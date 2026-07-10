@@ -70,3 +70,38 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 - [x] Create inline SVG placeholders with traditional Manipuri patterns (e.g. Moirang Phee borders)
 - [x] Apply new theme to `layout.tsx` and `page.tsx`
 - [x] Git Commit: `feat: integrate Manipuri culture branding and OKLCH color theme`
+
+### Milestone 2: Catalog Management & Admin Marketing Analytics
+
+#### Milestone 2.1: DB Schema & Migrations for Catalog
+- [ ] Create database tables for `categories`, `brands`, `products`, and `inventory` in `db/schema.ts`
+- [ ] Generate PostgreSQL 18 migration using `drizzle-kit generate`
+- [ ] Push schema changes to Neon PG 18 using `drizzle-kit push`
+- [ ] Git Commit: `feat: create database schema for catalog (products, categories, brands, inventory)`
+
+#### Milestone 2.2: Mock Image Upload API Route
+- [ ] Create `app/api/upload/route.ts` to support local file uploads to `/public/uploads/`
+- [ ] Verify image upload API returns public URLs
+- [ ] Git Commit: `feat: build local mock image upload API route`
+
+#### Milestone 2.3: Zod Validation & Database Services
+- [ ] Define Zod validation schemas for products, categories, and brands in `src/lib/validation/catalog.ts`
+- [ ] Create database query and mutation services in `src/services/catalog.ts`
+- [ ] Git Commit: `feat: build validation schemas and database services for catalog CRUD`
+
+#### Milestone 2.4: Admin Layout & Categories/Brands CRUD UI
+- [ ] Create admin layouts and navigation sidebar in `src/app/(admin)/admin/layout.tsx`
+- [ ] Create Category list & creation form at `src/app/(admin)/admin/categories/page.tsx`
+- [ ] Create Brand list & creation form at `src/app/(admin)/admin/brands/page.tsx`
+- [ ] Git Commit: `feat: build admin sidebar layout and categories/brands management UI`
+
+#### Milestone 2.5: Admin Products CRUD UI
+- [ ] Create Product list and inventory status page at `src/app/(admin)/admin/products/page.tsx`
+- [ ] Create Product creation form at `src/app/(admin)/admin/products/new/page.tsx` (with image selector and inventory fields)
+- [ ] Create Product edit page
+- [ ] Git Commit: `feat: build admin products and inventory management UI`
+
+#### Milestone 2.6: Analytics Tracking & Build Verification
+- [ ] Track admin catalog actions (create product, update inventory) in PostHog
+- [ ] Run typescript typechecks and Next.js production build verification
+- [ ] Git Commit: `feat: add admin catalog analytics tracking and verify build`
