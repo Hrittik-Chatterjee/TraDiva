@@ -5,7 +5,7 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ---
 
 ## Current Status
-- **Overall Progress**: 100% (Milestone 1 Complete) | Milestone 2: 15%
+- **Overall Progress**: 100% (Milestone 1 Complete) | Milestone 2: 30%
 - **Current Milestone**: Milestone 2: Catalog Management & Admin Marketing Analytics
 
 ---
@@ -80,9 +80,9 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 - [x] Git Commit: `feat: create database schema for catalog (products, categories, brands, inventory)`
 
 #### Milestone 2.2: Mock Image Upload API Route
-- [ ] Create `app/api/upload/route.ts` to support local file uploads to `/public/uploads/`
-- [ ] Verify image upload API returns public URLs
-- [ ] Git Commit: `feat: build local mock image upload API route`
+- [x] Create `app/api/upload/route.ts` to support local file uploads to `/public/uploads/`
+- [x] Verify image upload API returns public URLs
+- [x] Git Commit: `feat: build local mock image upload API route`
 
 #### Milestone 2.3: Zod Validation & Database Services
 - [ ] Define Zod validation schemas for products, categories, and brands in `src/lib/validation/catalog.ts`
