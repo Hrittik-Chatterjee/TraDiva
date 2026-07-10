@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { MoirangPheePattern } from "../shared/manipuri-patterns";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-footer-bg text-on-dark py-16 px-6 md:px-8 border-t border-charcoal mt-auto">
+    <>
+      <MoirangPheePattern height={16} className="bg-canvas" />
+      <footer className="w-full bg-footer-bg text-on-dark py-16 px-6 md:px-8 mt-auto">
       <div className="mx-auto max-w-7xl">
         {/* Main 6-Column Grid */}
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
@@ -136,5 +139,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+    </>
   );
 }

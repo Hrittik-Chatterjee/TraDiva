@@ -1,49 +1,36 @@
 ---
 version: alpha
-name: Miro-design-analysis
-description: Miro presents itself as the AI-powered visual workspace through a confident, almost playful brand voice — anchored by its signature canary yellow ({colors.brand-yellow}) wordmark over white canvas, broken open by colorful pastel feature tints (rose, teal, coral, orange, mint) that echo the actual sticky-note color palette used on the live whiteboard. Black-pill primary buttons dominate marketing, real Miro-board mockups serve as feature illustrations, and a 4-tier pricing grid leads into a dense comparison table. Roobert PRO carries display headlines; the system supports homepage, pricing, AI Workflows product page, agile vertical, and customer stories surfaces.
+name: TraDiva-design-analysis
+description: TraDiva presents traditional Manipuri attire and cultural products, reflecting Manipuri culture and heritage through custom vector illustrations, traditional patterns, and a warm, premium color palette in OKLCH. Black-pill primary buttons dominate marketing, animated cartoon characters in traditional attire serve as feature illustrations, and pages use geometric textile borders (Moirang Phee) as dividers. Roobert PRO carries display headlines.
 
 colors:
-  primary: "#1c1c1e"
-  on-primary: "#ffffff"
-  brand-yellow: "#ffd02f"
-  brand-yellow-deep: "#fcb900"
-  yellow-light: "#fff4c4"
-  yellow-dark: "#746019"
-  brand-blue: "#4262ff"
-  blue-450: "#5b76fe"
-  blue-pressed: "#2a41b6"
-  brand-coral: "#ff9999"
-  coral-light: "#ffc6c6"
-  coral-dark: "#600000"
-  brand-rose: "#ffd8f4"
-  rose-light: "#fde0f0"
-  brand-pink: "#fde0f0"
-  brand-teal: "#0fbcb0"
-  teal-light: "#c3faf5"
-  moss-dark: "#187574"
-  brand-orange-light: "#ffe6cd"
+  primary: "oklch(24.5% 0.008 17.7)"       # Primary Black (Text, primary buttons, UI elements)
+  on-primary: "oklch(97.7% 0.011 31.1)"    # Primary White
+  canvas: "oklch(97.7% 0.011 31.1)"        # Primary White (Page backgrounds)
+  dark-pink: "oklch(81.9% 0.101 24.7)"     # Dark Pink (dominant accent, active items)
+  light-pink: "oklch(85.1% 0.081 26.4)"    # Light Pink (borders, hover highlights)
+  lightest-pink: "oklch(89.8% 0.057 44.1)" # Lightest Pink (soft tag backgrounds, tag chips)
+  brand-yellow: "#ffd02f"                  # Preserved Yellow (Supporting accent, warning tags)
+  brand-blue: "#4262ff"                    # Preserved Blue (Action links, focus states)
   brand-red: "#fbd4d4"
   brand-red-dark: "#e3c5c5"
   success-accent: "#00b473"
-  canvas: "#ffffff"
-  surface: "#f7f8fa"
-  surface-soft: "#fafbfc"
+  surface: "oklch(97.7% 0.011 31.1)"
+  surface-soft: "oklch(89.8% 0.057 44.1)"
   surface-yellow: "#fff8e0"
-  surface-pricing-featured: "#f5f3ff"
-  hairline: "#e0e2e8"
-  hairline-soft: "#eef0f3"
-  hairline-strong: "#c7cad5"
-  ink-deep: "#050038"
-  ink: "#1c1c1e"
-  charcoal: "#2c2c34"
+  hairline: "oklch(85.1% 0.081 26.4)"      # Divider borders
+  hairline-soft: "oklch(89.8% 0.057 44.1)" # Subtle dividers
+  hairline-strong: "oklch(24.5% 0.008 17.7)"
+  ink: "oklch(24.5% 0.008 17.7)"           # Body text
+  charcoal: "oklch(24.5% 0.008 17.7)"
   slate: "#555a6a"
   steel: "#6b6f7e"
   stone: "#8e91a0"
   muted: "#a5a8b5"
-  on-dark: "#ffffff"
-  on-dark-muted: "#a5a8b5"
-  footer-bg: "#1c1c1e"
+  on-dark: "oklch(97.7% 0.011 31.1)"
+  on-dark-muted: "oklch(89.8% 0.057 44.1)"
+  footer-bg: "oklch(24.5% 0.008 17.7)"     # Dark footer background
+
 
 typography:
   hero-display:

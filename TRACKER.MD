@@ -62,3 +62,11 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 - [x] Setup global layouts with providers, loading boundaries, and error boundaries
 - [x] Visually verify elements in browser DevTools
 - [x] Git Commit: `feat: build base layout, navbar, and footer with Miro design language`
+
+#### Milestone 1.7: Manipuri Culture & OKLCH Theme Integration
+- [x] Update `DESIGN.md` colors and illustration plan
+- [x] Update `context.md` with new project goals & styles
+- [x] Configure OKLCH colors and float/wave/blink keyframes in `globals.css`
+- [x] Create inline SVG placeholders with traditional Manipuri patterns (e.g. Moirang Phee borders)
+- [x] Apply new theme to `layout.tsx` and `page.tsx`
+- [x] Git Commit: `feat: integrate Manipuri culture branding and OKLCH color theme`

@@ -5,7 +5,8 @@ This document serves as a persistent history and decision log for the TraDiva ec
 ---
 
 ## 1. Project Overview & Philosophy
-* **Goal**: Build a scalable, production-ready, SEO-first ecommerce platform from scratch (not a clone or tutorial project).
+* **Goal**: Build a scalable, production-ready, SEO-first ecommerce platform from scratch for **TraDiva** (traditional Manipuri attire, clothing, and cultural products).
+* **Culture & Heritage**: The platform design reflects Manipuri culture and heritage through custom vector illustrations, traditional textile borders (e.g. Moirang Phee triangular patterns), and subtle lightweight CSS animations of cartoon characters.
 * **Process**: Incremental development, feature-by-feature completion. Write clean, production-grade code without placeholder implementations unless requested.
 * **Development Flow**: After completing each granular task, make a Git commit. Keep code minimal and adhere to the Ponytail senior dev philosophy.
 
@@ -28,11 +29,18 @@ This document serves as a persistent history and decision log for the TraDiva ec
 * **Better Auth Chosen**: Stored in Drizzle tables (`user`, `session`, `account`, `verification`) within our own PostgreSQL 18 database.
 * **Rationale**: Essential for the requirement where guest orders must automatically link to a customer account if they later register using the same email address. This database-level merge is performed via a simple, safe transaction.
 
-### Design System (Miro Inspiration)
-* Follow [DESIGN.md](file:///c:/projects/TraDiva/DESIGN.md) strictly for the layout:
-  - Canary yellow (`#ffd02f`) accent tags and logos, but **never** for primary buttons.
-  - Black pill-shaped buttons (`#1c1c1e`, `rounded-full`) as the dominant CTA.
-  - Pastel feature card backgrounds (rose, teal, coral, yellow) mirroring Miro sticky notes.
+### Design System (Manipuri Style + OKLCH Colors)
+* Follow [DESIGN.md](file:///c:/projects/TraDiva/DESIGN.md) strictly for layout, color, and typography hierarchy:
+  - **White (Primary Background)**: `oklch(97.7% 0.011 31.1)`
+  - **Black (Text, Buttons, Key UI)**: `oklch(24.5% 0.008 17.7)`
+  - **Pink (Accent Color - second most dominant)**: 
+    * Dark Pink (active/dominant accent): `oklch(81.9% 0.101 24.7)`
+    * Light Pink (borders/highlights): `oklch(85.1% 0.081 26.4)`
+    * Lightest Pink (soft tags/backgrounds): `oklch(89.8% 0.057 44.1)`
+  - **Yellow & Blue (Preserved Supporting Accents)**: Yellow (`#ffd02f`) and Blue (`#4262ff`) used where appropriate.
+  - **Illustrations**: Animated Manipuri cartoon characters (especially girls wearing traditional Manipuri attire) in headers, footers, empty states, and promotional segments.
+  - **Animations**: Subtle, hardware-accelerated CSS animations (`gentle-float`, `gentle-wave`, `soft-blink`) applied to SVGs.
+  - **Patterns**: Traditional Manipuri textile motifs (serrated/triangular *Moirang Phee* borders) utilized on dividers and UI cards.
   - Strict typography rules (Roobert PRO or geometric sans font stack fallback) and negative letter-spacing for large text.
 
 ---
