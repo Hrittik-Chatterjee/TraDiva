@@ -5,7 +5,7 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ---
 
 ## Current Status
-- **Overall Progress**: 100% (Milestone 1 Complete) | Milestone 2: 30%
+- **Overall Progress**: 100% (Milestone 1 Complete) | Milestone 2: 45%
 - **Current Milestone**: Milestone 2: Catalog Management & Admin Marketing Analytics
 
 ---
@@ -85,9 +85,9 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 - [x] Git Commit: `feat: build local mock image upload API route`
 
 #### Milestone 2.3: Zod Validation & Database Services
-- [ ] Define Zod validation schemas for products, categories, and brands in `src/lib/validation/catalog.ts`
-- [ ] Create database query and mutation services in `src/services/catalog.ts`
-- [ ] Git Commit: `feat: build validation schemas and database services for catalog CRUD`
+- [x] Define Zod validation schemas for products, categories, and brands in `src/lib/validation/catalog.ts`
+- [x] Create database query and mutation services in `src/services/catalog.ts`
+- [x] Git Commit: `feat: build validation schemas and database services for catalog CRUD`
 
 #### Milestone 2.4: Admin Layout & Categories/Brands CRUD UI
 - [ ] Create admin layouts and navigation sidebar in `src/app/(admin)/admin/layout.tsx`
