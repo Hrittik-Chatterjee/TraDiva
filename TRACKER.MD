@@ -5,7 +5,7 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ---
 
 ## Current Status
-- **Overall Progress**: 50%
+- **Overall Progress**: 65%
 - **Current Milestone**: Milestone 1: Core Infrastructure Setup
 
 ---
@@ -42,12 +42,12 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 - [x] Git Commit: `feat: configure Neon database connection and Drizzle ORM`
 
 #### Milestone 1.4: Better Auth Configuration (Email, Google, Phone)
-- [ ] Install `better-auth`
-- [ ] Define Better Auth tables in `db/schema.ts` (user, session, account, verification)
-- [ ] Setup `lib/auth.ts` with Email/Password, Google OAuth, and Phone Auth (using a mock SMS logger)
-- [ ] Add route handler `app/api/auth/[...better-auth]/route.ts`
-- [ ] Verify API endpoints compile and respond
-- [ ] Git Commit: `feat: integrate Better Auth with Email, Google, and Phone providers`
+- [x] Install `better-auth`
+- [x] Define Better Auth tables in `db/schema.ts` (user, session, account, verification)
+- [x] Setup `lib/auth.ts` with Email/Password, Google OAuth, and Phone Auth (using a mock SMS logger)
+- [x] Add route handler `app/api/auth/[...better-auth]/route.ts`
+- [x] Verify API endpoints compile and respond
+- [x] Git Commit: `feat: integrate Better Auth with Email, Google, and Phone providers`
 
 #### Milestone 1.5: PostHog Analytics Setup
 - [ ] Install `posthog-js`
