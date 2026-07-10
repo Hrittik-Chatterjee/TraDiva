@@ -13,7 +13,7 @@ export default async function AdminBrandsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Brand List */}
-        <div className="lg:col-span-8 overflow-hidden rounded-2xl border border-light-pink bg-canvas">
+        <div className="lg:col-span-8 min-w-0 overflow-x-auto rounded-2xl border border-light-pink bg-canvas">
           <table className="w-full border-collapse text-left">
             <thead>
               <tr className="border-b border-light-pink bg-lightest-pink/10 text-xs font-semibold uppercase tracking-wider text-stone">
@@ -65,7 +65,7 @@ export default async function AdminBrandsPage() {
         </div>
 
         {/* Create Brand Form */}
-        <div className="lg:col-span-4">
+        <div className="lg:col-span-4 min-w-0">
           <BrandForm />
         </div>
       </div>
