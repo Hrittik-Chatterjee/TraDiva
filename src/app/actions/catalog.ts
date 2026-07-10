@@ -11,6 +11,16 @@ import {
   deleteProduct,
 } from "@/services/catalog";
 import { categorySchema, brandSchema, productSchema } from "@/lib/validation/catalog";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { trackServerEvent } from "@/services/posthog";
+
+async function getAdminUserId() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  return session?.user?.id || "anonymous_admin";
+}
 
 export async function createCategoryAction(prevState: any, formData: FormData) {
   const name = formData.get("name") as string;
@@ -24,7 +34,13 @@ export async function createCategoryAction(prevState: any, formData: FormData) {
   }
 
   try {
-    await createCategory(result.data);
+    const id = await createCategory(result.data);
+    const userId = await getAdminUserId();
+    trackServerEvent(userId, "admin_create_category", {
+      categoryId: id,
+      name: result.data.name,
+      slug: result.data.slug,
+    });
     revalidatePath("/admin/categories");
     revalidatePath("/admin");
     return { success: true };
@@ -39,6 +55,8 @@ export async function createCategoryAction(prevState: any, formData: FormData) {
 export async function deleteCategoryAction(id: string) {
   try {
     await deleteCategory(id);
+    const userId = await getAdminUserId();
+    trackServerEvent(userId, "admin_delete_category", { categoryId: id });
     revalidatePath("/admin/categories");
     revalidatePath("/admin");
     return { success: true };
@@ -60,7 +78,13 @@ export async function createBrandAction(prevState: any, formData: FormData) {
   }
 
   try {
-    await createBrand(result.data);
+    const id = await createBrand(result.data);
+    const userId = await getAdminUserId();
+    trackServerEvent(userId, "admin_create_brand", {
+      brandId: id,
+      name: result.data.name,
+      slug: result.data.slug,
+    });
     revalidatePath("/admin/brands");
     revalidatePath("/admin");
     return { success: true };
@@ -75,6 +99,8 @@ export async function createBrandAction(prevState: any, formData: FormData) {
 export async function deleteBrandAction(id: string) {
   try {
     await deleteBrand(id);
+    const userId = await getAdminUserId();
+    trackServerEvent(userId, "admin_delete_brand", { brandId: id });
     revalidatePath("/admin/brands");
     revalidatePath("/admin");
     return { success: true };
@@ -102,6 +128,12 @@ export async function createProductAction(input: any) {
       stock: result.data.stock,
       isFeatured: result.data.isFeatured,
       isActive: result.data.isActive,
+    });
+    const userId = await getAdminUserId();
+    trackServerEvent(userId, "admin_create_product", {
+      productId: id,
+      name: result.data.name,
+      stock: result.data.stock,
     });
     revalidatePath("/admin/products");
     revalidatePath("/admin");
@@ -135,6 +167,12 @@ export async function updateProductAction(id: string, input: any) {
       isFeatured: result.data.isFeatured,
       isActive: result.data.isActive,
     });
+    const userId = await getAdminUserId();
+    trackServerEvent(userId, "admin_update_product", {
+      productId: id,
+      name: result.data.name,
+      stock: result.data.stock,
+    });
     revalidatePath("/admin/products");
     return { success: true };
   } catch (error: any) {
@@ -149,6 +187,8 @@ export async function updateProductAction(id: string, input: any) {
 export async function deleteProductAction(id: string) {
   try {
     await deleteProduct(id);
+    const userId = await getAdminUserId();
+    trackServerEvent(userId, "admin_delete_product", { productId: id });
     revalidatePath("/admin/products");
     revalidatePath("/admin");
     return { success: true };
