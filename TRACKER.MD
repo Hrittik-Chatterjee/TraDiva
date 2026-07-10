@@ -5,7 +5,7 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ---
 
 ## Current Status
-- **Overall Progress**: 100% (Milestone 1 Complete) | Milestone 2: 45%
+- **Overall Progress**: 100% (Milestone 1 Complete) | Milestone 2: 60%
 - **Current Milestone**: Milestone 2: Catalog Management & Admin Marketing Analytics
 
 ---
@@ -90,10 +90,10 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 - [x] Git Commit: `feat: build validation schemas and database services for catalog CRUD`
 
 #### Milestone 2.4: Admin Layout & Categories/Brands CRUD UI
-- [ ] Create admin layouts and navigation sidebar in `src/app/(admin)/admin/layout.tsx`
-- [ ] Create Category list & creation form at `src/app/(admin)/admin/categories/page.tsx`
-- [ ] Create Brand list & creation form at `src/app/(admin)/admin/brands/page.tsx`
-- [ ] Git Commit: `feat: build admin sidebar layout and categories/brands management UI`
+- [x] Create admin layouts and navigation sidebar in `src/app/(admin)/admin/layout.tsx`
+- [x] Create Category list & creation form at `src/app/(admin)/admin/categories/page.tsx`
+- [x] Create Brand list & creation form at `src/app/(admin)/admin/brands/page.tsx`
+- [x] Git Commit: `feat: build admin sidebar layout and categories/brands management UI`
 
 #### Milestone 2.5: Admin Products CRUD UI
 - [ ] Create Product list and inventory status page at `src/app/(admin)/admin/products/page.tsx`

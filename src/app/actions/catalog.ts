@@ -1,0 +1,159 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import {
+  createCategory,
+  deleteCategory,
+  createBrand,
+  deleteBrand,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from "@/services/catalog";
+import { categorySchema, brandSchema, productSchema } from "@/lib/validation/catalog";
+
+export async function createCategoryAction(prevState: any, formData: FormData) {
+  const name = formData.get("name") as string;
+  const slug = formData.get("slug") as string;
+  const description = formData.get("description") as string;
+
+  const result = categorySchema.safeParse({ name, slug, description });
+
+  if (!result.success) {
+    return { error: result.error.issues[0].message };
+  }
+
+  try {
+    await createCategory(result.data);
+    revalidatePath("/admin/categories");
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error: any) {
+    if (error.code === "23505") {
+      return { error: "Category slug already exists" };
+    }
+    return { error: "Failed to create category" };
+  }
+}
+
+export async function deleteCategoryAction(id: string) {
+  try {
+    await deleteCategory(id);
+    revalidatePath("/admin/categories");
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error: any) {
+    return { error: "Failed to delete category (it may contain active products)" };
+  }
+}
+
+export async function createBrandAction(prevState: any, formData: FormData) {
+  const name = formData.get("name") as string;
+  const slug = formData.get("slug") as string;
+  const description = formData.get("description") as string;
+  const logoUrl = formData.get("logoUrl") as string;
+
+  const result = brandSchema.safeParse({ name, slug, description, logoUrl });
+
+  if (!result.success) {
+    return { error: result.error.issues[0].message };
+  }
+
+  try {
+    await createBrand(result.data);
+    revalidatePath("/admin/brands");
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error: any) {
+    if (error.code === "23505") {
+      return { error: "Brand slug already exists" };
+    }
+    return { error: "Failed to create brand" };
+  }
+}
+
+export async function deleteBrandAction(id: string) {
+  try {
+    await deleteBrand(id);
+    revalidatePath("/admin/brands");
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error: any) {
+    return { error: "Failed to delete brand" };
+  }
+}
+
+export async function createProductAction(input: any) {
+  const result = productSchema.safeParse(input);
+
+  if (!result.success) {
+    return { error: result.error.issues[0].message };
+  }
+
+  try {
+    const id = await createProduct({
+      name: result.data.name,
+      slug: result.data.slug,
+      description: result.data.description,
+      price: Math.round(result.data.price * 100), // convert to cents
+      images: result.data.images,
+      categoryId: result.data.categoryId,
+      brandId: result.data.brandId || null,
+      stock: result.data.stock,
+      isFeatured: result.data.isFeatured,
+      isActive: result.data.isActive,
+    });
+    revalidatePath("/admin/products");
+    revalidatePath("/admin");
+    return { success: true, id };
+  } catch (error: any) {
+    if (error.code === "23505") {
+      return { error: "Product slug already exists" };
+    }
+    console.error("Product creation action error:", error);
+    return { error: "Failed to create product" };
+  }
+}
+
+export async function updateProductAction(id: string, input: any) {
+  const result = productSchema.safeParse(input);
+
+  if (!result.success) {
+    return { error: result.error.issues[0].message };
+  }
+
+  try {
+    await updateProduct(id, {
+      name: result.data.name,
+      slug: result.data.slug,
+      description: result.data.description,
+      price: Math.round(result.data.price * 100), // convert to cents
+      images: result.data.images,
+      categoryId: result.data.categoryId,
+      brandId: result.data.brandId || null,
+      stock: result.data.stock,
+      isFeatured: result.data.isFeatured,
+      isActive: result.data.isActive,
+    });
+    revalidatePath("/admin/products");
+    return { success: true };
+  } catch (error: any) {
+    if (error.code === "23505") {
+      return { error: "Product slug already exists" };
+    }
+    console.error("Product update action error:", error);
+    return { error: "Failed to update product" };
+  }
+}
+
+export async function deleteProductAction(id: string) {
+  try {
+    await deleteProduct(id);
+    revalidatePath("/admin/products");
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error: any) {
+    console.error("Product delete action error:", error);
+    return { error: "Failed to delete product" };
+  }
+}
