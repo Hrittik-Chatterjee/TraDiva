@@ -1,6 +1,6 @@
 import { db } from "../../db";
 import { products, inventory, categories, brands } from "../../db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, asc, and, or, gte, lte, inArray, ilike } from "drizzle-orm";
 
 // --- Category Services ---
 
@@ -209,4 +209,110 @@ export async function updateProduct(
 export async function deleteProduct(id: string) {
   // Cascades to inventory automatically via database foreign key constraint
   await db.delete(products).where(eq(products.id, id));
+}
+
+// --- Storefront Catalog Services ---
+
+export async function getStorefrontProducts(filters: {
+  search?: string;
+  categorySlugs?: string[];
+  brandSlugs?: string[];
+  minPrice?: number; /* in cents */
+  maxPrice?: number; /* in cents */
+  sort?: string;
+}) {
+  const whereClauses: any[] = [eq(products.isActive, true)];
+
+  if (filters.search) {
+    whereClauses.push(
+      or(
+        ilike(products.name, `%${filters.search}%`),
+        ilike(products.description, `%${filters.search}%`)
+      )
+    );
+  }
+
+  if (filters.categorySlugs && filters.categorySlugs.length > 0) {
+    whereClauses.push(inArray(categories.slug, filters.categorySlugs));
+  }
+
+  if (filters.brandSlugs && filters.brandSlugs.length > 0) {
+    whereClauses.push(inArray(brands.slug, filters.brandSlugs));
+  }
+
+  if (filters.minPrice !== undefined) {
+    whereClauses.push(gte(products.price, filters.minPrice));
+  }
+
+  if (filters.maxPrice !== undefined) {
+    whereClauses.push(lte(products.price, filters.maxPrice));
+  }
+
+  let order = desc(products.createdAt); /* default to newest */
+  if (filters.sort === "price_asc") {
+    order = asc(products.price);
+  } else if (filters.sort === "price_desc") {
+    order = desc(products.price);
+  }
+
+  return await db
+    .select({
+      id: products.id,
+      name: products.name,
+      slug: products.slug,
+      description: products.description,
+      price: products.price,
+      images: products.images,
+      isFeatured: products.isFeatured,
+      createdAt: products.createdAt,
+      category: {
+        id: categories.id,
+        name: categories.name,
+        slug: categories.slug,
+      },
+      brand: {
+        id: brands.id,
+        name: brands.name,
+        slug: brands.slug,
+      },
+      stock: inventory.stock,
+    })
+    .from(products)
+    .innerJoin(categories, eq(products.categoryId, categories.id))
+    .leftJoin(brands, eq(products.brandId, brands.id))
+    .leftJoin(inventory, eq(products.id, inventory.productId))
+    .where(and(...whereClauses))
+    .orderBy(order);
+}
+
+export async function getProductBySlug(slug: string) {
+  const results = await db
+    .select({
+      id: products.id,
+      name: products.name,
+      slug: products.slug,
+      description: products.description,
+      price: products.price,
+      images: products.images,
+      isFeatured: products.isFeatured,
+      isActive: products.isActive,
+      category: {
+        id: categories.id,
+        name: categories.name,
+        slug: categories.slug,
+      },
+      brand: {
+        id: brands.id,
+        name: brands.name,
+        slug: brands.slug,
+      },
+      stock: inventory.stock,
+    })
+    .from(products)
+    .innerJoin(categories, eq(products.categoryId, categories.id))
+    .leftJoin(brands, eq(products.brandId, brands.id))
+    .leftJoin(inventory, eq(products.id, inventory.productId))
+    .where(eq(products.slug, slug))
+    .limit(1);
+  return results[0] || null;
 }

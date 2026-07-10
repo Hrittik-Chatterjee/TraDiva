@@ -5,8 +5,8 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ---
 
 ## Current Status
-- **Overall Progress**: 100% (Milestone 2 Complete)
-- **Current Milestone**: Milestone 3: Customer Storefront (Browsing, Search, Filters)
+- **Overall Progress**: 100% (Milestone 3 Complete)
+- **Current Milestone**: Milestone 4: Shopping Cart & Session Storage
 
 ---
 
@@ -109,27 +109,27 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ### Milestone 3: Customer Storefront (Browsing, Search, Filters)
 
 #### Milestone 3.1: Storefront Catalog Listing (Products & Categories/Brands)
-- [ ] Create the storefront `/catalog` page layout
-- [ ] Render active products in a responsive grid card view
-- [ ] Git Commit: `feat: create customer storefront catalog page layout`
+- [x] Create the storefront `/catalog` page layout
+- [x] Render active products in a responsive grid card view
+- [x] Git Commit: `feat: create customer storefront catalog page layout`
 
 #### Milestone 3.2: Storefront Search & Sorting
-- [ ] Implement search bar utilizing URL query parameters (`?q=xxx`)
-- [ ] Implement sort selector (Price low-high, high-low, newest) using URL sort parameters
-- [ ] Git Commit: `feat: implement catalog search and sorting parameters`
+- [x] Implement search bar utilizing URL query parameters (`?q=xxx`)
+- [x] Implement sort selector (Price low-high, high-low, newest) using URL sort parameters
+- [x] Git Commit: `feat: implement catalog search and sorting parameters`
 
 #### Milestone 3.3: Storefront Filters (Categories, Brands, Availability)
-- [ ] Create sidebar category and brand checkbox selectors that sync with URL parameters
-- [ ] Implement database-level SQL filtering in `getStorefrontProducts` service for search, category, brand, and price queries
-- [ ] Git Commit: `feat: build catalog sidebar filters and SQL-level filter queries`
+- [x] Create sidebar category and brand checkbox selectors that sync with URL parameters
+- [x] Implement database-level SQL filtering in `getStorefrontProducts` service for search, category, brand, and price queries
+- [x] Git Commit: `feat: build catalog sidebar filters and SQL-level filter queries`
 
 #### Milestone 3.4: Product Detail Page & SEO Metadata
-- [ ] Create dynamic route `/products/[slug]` detail page
-- [ ] Build interactive image gallery client component `ProductGallery`
-- [ ] Ingest Dynamic SEO Document titles and JSON-LD Product Schema markup
-- [ ] Git Commit: `feat: build product details page with interactive gallery and SEO schema`
+- [x] Create dynamic route `/products/[slug]` detail page
+- [x] Build interactive image gallery client component `ProductGallery`
+- [x] Ingest Dynamic SEO Document titles and JSON-LD Product Schema markup
+- [x] Git Commit: `feat: build product details page with interactive gallery and SEO schema`
 
 #### Milestone 3.5: PostHog Storefront Analytics & Build Checks
-- [ ] Track storefront actions (search, filter changes, product views) in PostHog
-- [ ] Run typescript checks and Next.js production build verification
-- [ ] Git Commit: `feat: add customer storefront analytics tracking and verify build`
+- [x] Track storefront actions (search, filter changes, product views) in PostHog
+- [x] Run typescript checks and Next.js production build verification
+- [x] Git Commit: `feat: add customer storefront analytics tracking and verify build`
