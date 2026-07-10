@@ -5,7 +5,7 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ---
 
 ## Current Status
-- **Overall Progress**: 0%
+- **Overall Progress**: 50%
 - **Current Milestone**: Milestone 1: Core Infrastructure Setup
 
 ---
@@ -20,26 +20,26 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ### Milestone 1: Core Infrastructure Setup
 
 #### Milestone 1.1: Next.js & TypeScript Base Initialization
-- [ ] Inspect `npx create-next-app@latest --help` options
-- [ ] Initialize Next.js 15 in `./` using non-interactive flags (TypeScript, ESLint, App Router, src directory, no Tailwind v3)
-- [ ] Configure strict TypeScript rules in `tsconfig.json`
-- [ ] Verify clean compilation via `npm run build`
-- [ ] Git Commit: `chore: initialize Next.js 15 project with TypeScript`
+- [x] Inspect `npx create-next-app@latest --help` options
+- [x] Initialize Next.js 15 in `./` using non-interactive flags (TypeScript, ESLint, App Router, src directory, no Tailwind v3)
+- [x] Configure strict TypeScript rules in `tsconfig.json`
+- [x] Verify clean compilation via `npm run build`
+- [x] Git Commit: `chore: initialize Next.js 15 project with TypeScript`
 
 #### Milestone 1.2: Tailwind CSS v4 Integration
-- [ ] Install Tailwind CSS v4 and PostCSS packages (`@tailwindcss/postcss`, `postcss`)
-- [ ] Update `globals.css` with color palette, typography, and shape tokens matching `DESIGN.md`
-- [ ] Verify Tailwind v4 compilation by running `npm run build`
-- [ ] Git Commit: `feat: install and configure Tailwind CSS v4 with Miro design tokens`
+- [x] Install Tailwind CSS v4 and PostCSS packages (`@tailwindcss/postcss`, `postcss`)
+- [x] Update `globals.css` with color palette, typography, and shape tokens matching `DESIGN.md`
+- [x] Verify Tailwind v4 compilation by running `npm run build`
+- [x] Git Commit: `feat: install and configure Tailwind CSS v4 with Miro design tokens`
 
 #### Milestone 1.3: Drizzle ORM & Neon Client Setup (PG 18)
-- [ ] Install `@neondatabase/serverless`, `drizzle-orm`, `drizzle-kit`, and `pg`
-- [ ] Create `db/index.ts` with connection pooling
-- [ ] Create `db/schema.ts` (empty schemas, preparing for auth)
-- [ ] Create `drizzle.config.ts`
-- [ ] Generate initial migration files
-- [ ] Run migration using `drizzle-kit push` or `migrate`
-- [ ] Git Commit: `feat: configure Neon database connection and Drizzle ORM`
+- [x] Install `@neondatabase/serverless`, `drizzle-orm`, `drizzle-kit`, and `pg`
+- [x] Create `db/index.ts` with connection pooling
+- [x] Create `db/schema.ts` (empty schemas, preparing for auth)
+- [x] Create `drizzle.config.ts`
+- [x] Generate initial migration files
+- [x] Run migration using `drizzle-kit push` or `migrate` (Pushed to Neon PG 18)
+- [x] Git Commit: `feat: configure Neon database connection and Drizzle ORM`
 
 #### Milestone 1.4: Better Auth Configuration (Email, Google, Phone)
 - [ ] Install `better-auth`
