@@ -34,7 +34,7 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
         {/* Page Header */}
         <div className="mb-12 border-b border-lightest-pink pb-8">
           <h1 className="text-4xl font-medium tracking-tight mb-2">Heritage Collection</h1>
-          <p className="text-steel text-sm max-w-md">
+          <p className="text-steel text-sm max-w-[448px]">
             Woven by hand, worn with pride. Explore traditional Manipuri apparel and cultural ornaments.
           </p>
         </div>
@@ -51,7 +51,7 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
               <div className="text-center p-16 border border-dashed border-light-pink rounded-3xl bg-lightest-pink/5">
                 <span className="text-4xl block mb-4">🌸</span>
                 <h3 className="text-lg font-bold text-ink mb-1">No products found</h3>
-                <p className="text-stone text-xs max-w-xs mx-auto">
+                <p className="text-stone text-xs max-w-[320px] mx-auto">
                   We couldn&apos;t find any items matching your filters. Try clearing some selections!
                 </p>
               </div>

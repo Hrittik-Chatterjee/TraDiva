@@ -19,7 +19,7 @@ export default function Home() {
           </h1>
 
           {/* Hero Subtitle */}
-          <p className="max-w-xl text-lg text-steel mb-10 leading-relaxed">
+          <p className="max-w-[576px] text-lg text-steel mb-10 leading-relaxed">
             Discover exquisite Phaneks, Innaphis, and handcrafted cultural products woven with love and legacy. Experience premium authenticity, directly from native Manipuri artisans.
           </p>
 
@@ -68,7 +68,7 @@ export default function Home() {
       <section className="w-full max-w-7xl px-6 py-12">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-medium text-ink mb-3">Shop Cultural Masterpieces</h2>
-          <p className="text-steel max-w-md mx-auto text-sm">Every garment carries centuries of traditional motifs and spiritual weaving heritage.</p>
+          <p className="text-steel max-w-[448px] mx-auto text-sm">Every garment carries centuries of traditional motifs and spiritual weaving heritage.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

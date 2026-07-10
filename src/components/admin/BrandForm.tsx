@@ -27,7 +27,7 @@ export default function BrandForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-md border border-light-pink p-6 rounded-2xl bg-canvas">
+    <form onSubmit={handleSubmit} className="w-full space-y-4 max-w-full border border-light-pink p-6 rounded-2xl bg-canvas">
       <h3 className="text-md font-semibold text-ink">Add New Brand</h3>
 
       <div>
