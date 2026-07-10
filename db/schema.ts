@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, integer, jsonb } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -47,4 +47,51 @@ export const verification = pgTable("verification", {
   expiresAt: timestamp("expires_at").notNull(),
   createdAt: timestamp("created_at"),
   updatedAt: timestamp("updated_at"),
+});
+
+export const categories = pgTable("categories", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const brands = pgTable("brands", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description"),
+  logoUrl: text("logo_url"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const products = pgTable("products", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description").notNull(),
+  price: integer("price").notNull(), // stored in cents/paisa
+  images: text("images").array().notNull(), // list of image paths/URLs
+  categoryId: text("category_id")
+    .notNull()
+    .references(() => categories.id, { onDelete: "restrict" }),
+  brandId: text("brand_id").references(() => brands.id, { onDelete: "set null" }),
+  isFeatured: boolean("is_featured").default(false).notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  metadata: jsonb("metadata"), // custom specs
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const inventory = pgTable("inventory", {
+  id: text("id").primaryKey(),
+  productId: text("product_id")
+    .notNull()
+    .unique()
+    .references(() => products.id, { onDelete: "cascade" }),
+  stock: integer("stock").default(0).notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

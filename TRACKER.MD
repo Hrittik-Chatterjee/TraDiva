@@ -5,7 +5,7 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ---
 
 ## Current Status
-- **Overall Progress**: 100% (Milestone 1 Complete)
+- **Overall Progress**: 100% (Milestone 1 Complete) | Milestone 2: 15%
 - **Current Milestone**: Milestone 2: Catalog Management & Admin Marketing Analytics
 
 ---
@@ -74,10 +74,10 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ### Milestone 2: Catalog Management & Admin Marketing Analytics
 
 #### Milestone 2.1: DB Schema & Migrations for Catalog
-- [ ] Create database tables for `categories`, `brands`, `products`, and `inventory` in `db/schema.ts`
-- [ ] Generate PostgreSQL 18 migration using `drizzle-kit generate`
-- [ ] Push schema changes to Neon PG 18 using `drizzle-kit push`
-- [ ] Git Commit: `feat: create database schema for catalog (products, categories, brands, inventory)`
+- [x] Create database tables for `categories`, `brands`, `products`, and `inventory` in `db/schema.ts`
+- [x] Generate PostgreSQL 18 migration using `drizzle-kit generate`
+- [x] Push schema changes to Neon PG 18 using `drizzle-kit push`
+- [x] Git Commit: `feat: create database schema for catalog (products, categories, brands, inventory)`
 
 #### Milestone 2.2: Mock Image Upload API Route
 - [ ] Create `app/api/upload/route.ts` to support local file uploads to `/public/uploads/`
