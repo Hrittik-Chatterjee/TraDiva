@@ -5,10 +5,9 @@ import { useEffect, useState, useTransition } from "react";
 
 interface CatalogFiltersProps {
   categories: { name: string; slug: string }[];
-  brands: { name: string; slug: string }[];
 }
 
-export default function CatalogFilters({ categories, brands }: CatalogFiltersProps) {
+export default function CatalogFilters({ categories }: CatalogFiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -16,7 +15,6 @@ export default function CatalogFilters({ categories, brands }: CatalogFiltersPro
 
   // Active filter values from URL
   const activeCategories = searchParams.get("category")?.split(",") || [];
-  const activeBrands = searchParams.get("brand")?.split(",") || [];
   const activeSort = searchParams.get("sort") || "newest";
   const activeSearch = searchParams.get("q") || "";
 
@@ -27,9 +25,9 @@ export default function CatalogFilters({ categories, brands }: CatalogFiltersPro
     setSearchVal(activeSearch);
   }, [activeSearch]);
 
-  function handleFilterToggle(type: "category" | "brand", slug: string) {
+  function handleFilterToggle(slug: string) {
     const params = new URLSearchParams(searchParams.toString());
-    let currentList = type === "category" ? [...activeCategories] : [...activeBrands];
+    let currentList = [...activeCategories];
 
     if (currentList.includes(slug)) {
       currentList = currentList.filter((s) => s !== slug);
@@ -38,9 +36,9 @@ export default function CatalogFilters({ categories, brands }: CatalogFiltersPro
     }
 
     if (currentList.length > 0) {
-      params.set(type, currentList.join(","));
+      params.set("category", currentList.join(","));
     } else {
-      params.delete(type);
+      params.delete("category");
     }
 
     startTransition(() => {
@@ -122,7 +120,7 @@ export default function CatalogFilters({ categories, brands }: CatalogFiltersPro
                 <input
                   type="checkbox"
                   checked={activeCategories.includes(c.slug)}
-                  onChange={() => handleFilterToggle("category", c.slug)}
+                  onChange={() => handleFilterToggle(c.slug)}
                   className="w-4 h-4 rounded border-light-pink accent-dark-pink"
                 />
                 <span>{c.name}</span>
@@ -132,30 +130,8 @@ export default function CatalogFilters({ categories, brands }: CatalogFiltersPro
         </div>
       )}
 
-      {/* Brands Filter */}
-      {brands.length > 0 && (
-        <div className="border-b border-lightest-pink pb-6">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-stone mb-3">
-            Brands
-          </label>
-          <div className="space-y-2">
-            {brands.map((b) => (
-              <label key={b.slug} className="flex items-center gap-2 cursor-pointer text-sm text-ink">
-                <input
-                  type="checkbox"
-                  checked={activeBrands.includes(b.slug)}
-                  onChange={() => handleFilterToggle("brand", b.slug)}
-                  className="w-4 h-4 rounded border-light-pink accent-dark-pink"
-                />
-                <span>{b.name}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Clear Action */}
-      {(activeCategories.length > 0 || activeBrands.length > 0 || activeSearch || activeSort !== "newest") && (
+      {(activeCategories.length > 0 || activeSearch || activeSort !== "newest") && (
         <button
           onClick={clearAllFilters}
           className="text-xs font-semibold text-brand-blue hover:underline"

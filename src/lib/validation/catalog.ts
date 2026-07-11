@@ -9,16 +9,6 @@ export const categorySchema = z.object({
   description: z.string().optional().or(z.literal("")),
 });
 
-export const brandSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  slug: z
-    .string()
-    .min(2, "Slug must be at least 2 characters")
-    .regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens"),
-  description: z.string().optional().or(z.literal("")),
-  logoUrl: z.string().url("Invalid URL").optional().or(z.literal("")),
-});
-
 export const productSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   slug: z
@@ -32,7 +22,6 @@ export const productSchema = z.object({
   ),
   images: z.array(z.string().min(1)).min(1, "At least one image is required"),
   categoryId: z.string().min(1, "Category is required"),
-  brandId: z.string().optional().nullable().or(z.literal("")),
   stock: z.preprocess(
     (val) => Number(val),
     z.number().int().min(0, "Stock cannot be negative")
@@ -42,5 +31,4 @@ export const productSchema = z.object({
 });
 
 export type CategoryInput = z.infer<typeof categorySchema>;
-export type BrandInput = z.infer<typeof brandSchema>;
 export type ProductInput = z.infer<typeof productSchema>;

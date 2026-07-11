@@ -15,6 +15,13 @@
       "when": 1783699905341,
       "tag": "0001_dazzling_stardust",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1783767356690,
+      "tag": "0002_silent_chronomancer",
+      "breakpoints": true
     }
   ]
 }

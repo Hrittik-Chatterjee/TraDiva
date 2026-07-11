@@ -1,4 +1,4 @@
-import { getStorefrontProducts, getCategories, getBrands } from "@/services/catalog";
+import { getStorefrontProducts, getCategories } from "@/services/catalog";
 import CatalogFilters from "@/components/storefront/CatalogFilters";
 import Link from "next/link";
 
@@ -6,7 +6,6 @@ interface CatalogPageProps {
   searchParams: Promise<{
     q?: string;
     category?: string;
-    brand?: string;
     sort?: string;
   }>;
 }
@@ -15,17 +14,14 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
   const resolvedSearchParams = await searchParams;
 
   const categorySlugs = resolvedSearchParams.category ? resolvedSearchParams.category.split(",") : undefined;
-  const brandSlugs = resolvedSearchParams.brand ? resolvedSearchParams.brand.split(",") : undefined;
 
-  const [productsList, categoriesList, brandsList] = await Promise.all([
+  const [productsList, categoriesList] = await Promise.all([
     getStorefrontProducts({
       search: resolvedSearchParams.q,
       categorySlugs,
-      brandSlugs,
       sort: resolvedSearchParams.sort,
     }),
     getCategories(),
-    getBrands(),
   ]);
 
   return (
@@ -42,7 +38,7 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           {/* Sidebar Filters */}
           <aside className="lg:col-span-3 lg:sticky lg:top-24">
-            <CatalogFilters categories={categoriesList} brands={brandsList} />
+            <CatalogFilters categories={categoriesList} />
           </aside>
 
           {/* Product Grid */}
@@ -88,9 +84,9 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
                         )}
                       </div>
 
-                      {/* Brand Label */}
+                      {/* Category Label */}
                       <span className="text-[10px] font-bold uppercase tracking-wider text-dark-pink">
-                        {product.brand?.name || "Traditional Weave"}
+                        {product.category?.name || "Traditional Collection"}
                       </span>
 
                       {/* Title */}

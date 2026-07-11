@@ -4,13 +4,11 @@ import { revalidatePath } from "next/cache";
 import {
   createCategory,
   deleteCategory,
-  createBrand,
-  deleteBrand,
   createProduct,
   updateProduct,
   deleteProduct,
 } from "@/services/catalog";
-import { categorySchema, brandSchema, productSchema } from "@/lib/validation/catalog";
+import { categorySchema, productSchema } from "@/lib/validation/catalog";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { trackServerEvent } from "@/services/posthog";
@@ -65,49 +63,7 @@ export async function deleteCategoryAction(id: string) {
   }
 }
 
-export async function createBrandAction(prevState: any, formData: FormData) {
-  const name = formData.get("name") as string;
-  const slug = formData.get("slug") as string;
-  const description = formData.get("description") as string;
-  const logoUrl = formData.get("logoUrl") as string;
-
-  const result = brandSchema.safeParse({ name, slug, description, logoUrl });
-
-  if (!result.success) {
-    return { error: result.error.issues[0].message };
-  }
-
-  try {
-    const id = await createBrand(result.data);
-    const userId = await getAdminUserId();
-    trackServerEvent(userId, "admin_create_brand", {
-      brandId: id,
-      name: result.data.name,
-      slug: result.data.slug,
-    });
-    revalidatePath("/admin/brands");
-    revalidatePath("/admin");
-    return { success: true };
-  } catch (error: any) {
-    if (error.code === "23505") {
-      return { error: "Brand slug already exists" };
-    }
-    return { error: "Failed to create brand" };
-  }
-}
-
-export async function deleteBrandAction(id: string) {
-  try {
-    await deleteBrand(id);
-    const userId = await getAdminUserId();
-    trackServerEvent(userId, "admin_delete_brand", { brandId: id });
-    revalidatePath("/admin/brands");
-    revalidatePath("/admin");
-    return { success: true };
-  } catch (error: any) {
-    return { error: "Failed to delete brand" };
-  }
-}
+// --- Product Actions ---
 
 export async function createProductAction(input: any) {
   const result = productSchema.safeParse(input);
@@ -124,7 +80,6 @@ export async function createProductAction(input: any) {
       price: Math.round(result.data.price * 100), // convert to cents
       images: result.data.images,
       categoryId: result.data.categoryId,
-      brandId: result.data.brandId || null,
       stock: result.data.stock,
       isFeatured: result.data.isFeatured,
       isActive: result.data.isActive,
@@ -162,7 +117,6 @@ export async function updateProductAction(id: string, input: any) {
       price: Math.round(result.data.price * 100), // convert to cents
       images: result.data.images,
       categoryId: result.data.categoryId,
-      brandId: result.data.brandId || null,
       stock: result.data.stock,
       isFeatured: result.data.isFeatured,
       isActive: result.data.isActive,

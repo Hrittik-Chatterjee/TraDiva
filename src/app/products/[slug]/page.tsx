@@ -98,9 +98,9 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
 
           {/* Details Column */}
           <div className="md:col-span-6 lg:col-span-7 flex flex-col justify-start">
-            {/* Brand Label */}
+            {/* Category Label */}
             <span className="text-xs font-bold uppercase tracking-wider text-dark-pink bg-lightest-pink px-2.5 py-1 rounded-md w-max mb-4">
-              {product.brand?.name || "Traditional Weave"}
+              {product.category.name}
             </span>
 
             {/* Name */}

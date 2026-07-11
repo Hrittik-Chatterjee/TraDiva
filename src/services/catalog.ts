@@ -1,5 +1,5 @@
 import { db } from "../../db";
-import { products, inventory, categories, brands } from "../../db/schema";
+import { products, inventory, categories } from "../../db/schema";
 import { eq, desc, asc, and, or, gte, lte, inArray, ilike } from "drizzle-orm";
 
 // --- Category Services ---
@@ -35,44 +35,6 @@ export async function deleteCategory(id: string) {
   await db.delete(categories).where(eq(categories.id, id));
 }
 
-// --- Brand Services ---
-
-export async function getBrands() {
-  return await db.select().from(brands).orderBy(desc(brands.createdAt));
-}
-
-export async function createBrand(input: { name: string; slug: string; description?: string; logoUrl?: string }) {
-  const id = "brand_" + crypto.randomUUID();
-  await db.insert(brands).values({
-    id,
-    name: input.name,
-    slug: input.slug,
-    description: input.description || null,
-    logoUrl: input.logoUrl || null,
-  });
-  return id;
-}
-
-export async function updateBrand(
-  id: string,
-  input: { name: string; slug: string; description?: string; logoUrl?: string }
-) {
-  await db
-    .update(brands)
-    .set({
-      name: input.name,
-      slug: input.slug,
-      description: input.description || null,
-      logoUrl: input.logoUrl || null,
-      updatedAt: new Date(),
-    })
-    .where(eq(brands.id, id));
-}
-
-export async function deleteBrand(id: string) {
-  await db.delete(brands).where(eq(brands.id, id));
-}
-
 // --- Product Services ---
 
 export async function getProducts() {
@@ -91,15 +53,10 @@ export async function getProducts() {
         id: categories.id,
         name: categories.name,
       },
-      brand: {
-        id: brands.id,
-        name: brands.name,
-      },
       stock: inventory.stock,
     })
     .from(products)
     .innerJoin(categories, eq(products.categoryId, categories.id))
-    .leftJoin(brands, eq(products.brandId, brands.id))
     .leftJoin(inventory, eq(products.id, inventory.productId))
     .orderBy(desc(products.createdAt));
 }
@@ -116,7 +73,6 @@ export async function getProductById(id: string) {
       isFeatured: products.isFeatured,
       isActive: products.isActive,
       categoryId: products.categoryId,
-      brandId: products.brandId,
       stock: inventory.stock,
     })
     .from(products)
@@ -133,7 +89,6 @@ export async function createProduct(input: {
   price: number;
   images: string[];
   categoryId: string;
-  brandId: string | null;
   stock: number;
   isFeatured: boolean;
   isActive: boolean;
@@ -148,7 +103,6 @@ export async function createProduct(input: {
     price: input.price,
     images: input.images,
     categoryId: input.categoryId,
-    brandId: input.brandId || null,
     isFeatured: input.isFeatured ?? false,
     isActive: input.isActive ?? true,
   });
@@ -171,7 +125,6 @@ export async function updateProduct(
     price: number;
     images: string[];
     categoryId: string;
-    brandId: string | null;
     stock: number;
     isFeatured: boolean;
     isActive: boolean;
@@ -186,7 +139,6 @@ export async function updateProduct(
       price: input.price,
       images: input.images,
       categoryId: input.categoryId,
-      brandId: input.brandId || null,
       isFeatured: input.isFeatured ?? false,
       isActive: input.isActive ?? true,
       updatedAt: new Date(),
@@ -212,7 +164,6 @@ export async function deleteProduct(id: string) {
 export async function getStorefrontProducts(filters: {
   search?: string;
   categorySlugs?: string[];
-  brandSlugs?: string[];
   minPrice?: number; /* in cents */
   maxPrice?: number; /* in cents */
   sort?: string;
@@ -230,10 +181,6 @@ export async function getStorefrontProducts(filters: {
 
   if (filters.categorySlugs && filters.categorySlugs.length > 0) {
     whereClauses.push(inArray(categories.slug, filters.categorySlugs));
-  }
-
-  if (filters.brandSlugs && filters.brandSlugs.length > 0) {
-    whereClauses.push(inArray(brands.slug, filters.brandSlugs));
   }
 
   if (filters.minPrice !== undefined) {
@@ -266,16 +213,10 @@ export async function getStorefrontProducts(filters: {
         name: categories.name,
         slug: categories.slug,
       },
-      brand: {
-        id: brands.id,
-        name: brands.name,
-        slug: brands.slug,
-      },
       stock: inventory.stock,
     })
     .from(products)
     .innerJoin(categories, eq(products.categoryId, categories.id))
-    .leftJoin(brands, eq(products.brandId, brands.id))
     .leftJoin(inventory, eq(products.id, inventory.productId))
     .where(and(...whereClauses))
     .orderBy(order);
@@ -297,16 +238,10 @@ export async function getProductBySlug(slug: string) {
         name: categories.name,
         slug: categories.slug,
       },
-      brand: {
-        id: brands.id,
-        name: brands.name,
-        slug: brands.slug,
-      },
       stock: inventory.stock,
     })
     .from(products)
     .innerJoin(categories, eq(products.categoryId, categories.id))
-    .leftJoin(brands, eq(products.brandId, brands.id))
     .leftJoin(inventory, eq(products.id, inventory.productId))
     .where(eq(products.slug, slug))
     .limit(1);

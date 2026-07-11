@@ -58,16 +58,6 @@ export const categories = pgTable("categories", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-export const brands = pgTable("brands", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  slug: text("slug").notNull().unique(),
-  description: text("description"),
-  logoUrl: text("logo_url"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
-
 export const products = pgTable("products", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
@@ -78,7 +68,6 @@ export const products = pgTable("products", {
   categoryId: text("category_id")
     .notNull()
     .references(() => categories.id, { onDelete: "restrict" }),
-  brandId: text("brand_id").references(() => brands.id, { onDelete: "set null" }),
   isFeatured: boolean("is_featured").default(false).notNull(),
   isActive: boolean("is_active").default(true).notNull(),
   metadata: jsonb("metadata"), // custom specs

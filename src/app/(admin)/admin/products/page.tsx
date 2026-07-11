@@ -24,7 +24,6 @@ export default async function AdminProductsPage() {
               <th className="p-4">Product</th>
               <th className="p-4">Slug</th>
               <th className="p-4">Category</th>
-              <th className="p-4">Brand</th>
               <th className="p-4">Price</th>
               <th className="p-4">Stock</th>
               <th className="p-4">Status</th>
@@ -34,7 +33,7 @@ export default async function AdminProductsPage() {
           <tbody className="divide-y divide-lightest-pink text-sm text-ink">
             {productsList.length === 0 ? (
               <tr>
-                <td colSpan={8} className="p-12 text-center text-stone">
+                <td colSpan={7} className="p-12 text-center text-stone">
                   No products found. Click &quot;Add Product&quot; to publish your first design!
                 </td>
               </tr>
@@ -67,7 +66,6 @@ export default async function AdminProductsPage() {
                   </td>
                   <td className="p-4 font-mono text-xs">{product.slug}</td>
                   <td className="p-4 text-stone">{product.category.name}</td>
-                  <td className="p-4 text-stone">{product.brand?.name || "-"}</td>
                   <td className="p-4 font-semibold">${(product.price / 100).toFixed(2)}</td>
                   <td className="p-4">
                     {product.stock !== null && product.stock !== undefined ? (

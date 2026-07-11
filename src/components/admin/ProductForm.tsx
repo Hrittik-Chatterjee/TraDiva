@@ -6,7 +6,6 @@ import { createProductAction, updateProductAction } from "@/app/actions/catalog"
 
 interface ProductFormProps {
   categories: { id: string; name: string }[];
-  brands: { id: string; name: string }[];
   initialData?: {
     id: string;
     name: string;
@@ -15,14 +14,13 @@ interface ProductFormProps {
     price: number; /* stored in cents */
     images: string[];
     categoryId: string;
-    brandId: string | null;
     stock: number | null;
     isFeatured: boolean;
     isActive: boolean;
   };
 }
 
-export default function ProductForm({ categories, brands, initialData }: ProductFormProps) {
+export default function ProductForm({ categories, initialData }: ProductFormProps) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -33,7 +31,6 @@ export default function ProductForm({ categories, brands, initialData }: Product
   const [description, setDescription] = useState(initialData?.description || "");
   const [price, setPrice] = useState(initialData ? (initialData.price / 100).toString() : "");
   const [categoryId, setCategoryId] = useState(initialData?.categoryId || "");
-  const [brandId, setBrandId] = useState(initialData?.brandId || "");
   const [stock, setStock] = useState(initialData ? (initialData.stock || 0).toString() : "0");
   const [isFeatured, setIsFeatured] = useState(initialData?.isFeatured || false);
   const [isActive, setIsActive] = useState(initialData?.isActive ?? true);
@@ -85,7 +82,6 @@ export default function ProductForm({ categories, brands, initialData }: Product
       description,
       price: parseFloat(price),
       categoryId,
-      brandId: brandId || null,
       stock: parseInt(stock),
       images,
       isFeatured,
@@ -146,9 +142,9 @@ export default function ProductForm({ categories, brands, initialData }: Product
         </div>
       </div>
 
-      {/* Grid for Category, Brand, Price, Stock */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="md:col-span-2">
+      {/* Grid for Category, Price, Stock */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
           <label htmlFor="category" className="block text-xs font-semibold uppercase tracking-wider text-stone mb-1">
             Category
           </label>
@@ -168,26 +164,7 @@ export default function ProductForm({ categories, brands, initialData }: Product
           </select>
         </div>
 
-        <div className="md:col-span-2">
-          <label htmlFor="brand" className="block text-xs font-semibold uppercase tracking-wider text-stone mb-1">
-            Brand (Optional)
-          </label>
-          <select
-            id="brand"
-            value={brandId}
-            onChange={(e) => setBrandId(e.target.value)}
-            className="w-full h-10 px-3 rounded-md border border-light-pink bg-canvas text-sm focus:border-dark-pink focus:outline-none"
-          >
-            <option value="">Select Brand</option>
-            {brands.map((b) => (
-              <option key={b.id} value={b.id}>
-                {b.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="md:col-span-2">
+        <div>
           <label htmlFor="price" className="block text-xs font-semibold uppercase tracking-wider text-stone mb-1">
             Price (USD)
           </label>
@@ -203,7 +180,7 @@ export default function ProductForm({ categories, brands, initialData }: Product
           />
         </div>
 
-        <div className="md:col-span-2">
+        <div>
           <label htmlFor="stock" className="block text-xs font-semibold uppercase tracking-wider text-stone mb-1">
             Initial Stock
           </label>
