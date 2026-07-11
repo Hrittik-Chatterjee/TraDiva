@@ -130,19 +130,56 @@ export async function createProduct(input: {
   name: string;
   slug: string;
   description: string;
-  price: number; // in cents
+  price: number;
   images: string[];
   categoryId: string;
-  brandId?: string | null;
+  brandId: string | null;
   stock: number;
-  isFeatured?: boolean;
-  isActive?: boolean;
+  isFeatured: boolean;
+  isActive: boolean;
 }) {
-  return await db.transaction(async (tx) => {
-    const productId = "prod_" + crypto.randomUUID();
+  const productId = "prod_" + crypto.randomUUID();
 
-    await tx.insert(products).values({
-      id: productId,
+  await db.insert(products).values({
+    id: productId,
+    name: input.name,
+    slug: input.slug,
+    description: input.description,
+    price: input.price,
+    images: input.images,
+    categoryId: input.categoryId,
+    brandId: input.brandId || null,
+    isFeatured: input.isFeatured ?? false,
+    isActive: input.isActive ?? true,
+  });
+
+  await db.insert(inventory).values({
+    id: "inv_" + crypto.randomUUID(),
+    productId: productId,
+    stock: input.stock,
+  });
+
+  return productId;
+}
+
+export async function updateProduct(
+  id: string,
+  input: {
+    name: string;
+    slug: string;
+    description: string;
+    price: number;
+    images: string[];
+    categoryId: string;
+    brandId: string | null;
+    stock: number;
+    isFeatured: boolean;
+    isActive: boolean;
+  }
+) {
+  await db
+    .update(products)
+    .set({
       name: input.name,
       slug: input.slug,
       description: input.description,
@@ -152,58 +189,17 @@ export async function createProduct(input: {
       brandId: input.brandId || null,
       isFeatured: input.isFeatured ?? false,
       isActive: input.isActive ?? true,
-    });
+      updatedAt: new Date(),
+    })
+    .where(eq(products.id, id));
 
-    await tx.insert(inventory).values({
-      id: "inv_" + crypto.randomUUID(),
-      productId: productId,
+  await db
+    .update(inventory)
+    .set({
       stock: input.stock,
-    });
-
-    return productId;
-  });
-}
-
-export async function updateProduct(
-  id: string,
-  input: {
-    name: string;
-    slug: string;
-    description: string;
-    price: number; // in cents
-    images: string[];
-    categoryId: string;
-    brandId?: string | null;
-    stock: number;
-    isFeatured?: boolean;
-    isActive?: boolean;
-  }
-) {
-  await db.transaction(async (tx) => {
-    await tx
-      .update(products)
-      .set({
-        name: input.name,
-        slug: input.slug,
-        description: input.description,
-        price: input.price,
-        images: input.images,
-        categoryId: input.categoryId,
-        brandId: input.brandId || null,
-        isFeatured: input.isFeatured ?? false,
-        isActive: input.isActive ?? true,
-        updatedAt: new Date(),
-      })
-      .where(eq(products.id, id));
-
-    await tx
-      .update(inventory)
-      .set({
-        stock: input.stock,
-        updatedAt: new Date(),
-      })
-      .where(eq(inventory.productId, id));
-  });
+      updatedAt: new Date(),
+    })
+    .where(eq(inventory.productId, id));
 }
 
 export async function deleteProduct(id: string) {
