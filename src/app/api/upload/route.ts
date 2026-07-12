@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { s3Client, R2_BUCKET_NAME, R2_PUBLIC_URL, isR2Configured } from "@/lib/r2";
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,28 +15,46 @@ export async function POST(req: NextRequest) {
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-
-    // Define the upload directory inside public/uploads
-    const uploadDir = join(process.cwd(), "public", "uploads");
-    
-    // Ensure the folder exists
-    await mkdir(uploadDir, { recursive: true });
+    const contentType = file.type || "application/octet-stream";
 
     // Generate a unique filename to prevent overwrites
     const timestamp = Date.now();
     const sanitizedName = file.name.replace(/[^a-zA-Z0-9.]/g, "_");
     const filename = `${timestamp}_${sanitizedName}`;
-    const filePath = join(uploadDir, filename);
 
-    // Write file to the local disk
+    // 1. If Cloudflare R2 is configured, upload directly to the R2 bucket
+    if (isR2Configured && s3Client) {
+      console.log(`[R2] Uploading ${filename} to bucket ${R2_BUCKET_NAME}...`);
+      await s3Client.send(
+        new PutObjectCommand({
+          Bucket: R2_BUCKET_NAME,
+          Key: filename,
+          Body: buffer,
+          ContentType: contentType,
+        })
+      );
+
+      // Return the public URL for the R2 object
+      const publicUrl = R2_PUBLIC_URL
+        ? `${R2_PUBLIC_URL.replace(/\/$/, "")}/${filename}`
+        : `/uploads/${filename}`; // fallback relative URL if no public URL is defined
+
+      return NextResponse.json({ url: publicUrl });
+    }
+
+    // 2. Fall back to local file system upload for development when R2 is not configured
+    console.log(`[R2] Not configured. Falling back to local upload for ${filename}`);
+    const uploadDir = join(process.cwd(), "public", "uploads");
+    await mkdir(uploadDir, { recursive: true });
+    
+    const filePath = join(uploadDir, filename);
     await writeFile(filePath, buffer);
 
-    // Return the relative URL path served by Next.js static files
-    const publicUrl = `/uploads/${filename}`;
-
-    return NextResponse.json({ url: publicUrl });
+    const localUrl = `/uploads/${filename}`;
+    return NextResponse.json({ url: localUrl });
   } catch (error) {
-    console.error("Local file upload error:", error);
+    console.error("File upload error:", error);
     return NextResponse.json({ error: "File upload failed" }, { status: 500 });
   }
 }
+

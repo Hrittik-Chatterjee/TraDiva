@@ -17,8 +17,8 @@ This document serves as a persistent history and decision log for the TraDiva ec
 * **Database**: Neon serverless PostgreSQL, version **PostgreSQL 18** (latest stable).
 * **ORM**: Drizzle ORM.
 * **Authentication**: Better Auth.
-* **Storage**: Mock local uploads first, migrate to Cloudflare R2 later.
-* **Payments**: Mock transactions first, migrate to Stripe later.
+* **Storage**: Cloudflare R2 Media Storage (with local filesystem fallback for development).
+* **Payments**: Mock transactions first, migrate to bKash PGW (mobile financial service) later.
 * **Analytics**: PostHog integrated into all client-side and server-side actions.
 
 ---
@@ -47,6 +47,14 @@ This document serves as a persistent history and decision log for the TraDiva ec
 * **State Management**: Developed `CartProvider` using React Context for global availability.
 * **Persistence**: Synchronizes state with client-side `localStorage`. Solved React hydration alerts by deferring the state initialization using `setTimeout` on mount.
 * **Displacement Bug**: Replaced absolute viewport classes with explicit fixed-pixel inline CSS configurations on the cart sheet drawer container to prevent rendering shifts.
+
+### Cloudflare R2 Media Storage
+* **Architecture**: Integrated AWS S3 client SDK (`@aws-sdk/client-s3`) in `src/lib/r2.ts` to manage image file objects in Cloudflare R2 bucket.
+* **Dev Fallback**: If R2 environment keys are unconfigured, `/api/upload` automatically falls back to local disk storage in `public/uploads/` with a console warning. This allows developers to run and test the catalog offline without R2 setup.
+
+### Tailwind CSS v4 Max-Width Fix
+* **Gotcha**: Tailwind v4 maps spacing tokens directly to max-width and sizing variables if `--max-width-*` is missing. Overriding `--spacing-md` with `16px` constrained all `max-w-md` cards to a 16px width.
+* **Resolution**: Configured explicit `--max-width-xs` through `--max-width-7xl` values in `globals.css` `@theme` to prevent spacing scale overrides and restore correct container sizing.
 
 ---
 
