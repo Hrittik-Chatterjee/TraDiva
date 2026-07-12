@@ -159,3 +159,37 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 - [x] Run typescript check and verify production build compilation succeeds cleanly
 - [x] Git Commit: `feat: clean up ts/lint warnings, implement analytics, and verify production build`
 
+### Milestone 5: Checkout, Mock Payments & Order Confirmation
+
+#### Milestone 5.1: Database Schema & Migrations for Orders
+- [ ] Create `orders` and `order_items` tables in `db/schema.ts`
+- [ ] Generate PostgreSQL 18 migration using `drizzle-kit generate`
+- [ ] Push/apply schema changes to the database
+- [ ] Git Commit: `feat: add orders and order_items tables to database schema`
+
+#### Milestone 5.2: Checkout Validation & Server Actions
+- [ ] Create `checkoutSchema` in `src/lib/validation/checkout.ts`
+- [ ] Create `createOrderAction` in `src/app/actions/order.ts` to process inventory updates and save the order
+- [ ] Git Commit: `feat: build checkout validation and createOrder server action`
+
+#### Milestone 5.3: Checkout Shipping Form & Order Review UI
+- [ ] Create `/checkout` shipping details form and order summary panel
+- [ ] Support guest checkout by letting non-logged-in users enter their email
+- [ ] Pre-populate address for active logged-in users
+- [ ] Git Commit: `feat: design storefront checkout shipping and order review page`
+
+#### Milestone 5.4: Mock Payments Processing (Stripe Emulation)
+- [ ] Create simulated mock credit card form on `/checkout`
+- [ ] Handle mock transaction responses and update database order status to `paid`
+- [ ] Git Commit: `feat: implement mock credit card processing and order payment status updates`
+
+#### Milestone 5.5: Order Confirmation Page & Order History
+- [ ] Create `/orders/[id]/confirmation` page with traditional illustrations and order summaries
+- [ ] Create customer orders listing page `/orders` for viewing transaction history
+- [ ] Git Commit: `feat: build order confirmation page and orders history UI`
+
+#### Milestone 5.6: Order PostHog Analytics & Build Verification
+- [ ] Track `checkout_initiated`, `payment_processed`, and `order_placed` events in PostHog
+- [ ] Run types checks and verify production build compilation succeeds cleanly
+- [ ] Git Commit: `feat: add order checkout analytics and verify production build`
+

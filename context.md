@@ -43,6 +43,11 @@ This document serves as a persistent history and decision log for the TraDiva ec
   - **Patterns**: Traditional Manipuri textile motifs (serrated/triangular *Moirang Phee* borders) utilized on dividers and UI cards.
   - Strict typography rules (Roobert PRO or geometric sans font stack fallback) and negative letter-spacing for large text.
 
+### Shopping Cart & Persistence
+* **State Management**: Developed `CartProvider` using React Context for global availability.
+* **Persistence**: Synchronizes state with client-side `localStorage`. Solved React hydration alerts by deferring the state initialization using `setTimeout` on mount.
+* **Displacement Bug**: Replaced absolute viewport classes with explicit fixed-pixel inline CSS configurations on the cart sheet drawer container to prevent rendering shifts.
+
 ---
 
 ## 4. Instructions for Incoming Agents
