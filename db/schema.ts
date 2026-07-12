@@ -84,3 +84,29 @@ export const inventory = pgTable("inventory", {
   stock: integer("stock").default(0).notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+export const orders = pgTable("orders", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").references(() => user.id, { onDelete: "set null" }),
+  guestEmail: text("guest_email"),
+  status: text("status").default("pending").notNull(), // "pending" | "paid" | "shipped" | "delivered" | "cancelled"
+  paymentStatus: text("payment_status").default("unpaid").notNull(), // "unpaid" | "paid" | "refunded"
+  paymentIntentId: text("payment_intent_id"),
+  totalAmount: integer("total_amount").notNull(), // in cents
+  shippingAddress: jsonb("shipping_address").notNull(), // { name, line1, line2, city, state, postalCode, country, phone }
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const orderItems = pgTable("order_items", {
+  id: text("id").primaryKey(),
+  orderId: text("order_id")
+    .notNull()
+    .references(() => orders.id, { onDelete: "cascade" }),
+  productId: text("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "restrict" }),
+  quantity: integer("quantity").notNull(),
+  price: integer("price").notNull(), // in cents
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
