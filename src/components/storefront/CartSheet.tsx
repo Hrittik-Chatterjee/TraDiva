@@ -44,17 +44,35 @@ export default function CartSheet() {
   if (!isCartOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
+    <>
       {/* Backdrop overlay */}
       <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-xs transition-opacity duration-300"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 9998,
+        }}
+        className="bg-black/40 backdrop-blur-xs transition-opacity duration-300 cursor-pointer"
         onClick={() => setIsCartOpen(false)}
       />
 
-      {/* Cart Sheet Content */}
+      {/* Cart Drawer Panel */}
       <div
         ref={sheetRef}
-        className="fixed inset-y-0 right-0 z-10 flex h-full w-full max-w-md flex-col bg-canvas shadow-2xl border-l border-light-pink animate-[slide-in_0.3s_ease-out_forwards]"
+        style={{
+          position: "fixed",
+          top: 0,
+          right: 0,
+          left: "auto",
+          bottom: 0,
+          width: "448px",
+          maxWidth: "100%",
+          zIndex: 9999,
+        }}
+        className="flex h-full flex-col bg-canvas shadow-2xl border-l border-light-pink"
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 pt-6 pb-4">
@@ -212,6 +230,6 @@ export default function CartSheet() {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }
