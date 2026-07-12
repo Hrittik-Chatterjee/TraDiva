@@ -101,13 +101,13 @@ export default function CartSheet() {
           {cartItems.length === 0 ? (
             /* Empty State */
             <div className="flex h-full flex-col items-center justify-center text-center">
-              <div className="w-full max-w-[180px] aspect-[4/5] bg-lightest-pink/30 rounded-3xl border border-light-pink p-4 shadow-sm mb-6 flex items-center justify-center overflow-hidden">
-                <div className="w-full h-full max-h-[140px] animate-gentle-float">
+              <div className="w-full max-w-45 aspect-4/5 bg-lightest-pink/30 rounded-3xl border border-light-pink p-4 shadow-sm mb-6 flex items-center justify-center overflow-hidden">
+                <div className="w-full h-full max-h-35 animate-gentle-float">
                   <ManipuriGirlPlaceholder />
                 </div>
               </div>
               <h3 className="text-base font-semibold text-ink mb-1">Your bag is empty</h3>
-              <p className="text-xs text-steel max-w-[240px] leading-relaxed mb-6">
+              <p className="text-xs text-steel max-w-60 leading-relaxed mb-6">
                 Explore our collection of authentic, handwoven Manipuri textiles and apparel to fill your bag!
               </p>
               <button

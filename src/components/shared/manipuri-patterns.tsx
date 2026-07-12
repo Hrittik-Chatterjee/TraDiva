@@ -14,7 +14,7 @@ export function MoirangPheePattern({ className = "", height = 24 }: { className?
             className="fill-dark-pink/10 stroke-dark-pink stroke-2"
           />
           {/* Subtle inner vertical line typical in Manipuri weaving */}
-          <path d="M10 4 L10 24" className="stroke-dark-pink/20 stroke-[1]" />
+          <path d="M10 4 L10 24" className="stroke-dark-pink/20 stroke-1" />
         </pattern>
       </defs>
       <rect width="100%" height={height} fill="url(#moirang-phee)" />

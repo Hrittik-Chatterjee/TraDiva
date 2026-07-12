@@ -20,7 +20,7 @@ export default function CartPage() {
         {/* Page Header */}
         <div className="mb-12 border-b border-lightest-pink pb-8">
           <h1 className="text-4xl font-medium tracking-tight mb-2">Shopping Bag</h1>
-          <p className="text-steel text-sm max-w-[448px]">
+          <p className="text-steel text-sm max-w-112">
             Please review the items in your bag before proceeding to checkout.
           </p>
         </div>
@@ -28,13 +28,13 @@ export default function CartPage() {
         {cartItems.length === 0 ? (
           /* Empty State */
           <div className="flex-1 flex flex-col items-center justify-center text-center py-16">
-            <div className="w-full max-w-[220px] aspect-[4/5] bg-lightest-pink/30 rounded-3xl border border-light-pink p-6 shadow-sm mb-8 flex items-center justify-center overflow-hidden">
-              <div className="w-full h-full max-h-[180px] animate-gentle-float">
+            <div className="w-full max-w-55 aspect-4/5 bg-lightest-pink/30 rounded-3xl border border-light-pink p-6 shadow-sm mb-8 flex items-center justify-center overflow-hidden">
+              <div className="w-full h-full max-h-45 animate-gentle-float">
                 <ManipuriGirlPlaceholder />
               </div>
             </div>
             <h2 className="text-xl font-bold text-ink mb-2">Your shopping bag is empty</h2>
-            <p className="text-sm text-steel max-w-[320px] leading-relaxed mb-8">
+            <p className="text-sm text-steel max-w-80 leading-relaxed mb-8">
               Looks like you haven&apos;t added any traditional Manipuri attire to your bag yet.
             </p>
             <Link

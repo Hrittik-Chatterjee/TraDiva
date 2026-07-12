@@ -7,7 +7,7 @@ export default function ProductGallery({ images }: { images: string[] }) {
 
   if (images.length === 0) {
     return (
-      <div className="aspect-[4/5] w-full rounded-3xl border border-light-pink bg-lightest-pink/10 flex items-center justify-center text-6xl">
+      <div className="aspect-4/5 w-full rounded-3xl border border-light-pink bg-lightest-pink/10 flex items-center justify-center text-6xl">
         👗
       </div>
     );
@@ -16,7 +16,7 @@ export default function ProductGallery({ images }: { images: string[] }) {
   return (
     <div className="space-y-4">
       {/* Main Large Image View */}
-      <div className="aspect-[4/5] w-full rounded-3xl border border-light-pink bg-lightest-pink/10 overflow-hidden relative">
+      <div className="aspect-4/5 w-full rounded-3xl border border-light-pink bg-lightest-pink/10 overflow-hidden relative">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={images[activeIdx]}

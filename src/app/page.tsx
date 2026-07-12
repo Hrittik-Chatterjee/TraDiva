@@ -19,7 +19,7 @@ export default function Home() {
           </h1>
 
           {/* Hero Subtitle */}
-          <p className="max-w-[576px] text-lg text-steel mb-10 leading-relaxed">
+          <p className="max-w-144 text-lg text-steel mb-10 leading-relaxed">
             Discover exquisite Phaneks, Innaphis, and handcrafted cultural products woven with love and legacy. Experience premium authenticity, directly from native Manipuri artisans.
           </p>
 
@@ -42,12 +42,12 @@ export default function Home() {
 
         {/* Right Side: Animated Manipuri Cartoon Character Frame (5 cols) */}
         <div className="lg:col-span-5 flex justify-center items-center">
-          <div className="relative w-full max-w-[340px] aspect-[4/5] rounded-3xl border border-light-pink bg-lightest-pink/40 p-6 shadow-sm flex flex-col justify-between items-center overflow-hidden">
+          <div className="relative w-full max-w-85 aspect-4/5 rounded-3xl border border-light-pink bg-lightest-pink/40 p-6 shadow-sm flex flex-col justify-between items-center overflow-hidden">
             {/* Traditional Pattern Decorative Corner Accent */}
             <div className="absolute top-0 left-0 w-full h-2 bg-brand-yellow"></div>
             
             {/* The Floating Cartoon Illustration */}
-            <div className="w-full h-full max-h-[260px] animate-gentle-float">
+            <div className="w-full h-full max-h-65 animate-gentle-float">
               <ManipuriGirlPlaceholder />
             </div>
 
@@ -68,12 +68,12 @@ export default function Home() {
       <section className="w-full max-w-7xl px-6 py-12">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-medium text-ink mb-3">Shop Cultural Masterpieces</h2>
-          <p className="text-steel max-w-[448px] mx-auto text-sm">Every garment carries centuries of traditional motifs and spiritual weaving heritage.</p>
+          <p className="text-steel max-w-112 mx-auto text-sm">Every garment carries centuries of traditional motifs and spiritual weaving heritage.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Card 1: Phanek */}
-          <div className="group rounded-2xl border border-light-pink bg-canvas p-6 flex flex-col justify-between aspect-[4/3] hover:border-dark-pink hover:bg-lightest-pink/20 transition-all cursor-pointer">
+          <div className="group rounded-2xl border border-light-pink bg-canvas p-6 flex flex-col justify-between aspect-4/3 hover:border-dark-pink hover:bg-lightest-pink/20 transition-all cursor-pointer">
             <div>
               <span className="text-xs font-bold text-dark-pink uppercase tracking-widest bg-lightest-pink px-2.5 py-1 rounded">Phanek</span>
               <h3 className="text-xl font-semibold text-ink mt-3">Striped Phanek Maphal</h3>
@@ -86,7 +86,7 @@ export default function Home() {
           </div>
 
           {/* Card 2: Innaphi */}
-          <div className="group rounded-2xl border border-light-pink bg-canvas p-6 flex flex-col justify-between aspect-[4/3] hover:border-dark-pink hover:bg-lightest-pink/20 transition-all cursor-pointer">
+          <div className="group rounded-2xl border border-light-pink bg-canvas p-6 flex flex-col justify-between aspect-4/3 hover:border-dark-pink hover:bg-lightest-pink/20 transition-all cursor-pointer">
             <div>
               <span className="text-xs font-bold text-dark-pink uppercase tracking-widest bg-lightest-pink px-2.5 py-1 rounded">Innaphi</span>
               <h3 className="text-xl font-semibold text-ink mt-3">Moirang Phee Shawls</h3>
@@ -99,7 +99,7 @@ export default function Home() {
           </div>
 
           {/* Card 3: Headgear & Accessories */}
-          <div className="group rounded-2xl border border-light-pink bg-canvas p-6 flex flex-col justify-between aspect-[4/3] hover:border-dark-pink hover:bg-lightest-pink/20 transition-all cursor-pointer">
+          <div className="group rounded-2xl border border-light-pink bg-canvas p-6 flex flex-col justify-between aspect-4/3 hover:border-dark-pink hover:bg-lightest-pink/20 transition-all cursor-pointer">
             <div>
               <span className="text-xs font-bold text-dark-pink uppercase tracking-widest bg-lightest-pink px-2.5 py-1 rounded">Accessories</span>
               <h3 className="text-xl font-semibold text-ink mt-3">Kajenglei & Bridal Ornaments</h3>

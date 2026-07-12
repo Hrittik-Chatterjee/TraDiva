@@ -35,7 +35,7 @@ export default async function AdminCategoriesPage() {
                   <tr key={category.id} className="hover:bg-lightest-pink/5 transition-colors">
                     <td className="p-4 font-semibold">{category.name}</td>
                     <td className="p-4 font-mono text-xs">{category.slug}</td>
-                    <td className="p-4 text-stone truncate max-w-[200px]" title={category.description || ""}>
+                    <td className="p-4 text-stone truncate max-w-50" title={category.description || ""}>
                       {category.description || "-"}
                     </td>
                     <td className="p-4 text-right">
