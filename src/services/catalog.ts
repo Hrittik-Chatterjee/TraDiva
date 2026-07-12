@@ -1,6 +1,6 @@
 import { db } from "../../db";
 import { products, inventory, categories } from "../../db/schema";
-import { eq, desc, asc, and, or, gte, lte, inArray, ilike } from "drizzle-orm";
+import { SQL, eq, desc, asc, and, or, gte, lte, inArray, ilike } from "drizzle-orm";
 
 // --- Category Services ---
 
@@ -168,7 +168,7 @@ export async function getStorefrontProducts(filters: {
   maxPrice?: number; /* in cents */
   sort?: string;
 }) {
-  const whereClauses = [eq(products.isActive, true)];
+  const whereClauses: (SQL | undefined)[] = [eq(products.isActive, true)];
 
   if (filters.search) {
     whereClauses.push(

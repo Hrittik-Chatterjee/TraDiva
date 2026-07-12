@@ -44,17 +44,17 @@ export default function CartSheet() {
   if (!isCartOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end">
+    <div className="fixed inset-0 z-50 overflow-hidden">
       {/* Backdrop overlay */}
       <div
-        className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity duration-300"
+        className="absolute inset-0 bg-black/40 backdrop-blur-xs transition-opacity duration-300"
         onClick={() => setIsCartOpen(false)}
       />
 
       {/* Cart Sheet Content */}
       <div
         ref={sheetRef}
-        className="relative z-10 flex h-full w-full max-w-md flex-col bg-canvas shadow-2xl border-l border-light-pink animate-[slide-in_0.3s_ease-out]"
+        className="fixed inset-y-0 right-0 z-10 flex h-full w-full max-w-md flex-col bg-canvas shadow-2xl border-l border-light-pink animate-[slide-in_0.3s_ease-out_forwards]"
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 pt-6 pb-4">
