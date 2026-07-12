@@ -20,7 +20,7 @@ async function getAdminUserId() {
   return session?.user?.id || "anonymous_admin";
 }
 
-export async function createCategoryAction(prevState: any, formData: FormData) {
+export async function createCategoryAction(prevState: unknown, formData: FormData) {
   const name = formData.get("name") as string;
   const slug = formData.get("slug") as string;
   const description = formData.get("description") as string;
@@ -42,8 +42,9 @@ export async function createCategoryAction(prevState: any, formData: FormData) {
     revalidatePath("/admin/categories");
     revalidatePath("/admin");
     return { success: true };
-  } catch (error: any) {
-    if (error.code === "23505") {
+  } catch (error) {
+    const err = error as { code?: string };
+    if (err.code === "23505") {
       return { error: "Category slug already exists" };
     }
     return { error: "Failed to create category" };
@@ -58,14 +59,14 @@ export async function deleteCategoryAction(id: string) {
     revalidatePath("/admin/categories");
     revalidatePath("/admin");
     return { success: true };
-  } catch (error: any) {
+  } catch {
     return { error: "Failed to delete category (it may contain active products)" };
   }
 }
 
 // --- Product Actions ---
 
-export async function createProductAction(input: any) {
+export async function createProductAction(input: unknown) {
   const result = productSchema.safeParse(input);
 
   if (!result.success) {
@@ -93,8 +94,9 @@ export async function createProductAction(input: any) {
     revalidatePath("/admin/products");
     revalidatePath("/admin");
     return { success: true, id };
-  } catch (error: any) {
-    if (error.code === "23505") {
+  } catch (error) {
+    const err = error as { code?: string };
+    if (err.code === "23505") {
       return { error: "Product slug already exists" };
     }
     console.error("Product creation action error:", error);
@@ -102,7 +104,7 @@ export async function createProductAction(input: any) {
   }
 }
 
-export async function updateProductAction(id: string, input: any) {
+export async function updateProductAction(id: string, input: unknown) {
   const result = productSchema.safeParse(input);
 
   if (!result.success) {
@@ -129,8 +131,9 @@ export async function updateProductAction(id: string, input: any) {
     });
     revalidatePath("/admin/products");
     return { success: true };
-  } catch (error: any) {
-    if (error.code === "23505") {
+  } catch (error) {
+    const err = error as { code?: string };
+    if (err.code === "23505") {
       return { error: "Product slug already exists" };
     }
     console.error("Product update action error:", error);
@@ -146,7 +149,7 @@ export async function deleteProductAction(id: string) {
     revalidatePath("/admin/products");
     revalidatePath("/admin");
     return { success: true };
-  } catch (error: any) {
+  } catch (error) {
     console.error("Product delete action error:", error);
     return { error: "Failed to delete product" };
   }

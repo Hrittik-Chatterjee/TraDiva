@@ -31,7 +31,7 @@ export const auth = betterAuth({
   },
   plugins: [
     phoneNumber({
-      sendOTP: async (data, request) => {
+      sendOTP: async (data) => {
         // Mock SMS logger for development
         console.log(`[SMS AUTH MOCK] Sending OTP code [${data.code}] to phone number [${data.phoneNumber}]`);
       },

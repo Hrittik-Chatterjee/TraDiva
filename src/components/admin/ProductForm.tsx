@@ -60,7 +60,7 @@ export default function ProductForm({ categories, initialData }: ProductFormProp
 
       const data = await res.json();
       setImages((prev) => [...prev, data.url]);
-    } catch (err: any) {
+    } catch {
       setError("Image upload failed. Please try again.");
     } finally {
       setUploading(false);

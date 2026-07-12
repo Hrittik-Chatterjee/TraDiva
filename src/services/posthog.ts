@@ -16,7 +16,7 @@ if (key) {
 /**
  * Capture analytics events from Next.js Server Components, API routes, or Server Actions.
  */
-export function trackServerEvent(userId: string, event: string, properties?: Record<string, any>) {
+export function trackServerEvent(userId: string, event: string, properties?: Record<string, unknown>) {
   if (posthogClient) {
     posthogClient.capture({
       distinctId: userId,

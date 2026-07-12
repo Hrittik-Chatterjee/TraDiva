@@ -168,7 +168,7 @@ export async function getStorefrontProducts(filters: {
   maxPrice?: number; /* in cents */
   sort?: string;
 }) {
-  const whereClauses: any[] = [eq(products.isActive, true)];
+  const whereClauses = [eq(products.isActive, true)];
 
   if (filters.search) {
     whereClauses.push(

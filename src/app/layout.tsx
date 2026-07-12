@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { PostHogProvider } from "@/components/providers/posthog-provider";
 import PostHogPageView from "@/components/providers/posthog-pageview";
+import { CartProvider } from "@/components/providers/cart-provider";
+import CartSheet from "@/components/storefront/CartSheet";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 
@@ -20,9 +22,12 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-canvas text-ink">
         <PostHogProvider>
           <PostHogPageView />
-          <Navbar />
-          <main className="flex-1 flex flex-col">{children}</main>
-          <Footer />
+          <CartProvider>
+            <Navbar />
+            <main className="flex-1 flex flex-col">{children}</main>
+            <CartSheet />
+            <Footer />
+          </CartProvider>
         </PostHogProvider>
       </body>
     </html>

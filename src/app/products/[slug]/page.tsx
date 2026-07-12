@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { trackServerEvent } from "@/services/posthog";
+import AddToCartButton from "@/components/storefront/AddToCartButton";
 
 interface ProductDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -140,14 +141,9 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
               </div>
             </div>
 
-            {/* Mock Checkout Action Button */}
+            {/* Checkout Action Button */}
             <div className="pt-6 border-t border-lightest-pink">
-              <button
-                disabled={isOutOfStock}
-                className="w-full sm:w-auto h-12 inline-flex items-center justify-center rounded-full bg-primary px-10 text-sm font-semibold text-on-primary hover:bg-dark-pink disabled:bg-stone disabled:cursor-not-allowed active:scale-[0.98] transition-all"
-              >
-                {isOutOfStock ? "Out of Stock" : "Add to Cart"}
-              </button>
+              <AddToCartButton product={product} />
             </div>
           </div>
         </div>

@@ -5,8 +5,8 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ---
 
 ## Current Status
-- **Overall Progress**: 100% (Milestone 3 Complete)
-- **Current Milestone**: Milestone 4: Shopping Cart & Session Storage
+- **Overall Progress**: 100% (Milestone 4 Complete)
+- **Current Milestone**: Milestone 5: Checkout, Mock Payments & Order Confirmation
 
 ---
 
@@ -133,3 +133,29 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 - [x] Track storefront actions (search, filter changes, product views) in PostHog
 - [x] Run typescript checks and Next.js production build verification
 - [x] Git Commit: `feat: add customer storefront analytics tracking and verify build`
+
+### Milestone 4: Shopping Cart & Session Storage
+
+#### Milestone 4.1: Cart State Management & Persistence
+- [x] Create `CartItem` and `CartContext` types
+- [x] Build client-side context provider `CartProvider` in `src/components/providers/cart-provider.tsx` with asynchronous `localStorage` loading and stock boundaries
+- [x] Wrap root layout in `CartProvider` in `src/app/layout.tsx`
+- [x] Git Commit: `feat: build cart state context and provider with local storage sync`
+
+#### Milestone 4.2: Add to Cart Button & Quantity Selector
+- [x] Build client-side `<AddToCartButton>` component with quantity controls in `src/components/storefront/AddToCartButton.tsx`
+- [x] Replace static button on product detail pages in `src/app/products/[slug]/page.tsx`
+- [x] Git Commit: `feat: implement interactive AddToCartButton component on details page`
+
+#### Milestone 4.3: Slide-over Cart Drawer & Full Review Page
+- [x] Build drawer slide-over panel `<CartSheet>` in `src/components/storefront/CartSheet.tsx` with scrollable items list, subtotals, and traditional Manipuri empty state illustration
+- [x] Mount `CartSheet` globally in the root layout
+- [x] Create a full-page checkout review path at `src/app/cart/page.tsx`
+- [x] Git Commit: `feat: design slide-over cart drawer and full-screen review page`
+
+#### Milestone 4.4: Quality Assurance, Type Safety Cleanup & Build Verification
+- [x] Track all cart mutations and views in PostHog analytics
+- [x] Clean up all unused variables, imports, and forbidden `any` typecasts across catalog action files and filter layouts
+- [x] Run typescript check and verify production build compilation succeeds cleanly
+- [x] Git Commit: `feat: clean up ts/lint warnings, implement analytics, and verify production build`
+

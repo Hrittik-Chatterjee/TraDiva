@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 
 interface CatalogFiltersProps {
   categories: { name: string; slug: string }[];
@@ -20,10 +20,12 @@ export default function CatalogFilters({ categories }: CatalogFiltersProps) {
 
   // Local state for search query to avoid router push on every keystroke
   const [searchVal, setSearchVal] = useState(activeSearch);
+  const [prevActiveSearch, setPrevActiveSearch] = useState(activeSearch);
 
-  useEffect(() => {
+  if (activeSearch !== prevActiveSearch) {
     setSearchVal(activeSearch);
-  }, [activeSearch]);
+    setPrevActiveSearch(activeSearch);
+  }
 
   function handleFilterToggle(slug: string) {
     const params = new URLSearchParams(searchParams.toString());

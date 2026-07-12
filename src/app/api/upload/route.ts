@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     const publicUrl = `/uploads/${filename}`;
 
     return NextResponse.json({ url: publicUrl });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Local file upload error:", error);
     return NextResponse.json({ error: "File upload failed" }, { status: 500 });
   }
