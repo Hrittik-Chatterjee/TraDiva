@@ -5,7 +5,7 @@ import { orders, orderItems, products, inventory } from "../../../db/schema";
 import { checkoutSchema } from "@/lib/validation/checkout";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { eq } from "drizzle-orm";
+import { eq, sql, and, gte } from "drizzle-orm";
 import { trackServerEvent } from "@/services/posthog";
 import { revalidatePath } from "next/cache";
 
@@ -80,15 +80,25 @@ export async function createOrderAction(input: {
     // B. Apply inventory deductions and insert records
     const orderId = "ord_" + crypto.randomUUID();
 
-    // Deduct stock
+    // Atomically deduct stock — only succeeds if stock is still sufficient at write time.
+    // Prevents overselling under concurrent orders (race condition safe).
     for (const item of validatedItems) {
-      await db
+      const result = await db
         .update(inventory)
         .set({
-          stock: item.currentStock - item.quantity,
+          stock: sql`${inventory.stock} - ${item.quantity}`,
           updatedAt: new Date(),
         })
-        .where(eq(inventory.productId, item.productId));
+        .where(
+          and(
+            eq(inventory.productId, item.productId),
+            gte(inventory.stock, item.quantity)
+          )
+        );
+
+      if (result.rowCount === 0) {
+        return { error: "Stock was just purchased by someone else. Please review your cart and try again." };
+      }
     }
 
     // Create the order
