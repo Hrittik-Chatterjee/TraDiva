@@ -1,15 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/components/providers/cart-provider";
 import { createOrderAction } from "@/app/actions/order";
 import { MoirangPheePattern } from "@/components/shared/manipuri-patterns";
 import posthog from "posthog-js";
 
-export default function CheckoutPage() {
+function CheckoutContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchError = searchParams.get("error");
   const { cartItems, cartTotal, clearCart } = useCart();
 
   const [loading, setLoading] = useState(false);
@@ -23,13 +25,8 @@ export default function CheckoutPage() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [postalCode, setPostalCode] = useState("");
-  const [country, setCountry] = useState("United States");
+  const [country, setCountry] = useState("Bangladesh");
   const [phone, setPhone] = useState("");
-
-  // Mock Card State
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiry, setExpiry] = useState("");
-  const [cvc, setCvc] = useState("");
 
   // Load session user if available
   useEffect(() => {
@@ -60,13 +57,6 @@ export default function CheckoutPage() {
     setLoading(true);
     setError(null);
 
-    // Mock validation of credit card fields
-    if (!cardNumber || !expiry || !cvc) {
-      setError("Please complete the simulated payment card information.");
-      setLoading(false);
-      return;
-    }
-
     const payload = {
       checkoutData: {
         email,
@@ -91,8 +81,8 @@ export default function CheckoutPage() {
       setError(res.error);
       setLoading(false);
     } else if (res.success && res.orderId) {
-      clearCart();
-      router.push(`/orders/${res.orderId}/confirmation`);
+      // Redirect directly to the bKash payment gateway initializer endpoint
+      window.location.href = `/api/bkash/create?orderId=${res.orderId}`;
     }
   }
 
@@ -118,12 +108,20 @@ export default function CheckoutPage() {
     <div className="bg-canvas py-12 px-6 md:px-8">
       <div className="mx-auto max-w-7xl">
         {/* Page Header */}
-        <div className="mb-12 border-b border-lightest-pink pb-8">
+        <div className="mb-8 border-b border-lightest-pink pb-6">
           <h1 className="text-4xl font-medium tracking-tight mb-2">Secure Checkout</h1>
           <p className="text-steel text-sm max-w-[448px]">
-            Please enter your delivery address and mock payment information below.
+            Please enter your delivery address and pay securely via bKash.
           </p>
         </div>
+
+        {/* Error Alert */}
+        {(error || searchError) && (
+          <div className="mb-6 p-4 rounded-xl border border-rose-200 bg-rose-50 text-xs font-semibold text-rose-600 flex items-center gap-2">
+            <span>⚠️</span>
+            <span>{error || searchError}</span>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left Column: Forms */}
@@ -256,63 +254,21 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* Mock Card Payment */}
+            {/* bKash Payment */}
             <div className="border border-light-pink p-6 md:p-8 rounded-3xl bg-canvas space-y-6">
               <h3 className="text-lg font-bold text-ink flex items-center gap-2">
-                <span>💳</span> Simulated Card Payment
+                <span className="text-xl">🌸</span> bKash Mobile Payment
               </h3>
               
-              <p className="text-xs text-stone leading-relaxed bg-lightest-pink/30 border border-light-pink p-4 rounded-xl">
-                🔒 <strong>Developer Mode Sandbox:</strong> Card details are simulated locally. You can enter any mock values (e.g. 4242 4242...) to complete checkout. No actual charges will be processed.
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="md:col-span-3">
-                  <label htmlFor="cardNumber" className="block text-xs font-semibold uppercase tracking-wider text-stone mb-1">
-                    Card Number
-                  </label>
-                  <input
-                    type="text"
-                    id="cardNumber"
-                    required
-                    maxLength={19}
-                    value={cardNumber}
-                    onChange={(e) => setCardNumber(e.target.value)}
-                    placeholder="4242 4242 4242 4242"
-                    className="w-full h-10 px-3 rounded-md border border-light-pink bg-transparent text-sm focus:border-dark-pink focus:outline-none"
-                  />
+              <div className="flex flex-col md:flex-row items-center gap-6 p-5 bg-white border border-light-pink rounded-2xl">
+                <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center bg-[#e2136e] rounded-2xl text-white font-black text-lg shadow-sm font-sans tracking-wide">
+                  bKash
                 </div>
-
-                <div className="md:col-span-2">
-                  <label htmlFor="expiry" className="block text-xs font-semibold uppercase tracking-wider text-stone mb-1">
-                    Expiration Date
-                  </label>
-                  <input
-                    type="text"
-                    id="expiry"
-                    required
-                    maxLength={5}
-                    value={expiry}
-                    onChange={(e) => setExpiry(e.target.value)}
-                    placeholder="MM/YY"
-                    className="w-full h-10 px-3 rounded-md border border-light-pink bg-transparent text-sm focus:border-dark-pink focus:outline-none"
-                  />
-                </div>
-
                 <div>
-                  <label htmlFor="cvc" className="block text-xs font-semibold uppercase tracking-wider text-stone mb-1">
-                    CVC
-                  </label>
-                  <input
-                    type="password"
-                    id="cvc"
-                    required
-                    maxLength={4}
-                    value={cvc}
-                    onChange={(e) => setCvc(e.target.value)}
-                    placeholder="123"
-                    className="w-full h-10 px-3 rounded-md border border-light-pink bg-transparent text-sm focus:border-dark-pink focus:outline-none"
-                  />
+                  <h4 className="font-bold text-sm text-ink">Pay with bKash Account</h4>
+                  <p className="text-xs text-stone mt-1 leading-relaxed">
+                    You will be securely redirected to bKash's official portal to authorize your payment using your bKash mobile wallet number, OTP, and PIN.
+                  </p>
                 </div>
               </div>
             </div>
@@ -375,7 +331,7 @@ export default function CheckoutPage() {
                   disabled={loading}
                   className="w-full h-12 inline-flex items-center justify-center rounded-full bg-primary text-sm font-semibold text-on-primary hover:bg-dark-pink transition-all active:scale-[0.98] disabled:bg-stone disabled:cursor-not-allowed mt-4 cursor-pointer"
                 >
-                  {loading ? "Processing Order..." : `Pay $${(cartTotal / 100).toFixed(2)}`}
+                  {loading ? "Processing Order..." : `Pay ৳ ${(cartTotal / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
                 </button>
               </div>
             </div>
@@ -389,5 +345,17 @@ export default function CheckoutPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-canvas flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-dark-pink"></div>
+      </div>
+    }>
+      <CheckoutContent />
+    </Suspense>
   );
 }

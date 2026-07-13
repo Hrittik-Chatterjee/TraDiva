@@ -91,13 +91,13 @@ export async function createOrderAction(input: {
         .where(eq(inventory.productId, item.productId));
     }
 
-    // Create the order (mock paid state immediately for simulation)
+    // Create the order
     await db.insert(orders).values({
       id: orderId,
       userId,
       guestEmail: userId ? null : email,
-      status: "paid",
-      paymentStatus: "paid",
+      status: "pending",
+      paymentStatus: "unpaid",
       totalAmount,
       shippingAddress,
     });

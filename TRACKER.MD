@@ -5,8 +5,8 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ---
 
 ## Current Status
-- **Overall Progress**: 70% (Milestones 1 to 7 Complete, Milestones 8 to 10 Pending)
-- **Current Milestone**: Milestone 8: Production bKash Mobile Payment Integration
+- **Overall Progress**: 80% (Milestones 1 to 8 Complete, Milestones 9 to 10 Pending)
+- **Current Milestone**: Milestone 9: Customer Accounts Order History & Profile Management
 
 ---
 
@@ -209,13 +209,13 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 - [x] Git Commit: `feat: build admin order fulfillment dashboard`
 
 ### Milestone 8: Production bKash Mobile Payment Integration
-- [ ] Set up bKash environment credentials in `.env`
-- [ ] Build token grant and authorization service
-- [ ] Build `/api/bkash/create` payment creation route
-- [ ] Build `/api/bkash/callback` query and execute route
-- [ ] Integrate bKash redirection/modal checkout UI in `/checkout`
-- [ ] Store bKash transaction details in `paymentIntentId` and verify build
-- [ ] Git Commit: `feat: integrate production bKash payment gateway`
+- [x] Set up bKash environment credentials in `.env`
+- [x] Build token grant and authorization service
+- [x] Build `/api/bkash/create` payment creation route
+- [x] Build `/api/bkash/callback` query and execute route
+- [x] Integrate bKash redirection/modal checkout UI in `/checkout`
+- [x] Store bKash transaction details in `paymentIntentId` and verify build
+- [x] Git Commit: `feat: integrate production bKash payment gateway`
 
 ### Milestone 9: Customer Accounts Order History & Profile Management
 - [ ] Build customer `/orders` order history listing

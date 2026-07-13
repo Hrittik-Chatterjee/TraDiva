@@ -66,6 +66,13 @@ This document serves as a persistent history and decision log for the TraDiva ec
   * **Cancellation**: `cancelOrderAction` sets status to `"cancelled"` and runs a sequential inventory restock iteration for each ordered item to restore product availability.
 * **Server-side Analytics**: Triggers PostHog telemetry server-side on status changes (`order_shipped`, `order_delivered`, `order_cancelled`) for business analytics tracking.
 
+### bKash Mobile Payment Gateway (MFS)
+* **Architecture**: Integrated bKash Tokenized Checkout APIs (v1.2.0-beta) using a custom server service (`src/services/bkash.ts`). Caches the authorization `id_token` in-memory to respect rate-limiting.
+* **Redirect Workflow**:
+  * **Creation**: Checkout forms submit details to `createOrderAction`, which saves the order as `"pending"` and `"unpaid"` (with inventory deducted). The client is then redirected to `/api/bkash/create`, which registers the payment with bKash and redirects the browser to bKash's official sandbox page.
+  * **Callback Execution**: Once paid, bKash redirects the client back to `/api/bkash/callback`. On success, the endpoint calls `executePayment`, moves order and payment states to `"paid"`, saves the transaction ID `trxID` in `paymentIntentId`, and redirects to order confirmation.
+  * **Failures & Restocking**: If the user cancels or the transaction fails, the callback transitions the order to `"cancelled"`, runs an automatic database iteration to restock items, and redirects back to `/checkout` with the error query string.
+
 ---
 
 ## 4. Instructions for Incoming Agents
