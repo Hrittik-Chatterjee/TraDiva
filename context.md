@@ -51,6 +51,8 @@ This document serves as a persistent history and decision log for the TraDiva ec
 ### Cloudflare R2 Media Storage
 * **Architecture**: Integrated AWS S3 client SDK (`@aws-sdk/client-s3`) in `src/lib/r2.ts` to manage image file objects in Cloudflare R2 bucket.
 * **Dev Fallback**: If R2 environment keys are unconfigured, `/api/upload` automatically falls back to local disk storage in `public/uploads/` with a console warning. This allows developers to run and test the catalog offline without R2 setup.
+* **Production Deployment Note**: The public development URL (ending in `.r2.dev`) is rate-limited and lacks CDN edge caching. Before going live, connect a custom subdomain (e.g. `media.tradiva.com`) to the bucket in the Cloudflare Dashboard and update `NEXT_PUBLIC_R2_PUBLIC_URL` in `.env`.
+
 
 ### Tailwind CSS v4 Max-Width Fix
 * **Gotcha**: Tailwind v4 maps spacing tokens directly to max-width and sizing variables if `--max-width-*` is missing. Overriding `--spacing-md` with `16px` constrained all `max-w-md` cards to a 16px width.

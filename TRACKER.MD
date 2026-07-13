@@ -226,6 +226,7 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ### Milestone 10: Production Deployment & Performance Tuning
 - [ ] Run Lighthouse performance audit and optimize bundle sizes
 - [ ] Setup dynamic sitemaps and configure robots.txt
+- [ ] Configure custom domain for R2 bucket in Cloudflare dashboard and update `NEXT_PUBLIC_R2_PUBLIC_URL`
 - [ ] Deploy to production hosting environment and verify build
 - [ ] Git Commit: `feat: deploy production build and tune sitemaps`
 
