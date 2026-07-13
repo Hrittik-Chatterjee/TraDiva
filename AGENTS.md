@@ -221,6 +221,8 @@ Every feature must follow this order:
 7. UI
 8. Analytics
 9. Testing
+10. Runtime Verification: Run browser or API tests to confirm that the feature actually works and successfully updates the database at runtime.
+11. Git Push: Commit and push the verified changes to GitHub immediately upon completing the milestone.
 
 Do not skip steps.
 
@@ -296,5 +298,7 @@ A feature is complete only when:
 - TypeScript passes
 - ESLint passes
 - Build succeeds
+- Runtime verification passed (tested and verified working in the browser)
+- Committed and pushed to GitHub
 
 Never consider a feature complete if any of these are missing.
