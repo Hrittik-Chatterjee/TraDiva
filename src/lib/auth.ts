@@ -3,12 +3,35 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { phoneNumber } from "better-auth/plugins";
 import { db } from "../../db";
 import * as schema from "../../db/schema";
+import { eq } from "drizzle-orm";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: schema,
   }),
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          console.log(`[Better Auth Hook] New user created: ${user.email} (${user.id}). Merging guest orders...`);
+          try {
+            await db
+              .update(schema.orders)
+              .set({
+                userId: user.id,
+                guestEmail: null,
+                updatedAt: new Date(),
+              })
+              .where(eq(schema.orders.guestEmail, user.email));
+            console.log(`[Better Auth Hook] Merged guest orders successfully for ${user.email}.`);
+          } catch (err) {
+            console.error(`[Better Auth Hook] Failed to merge guest orders for ${user.email}:`, err);
+          }
+        },
+      },
+    },
+  },
   user: {
     additionalFields: {
       role: {

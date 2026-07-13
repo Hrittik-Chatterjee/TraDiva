@@ -124,7 +124,7 @@ export default async function OrderConfirmationPage({ params }: ConfirmationPage
                       <p className="text-xs text-stone mt-0.5">Quantity: {item.quantity}</p>
                     </div>
                     <span className="text-sm font-bold text-ink shrink-0">
-                      ${((item.price * item.quantity) / 100).toFixed(2)}
+                      ৳ {((item.price * item.quantity) / 100).toLocaleString("en-US", { minimumFractionDigits: 2 })}
                     </span>
                   </div>
                 ))}
@@ -134,7 +134,7 @@ export default async function OrderConfirmationPage({ params }: ConfirmationPage
             {/* Total Billing */}
             <div className="border-t border-light-pink pt-6 flex justify-between items-center text-ink">
               <span className="font-bold">Total Amount Paid</span>
-              <span className="font-bold text-xl">${(order.totalAmount / 100).toFixed(2)}</span>
+              <span className="font-bold text-xl">৳ {(order.totalAmount / 100).toLocaleString("en-US", { minimumFractionDigits: 2 })}</span>
             </div>
           </div>
         </div>

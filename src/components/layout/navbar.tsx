@@ -79,8 +79,14 @@ export default function Navbar() {
             {session ? (
               <>
                 <Link
-                  href="/account"
+                  href="/orders"
                   className="text-sm font-medium text-steel hover:text-ink transition-colors"
+                >
+                  📦 My Orders
+                </Link>
+                <Link
+                  href="/profile"
+                  className="text-sm font-medium text-steel hover:text-ink transition-colors font-semibold text-dark-pink"
                 >
                   Hi, {session.user.name.split(" ")[0]}
                 </Link>
