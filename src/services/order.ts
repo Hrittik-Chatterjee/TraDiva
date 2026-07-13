@@ -48,3 +48,18 @@ export async function getOrdersByEmail(email: string) {
     .where(eq(orders.guestEmail, email))
     .orderBy(desc(orders.createdAt));
 }
+
+export async function getAllOrders(statusFilter?: string) {
+  if (statusFilter) {
+    return await db
+      .select()
+      .from(orders)
+      .where(eq(orders.status, statusFilter))
+      .orderBy(desc(orders.createdAt));
+  }
+  return await db
+    .select()
+    .from(orders)
+    .orderBy(desc(orders.createdAt));
+}
+

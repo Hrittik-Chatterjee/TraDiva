@@ -129,3 +129,161 @@ export async function createOrderAction(input: {
     return { error: "Failed to process order. Please try again." };
   }
 }
+
+export async function shipOrderAction(orderId: string, carrier: string, trackingNumber: string) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const isDev = process.env.NODE_ENV === "development";
+  const isAdmin = session?.user?.role === "admin";
+  if (!isDev && !isAdmin) {
+    return { error: "Unauthorized: Admin access required" };
+  }
+
+  try {
+    const orderRecords = await db.select().from(orders).where(eq(orders.id, orderId)).limit(1);
+    if (orderRecords.length === 0) {
+      return { error: "Order not found" };
+    }
+
+    const order = orderRecords[0];
+    const shippingAddress = order.shippingAddress as Record<string, any>;
+    const updatedAddress = {
+      ...shippingAddress,
+      tracking: {
+        carrier,
+        trackingNumber,
+        shippedAt: new Date().toISOString(),
+      },
+    };
+
+    await db
+      .update(orders)
+      .set({
+        status: "shipped",
+        shippingAddress: updatedAddress,
+        updatedAt: new Date(),
+      })
+      .where(eq(orders.id, orderId));
+
+    trackServerEvent(session?.user?.id || "admin", "order_shipped", {
+      orderId,
+      carrier,
+      trackingNumber,
+    });
+
+    revalidatePath("/admin/orders");
+    revalidatePath(`/admin/orders/${orderId}`);
+    revalidatePath(`/orders/${orderId}/confirmation`);
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to ship order:", error);
+    return { error: error.message || "Failed to ship order. Please try again." };
+  }
+}
+
+export async function deliverOrderAction(orderId: string) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const isDev = process.env.NODE_ENV === "development";
+  const isAdmin = session?.user?.role === "admin";
+  if (!isDev && !isAdmin) {
+    return { error: "Unauthorized: Admin access required" };
+  }
+
+  try {
+    const orderRecords = await db.select().from(orders).where(eq(orders.id, orderId)).limit(1);
+    if (orderRecords.length === 0) {
+      return { error: "Order not found" };
+    }
+
+    await db
+      .update(orders)
+      .set({
+        status: "delivered",
+        updatedAt: new Date(),
+      })
+      .where(eq(orders.id, orderId));
+
+    trackServerEvent(session?.user?.id || "admin", "order_delivered", {
+      orderId,
+    });
+
+    revalidatePath("/admin/orders");
+    revalidatePath(`/admin/orders/${orderId}`);
+    revalidatePath(`/orders/${orderId}/confirmation`);
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to deliver order:", error);
+    return { error: error.message || "Failed to deliver order. Please try again." };
+  }
+}
+
+export async function cancelOrderAction(orderId: string) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const isDev = process.env.NODE_ENV === "development";
+  const isAdmin = session?.user?.role === "admin";
+  if (!isDev && !isAdmin) {
+    return { error: "Unauthorized: Admin access required" };
+  }
+
+  try {
+    const orderRecords = await db.select().from(orders).where(eq(orders.id, orderId)).limit(1);
+    if (orderRecords.length === 0) {
+      return { error: "Order not found" };
+    }
+
+    const order = orderRecords[0];
+    if (order.status === "cancelled") {
+      return { error: "Order is already cancelled" };
+    }
+
+    // Update order status first
+    await db
+      .update(orders)
+      .set({
+        status: "cancelled",
+        updatedAt: new Date(),
+      })
+      .where(eq(orders.id, orderId));
+
+    // Retrieve order items to restock
+    const items = await db.select().from(orderItems).where(eq(orderItems.orderId, orderId));
+
+    // Restock each item
+    for (const item of items) {
+      const invRecord = await db
+        .select()
+        .from(inventory)
+        .where(eq(inventory.productId, item.productId))
+        .limit(1);
+
+      if (invRecord.length > 0) {
+        const currentStock = invRecord[0].stock;
+        await db
+          .update(inventory)
+          .set({
+            stock: currentStock + item.quantity,
+            updatedAt: new Date(),
+          })
+          .where(eq(inventory.productId, item.productId));
+      }
+    }
+
+    trackServerEvent(session?.user?.id || "admin", "order_cancelled", {
+      orderId,
+    });
+
+    revalidatePath("/admin/orders");
+    revalidatePath(`/admin/orders/${orderId}`);
+    revalidatePath(`/orders/${orderId}/confirmation`);
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to cancel order:", error);
+    return { error: error.message || "Failed to cancel order. Please try again." };
+  }
+}
+

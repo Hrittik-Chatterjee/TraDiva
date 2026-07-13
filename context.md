@@ -58,6 +58,14 @@ This document serves as a persistent history and decision log for the TraDiva ec
 * **Gotcha**: Tailwind v4 maps spacing tokens directly to max-width and sizing variables if `--max-width-*` is missing. Overriding `--spacing-md` with `16px` constrained all `max-w-md` cards to a 16px width.
 * **Resolution**: Configured explicit `--max-width-xs` through `--max-width-7xl` values in `globals.css` `@theme` to prevent spacing scale overrides and restore correct container sizing.
 
+### Admin Order Fulfillment Dashboard
+* **Architecture**: Constructed a full-featured admin management panel under `/admin/orders` and `/admin/orders/[id]`. These routes leverage React Server Components to execute fast database reads for orders and product details.
+* **Fulfillment States**:
+  * **Shipment**: `shipOrderAction` transitions orders to `"shipped"` status and embeds tracking data (carrier, tracking number, timestamp) directly into the `shippingAddress` JSONB object, avoiding schema migrations.
+  * **Delivery**: `deliverOrderAction` transitions orders to `"delivered"`.
+  * **Cancellation**: `cancelOrderAction` sets status to `"cancelled"` and runs a sequential inventory restock iteration for each ordered item to restore product availability.
+* **Server-side Analytics**: Triggers PostHog telemetry server-side on status changes (`order_shipped`, `order_delivered`, `order_cancelled`) for business analytics tracking.
+
 ---
 
 ## 4. Instructions for Incoming Agents

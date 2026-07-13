@@ -46,6 +46,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             >
               🏷️ Categories
             </Link>
+            <Link
+              href="/admin/orders"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-lightest-pink/50 transition-colors font-medium text-sm text-ink"
+            >
+              📦 Orders
+            </Link>
           </nav>
         </div>
 
