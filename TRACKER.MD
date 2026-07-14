@@ -5,8 +5,8 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ---
 
 ## Current Status
-- **Overall Progress**: 80% (Milestones 1 to 8 Complete, Milestones 9 to 10 Pending)
-- **Current Milestone**: Milestone 9: Customer Accounts Order History & Profile Management
+- **Overall Progress**: 90% (Milestones 1 to 9 Complete, Milestone 10 Pending)
+- **Current Milestone**: Milestone 10: Production Deployment & Performance Tuning
 
 ---
 
@@ -218,10 +218,10 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 - [x] Git Commit: `feat: integrate production bKash payment gateway`
 
 ### Milestone 9: Customer Accounts Order History & Profile Management
-- [ ] Build customer `/orders` order history listing
-- [ ] Build customer `/profile` personal details page
-- [ ] Verify guest order account merging on signup/registration and check build
-- [ ] Git Commit: `feat: build customer order history and profile settings`
+- [x] Build customer `/orders` order history listing
+- [x] Build customer `/profile` personal details page
+- [x] Verify guest order account merging on signup/registration and check build
+- [x] Git Commit: `feat: build customer order history and profile settings`
 
 ### Milestone 10: Production Deployment & Performance Tuning
 - [ ] Run Lighthouse performance audit and optimize bundle sizes
