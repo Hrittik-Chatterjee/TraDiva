@@ -36,7 +36,7 @@ export default function Navbar({ categories = [] }: NavbarProps) {
       <div className="hype-mobile-logo md:relative md:top-auto md:left-auto flex items-center gap-6 bg-lightest-pink/90 backdrop-blur-md border border-light-pink rounded-full px-5 py-2.5 shadow-sm pointer-events-auto">
         <Link href="/" className="flex items-center shrink-0">
           <img
-            src="/TraDivaLogo.svg"
+            src="/TraDivalogo.svg"
             alt="TraDiva Logo"
             className="h-8 w-auto object-contain"
           />
