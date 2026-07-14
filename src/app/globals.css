@@ -127,14 +127,14 @@ body {
 /* Inspected Hypefluency Multi-Pill Floating Navigation Sizing */
 @media screen and (min-width: 1280px) {
   .hype-nav-wrapper {
-    top: 6em;
+    top: 3em;
   }
 }
 
 @media screen and (min-width: 768px) {
   .hype-nav-wrapper {
     position: absolute;
-    top: 3em;
+    top: 2em;
     right: 50%;
     translate: 50% 0;
     width: calc(100% - 2 * var(--page-gutter));
