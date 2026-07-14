@@ -5,8 +5,8 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ---
 
 ## Current Status
-- **Overall Progress**: 80% (Milestones 1 to 9 Complete, UI Tuning Milestones 9.1 to 9.7 Pending, Milestone 10 Pending)
-- **Current Milestone**: Milestone 9.1: UI Tuning - Navbar & Footer
+- **Overall Progress**: 82% (Milestones 1 to 9.1 Complete, UI Tuning Milestones 9.2 to 9.7 Pending, Milestone 10 Pending)
+- **Current Milestone**: Milestone 9.2: UI Tuning - Home Page
 
 ---
 
@@ -224,12 +224,12 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 - [x] Git Commit: `feat: build customer order history and profile settings`
 
 ### Milestone 9.1: UI Tuning - Navbar & Footer
-- [ ] Build responsive mobile navigation (hamburger menu/mobile drawer) for the Navbar
-- [ ] Replace placeholder categories with dynamic/actual categories (Phanek, Inaphi) in Navbar and Footer
-- [ ] Remove non-existent link pathways (e.g. Brands link) from Navbar and Footer, or fallback cleanly
-- [ ] Integrate subtle Manipuri animation/aesthetic enhancements to the header/footer
-- [ ] Run build and verify correctness
-- [ ] Git Commit: `ui: tweak and optimize navbar and footer layout`
+- [x] Build responsive mobile navigation (hamburger menu/mobile drawer) for the Navbar
+- [x] Replace placeholder categories with dynamic/actual categories (Phanek, Inaphi) in Navbar and Footer
+- [x] Remove non-existent link pathways (e.g. Brands link) from Navbar and Footer, or fallback cleanly
+- [x] Integrate subtle Manipuri animation/aesthetic enhancements to the header/footer
+- [x] Run build and verify correctness
+- [x] Git Commit: `ui: tweak and optimize navbar and footer layout`
 
 ### Milestone 9.2: UI Tuning - Home Page
 - [ ] Tweak and optimize homepage layout, hero section, and promotional blocks
