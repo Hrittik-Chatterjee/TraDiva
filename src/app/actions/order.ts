@@ -8,6 +8,7 @@ import { headers } from "next/headers";
 import { eq, sql, and, gte } from "drizzle-orm";
 import { trackServerEvent } from "@/services/posthog";
 import { revalidatePath } from "next/cache";
+import { cleanupExpiredPendingOrders } from "../../services/order";
 
 export async function createOrderAction(input: {
   checkoutData: any;
@@ -32,6 +33,12 @@ export async function createOrderAction(input: {
   }
 
   try {
+    // 1. Pre-cleanup: cancel this user's existing pending, unpaid checkouts immediately to release their stock
+    await cleanupExpiredPendingOrders({ email, userId });
+
+    // 2. General cleanup: cancel any other expired checkouts (older than 5 minutes)
+    await cleanupExpiredPendingOrders();
+
     const validatedItems: {
       productId: string;
       quantity: number;

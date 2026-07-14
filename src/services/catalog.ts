@@ -1,6 +1,7 @@
 import { db } from "../../db";
 import { products, inventory, categories } from "../../db/schema";
 import { SQL, eq, desc, asc, and, or, gte, lte, inArray, ilike } from "drizzle-orm";
+import { cleanupExpiredPendingOrders } from "./order";
 
 // --- Category Services ---
 
@@ -168,6 +169,9 @@ export async function getStorefrontProducts(filters: {
   maxPrice?: number; /* in cents */
   sort?: string;
 }) {
+  // Lazy cleanup expired pending orders to ensure stock is up to date
+  await cleanupExpiredPendingOrders();
+
   const whereClauses: (SQL | undefined)[] = [eq(products.isActive, true)];
 
   if (filters.search) {
@@ -223,6 +227,9 @@ export async function getStorefrontProducts(filters: {
 }
 
 export async function getProductBySlug(slug: string) {
+  // Lazy cleanup expired pending orders to ensure stock is up to date
+  await cleanupExpiredPendingOrders();
+
   const results = await db
     .select({
       id: products.id,
