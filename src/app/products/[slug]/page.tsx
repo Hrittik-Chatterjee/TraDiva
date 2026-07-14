@@ -126,7 +126,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
                 </div>
               ) : (
                 <div className="inline-flex items-center gap-2 text-xs font-bold text-success-accent bg-success-accent/10 border border-success-accent/20 px-3.5 py-1.5 rounded-full">
-                  🟢 In Stock & Ready to Ship
+                  🟢 In Stock: {product.stock} items available
                 </div>
               )}
             </div>
