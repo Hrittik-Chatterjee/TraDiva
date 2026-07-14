@@ -5,8 +5,8 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ---
 
 ## Current Status
-- **Overall Progress**: 90% (Milestones 1 to 9 Complete, Milestone 10 Pending)
-- **Current Milestone**: Milestone 10: Production Deployment & Performance Tuning
+- **Overall Progress**: 80% (Milestones 1 to 9 Complete, UI Tuning Milestones 9.1 to 9.7 Pending, Milestone 10 Pending)
+- **Current Milestone**: Milestone 9.1: UI Tuning - Navbar & Footer
 
 ---
 
@@ -222,6 +222,44 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 - [x] Build customer `/profile` personal details page
 - [x] Verify guest order account merging on signup/registration and check build
 - [x] Git Commit: `feat: build customer order history and profile settings`
+
+### Milestone 9.1: UI Tuning - Navbar & Footer
+- [ ] Build responsive mobile navigation (hamburger menu/mobile drawer) for the Navbar
+- [ ] Replace placeholder categories with dynamic/actual categories (Phanek, Inaphi) in Navbar and Footer
+- [ ] Remove non-existent link pathways (e.g. Brands link) from Navbar and Footer, or fallback cleanly
+- [ ] Integrate subtle Manipuri animation/aesthetic enhancements to the header/footer
+- [ ] Run build and verify correctness
+- [ ] Git Commit: `ui: tweak and optimize navbar and footer layout`
+
+### Milestone 9.2: UI Tuning - Home Page
+- [ ] Tweak and optimize homepage layout, hero section, and promotional blocks
+- [ ] Ensure proper typography, font pairings, and Manipuri-themed vector highlights
+- [ ] Git Commit: `ui: refine homepage layout and typography`
+
+### Milestone 9.3: UI Tuning - Catalog Page & Filters
+- [ ] Standardize price formatting from USD ($) to BDT (৳) on catalog cards
+- [ ] Improve sidebar filter checklist design, spacing, and mobile responsiveness
+- [ ] Git Commit: `ui: optimize catalog page layout and filters`
+
+### Milestone 9.4: UI Tuning - Product Detail Page
+- [ ] Tweak image gallery slider controls and stock indicator UI styling
+- [ ] Apply OKLCH pink branding accents to action buttons and specs tables
+- [ ] Git Commit: `ui: refine product details page layout`
+
+### Milestone 9.5: UI Tuning - Cart & Slide-out Drawer
+- [ ] Tweak Cart Sheet spacing, subtotal section, and traditional empty state layout
+- [ ] Ensure smooth GSAP or CSS transitions for drawer opening and closing
+- [ ] Git Commit: `ui: optimize cart drawer layout and animation`
+
+### Milestone 9.6: UI Tuning - Checkout & Order Confirmation Page
+- [ ] Standardize form fields, validation error messages, and spacing on checkout page
+- [ ] Enhance payment options UI and order summary styling
+- [ ] Git Commit: `ui: refine checkout and order confirmation layout`
+
+### Milestone 9.7: UI Tuning - Order History & Profile Page
+- [ ] Polish order cards, tracking ID displays, and status badges in purchase history
+- [ ] Refine display name and password change form styling in profile settings
+- [ ] Git Commit: `ui: polish customer orders and profile form UI`
 
 ### Milestone 10: Production Deployment & Performance Tuning
 - [ ] Run Lighthouse performance audit and optimize bundle sizes
