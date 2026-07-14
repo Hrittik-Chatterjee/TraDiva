@@ -75,14 +75,12 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
   };
 
   return (
-    <div className="bg-canvas py-12 px-6 md:px-8">
+    <div className="page-container py-12">
       {/* Schema Injection */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
-      <div className="mx-auto max-w-7xl">
         {/* Breadcrumbs */}
         <nav className="text-xs font-semibold uppercase tracking-wider text-stone mb-8">
           <Link href="/catalog" className="hover:text-dark-pink transition-colors">
@@ -147,7 +145,6 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }

@@ -74,6 +74,8 @@
   --max-width-5xl: 64rem;
   --max-width-6xl: 72rem;
   --max-width-7xl: 80rem;
+  --max-width-page-content: 1440px;
+  --page-gutter: 2rem;
 }
 
 body {
@@ -121,6 +123,65 @@ body {
 .animate-soft-blink {
   animation: soft-blink 5s infinite;
 }
+
+/* Inspected Hypefluency Multi-Pill Floating Navigation Sizing */
+@media screen and (min-width: 1280px) {
+  .hype-nav-wrapper {
+    top: 6em;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .hype-nav-wrapper {
+    position: absolute;
+    top: 3em;
+    right: 50%;
+    translate: 50% 0;
+    width: calc(100% - 2 * var(--page-gutter));
+    max-width: var(--max-width-page-content);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+@media screen and (min-width: 480px) {
+  .hype-mobile-actions {
+    max-width: 360px;
+  }
+}
+
+.hype-mobile-actions {
+  position: absolute;
+  top: 2em;
+  right: 2em;
+  width: calc(100% - 4em);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  pointer-events: auto;
+}
+
+.hype-mobile-logo {
+  position: absolute;
+  top: 2em;
+  left: 2em;
+  pointer-events: auto;
+}
+
+/* Reusable Fluid Page Container Sizing */
+@utility page-container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1.5rem; /* 24px mobile padding */
+  max-width: var(--max-width-page-content);
+  
+  @media (min-width: 768px) {
+    padding-inline: var(--page-gutter); /* 32px desktop gutter */
+  }
+}
+
+
 
 
 

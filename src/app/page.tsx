@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center bg-canvas">
       {/* Hero Section */}
-      <section className="w-full max-w-7xl px-6 py-12 md:py-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section className="page-container py-12 md:py-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* Left Side: Brand Text & CTAs (7 cols) */}
         <div className="lg:col-span-7 flex flex-col items-start text-left">
           {/* Cultural Tag Badge */}
@@ -65,7 +65,7 @@ export default function Home() {
       <MoirangPheePattern height={24} className="bg-canvas my-8" />
 
       {/* Featured Categories / Cultural Highlights */}
-      <section className="w-full max-w-7xl px-6 py-12">
+      <section className="page-container py-12">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-medium text-ink mb-3">Shop Cultural Masterpieces</h2>
           <p className="text-steel max-w-112 mx-auto text-sm">Every garment carries centuries of traditional motifs and spiritual weaving heritage.</p>

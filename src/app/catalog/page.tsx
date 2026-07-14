@@ -25,8 +25,7 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
   ]);
 
   return (
-    <div className="bg-canvas py-12 px-6 md:px-8">
-      <div className="mx-auto max-w-7xl">
+    <div className="page-container py-12">
         {/* Page Header */}
         <div className="mb-12 border-b border-lightest-pink pb-8">
           <h1 className="text-4xl font-medium tracking-tight mb-2">Heritage Collection</h1>
@@ -108,7 +107,6 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
             )}
           </div>
         </div>
-      </div>
     </div>
   );
 }

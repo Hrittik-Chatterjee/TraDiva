@@ -528,7 +528,7 @@ Roobert PRO — Miro's custom display face — anchors every typographic surface
 - **Card internal padding**: `{spacing.xl}` (24px) for compact cards; `{spacing.xxl}` (32px) for feature panels
 
 ### Grid & Container
-- Marketing pages use 1280px max-width with 32px gutters
+- Marketing and storefront pages use a fluid 1440px max-width content container (.page-container) with 32px gutters on desktop and 24px on mobile
 - Pricing page renders 4-tier card row at desktop (Free / Starter / Business / Enterprise)
 - Customer stories page uses 2-column grid with filter dropdowns
 - AI Workflows page uses 2-column hero, then 3-up feature grid

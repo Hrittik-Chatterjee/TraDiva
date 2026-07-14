@@ -31,171 +31,187 @@ export default function Navbar({ categories = [] }: NavbarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-canvas/80 backdrop-blur-md border-b border-light-pink/20">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:px-8">
-        {/* Left Side: Brand Logo & Navigation */}
-        <div className="flex items-center gap-8">
-          <Link href="/" className="flex items-center">
-            {/* Logo Image replacing yellow block and text */}
-            <img
-              src="/TraDivaLogo.png"
-              alt="TraDiva Logo"
-              className="h-10 w-auto object-contain"
-            />
+    <header className="hype-nav-wrapper pointer-events-none z-50">
+      {/* Left Side: Brand Logo & Desktop Nav in a unified floating pill */}
+      <div className="hype-mobile-logo md:relative md:top-auto md:left-auto flex items-center gap-6 bg-lightest-pink/90 backdrop-blur-md border border-light-pink rounded-full px-5 py-2.5 shadow-sm pointer-events-auto">
+        <Link href="/" className="flex items-center shrink-0">
+          <img
+            src="/TraDivaLogo.svg"
+            alt="TraDiva Logo"
+            className="h-8 w-auto object-contain"
+          />
+        </Link>
+
+        {/* Desktop Navigation Links */}
+        <nav className="hidden md:flex items-center gap-6 border-l border-light-pink pl-6">
+          <Link href="/catalog" className={getLinkClass("/catalog")}>
+            All
+          </Link>
+          <Link href="/catalog?featured=true" className={getLinkClass("/catalog?featured=true")}>
+            New
+          </Link>
+          <Link href="/catalog?category=saree" className={getLinkClass("/catalog?category=saree")}>
+            Saree
+          </Link>
+          <Link href="#" className="text-sm font-medium text-steel hover:text-ink transition-colors">
+            Our Story
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden items-center gap-6 md:flex">
-            <Link href="/catalog" className={getLinkClass("/catalog")}>
-              Shop All
-            </Link>
-
-            {/* Categories Dropdown */}
-            <div className="relative group">
-              <button
-                className="flex items-center gap-1 text-sm font-medium text-steel hover:text-ink transition-colors cursor-pointer"
-                aria-haspopup="true"
+          {/* Categories Dropdown */}
+          <div className="relative group">
+            <button
+              className="flex items-center gap-1 text-sm font-medium text-steel hover:text-ink transition-colors cursor-pointer"
+              aria-haspopup="true"
+            >
+              Categories
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="h-3 w-3 transition-transform group-hover:rotate-180"
               >
-                Categories
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="h-3 w-3 transition-transform group-hover:rotate-180"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                </svg>
-              </button>
-              {/* Dropdown Menu */}
-              <div className="absolute left-0 mt-2 w-48 rounded-2xl border border-light-pink bg-canvas py-2 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                {categories.length > 0 ? (
-                  categories.map((cat) => (
-                    <Link
-                      key={cat.id}
-                      href={`/catalog?category=${cat.slug}`}
-                      className="block px-4 py-2 text-sm text-steel hover:text-dark-pink hover:bg-lightest-pink/30 transition-colors"
-                    >
-                      {cat.name}
-                    </Link>
-                  ))
-                ) : (
-                  <span className="block px-4 py-2 text-xs text-stone">No categories available</span>
-                )}
-              </div>
+                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+              </svg>
+            </button>
+            {/* Dropdown Menu */}
+            <div className="absolute left-0 mt-3 w-48 rounded-2xl border border-light-pink bg-canvas py-2 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              {categories.length > 0 ? (
+                categories.map((cat) => (
+                  <Link
+                    key={cat.id}
+                    href={`/catalog?category=${cat.slug}`}
+                    className="block px-4 py-2 text-sm text-steel hover:text-dark-pink hover:bg-lightest-pink/30 transition-colors"
+                  >
+                    {cat.name}
+                  </Link>
+                ))
+              ) : (
+                <span className="block px-4 py-2 text-xs text-stone">No categories available</span>
+              )}
             </div>
-          </nav>
-        </div>
-
-        {/* Right Side: Actions & Hamburger */}
-        <div className="flex items-center gap-4">
-          {/* Desktop Auth/Actions */}
-          <div className="hidden md:flex items-center gap-6">
-            {session ? (
-              <>
-                <Link href="/orders" className={getLinkClass("/orders")}>
-                  📦 My Orders
-                </Link>
-                <Link
-                  href="/profile"
-                  className={getLinkClass("/profile")}
-                >
-                  Hi, {session.user.name.split(" ")[0]}
-                </Link>
-                <button
-                  onClick={() => authClient.signOut()}
-                  className="text-sm font-medium text-steel hover:text-ink cursor-pointer transition-colors"
-                >
-                  Log Out
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/login" className={getLinkClass("/login")}>
-                  Log In
-                </Link>
-                <Link
-                  href="/signup"
-                  className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2 text-sm font-medium text-on-primary hover:bg-charcoal transition-all active:scale-[0.98]"
-                >
-                  Get Started Free
-                </Link>
-              </>
-            )}
           </div>
+        </nav>
 
-          {/* Shopping Cart Trigger */}
-          <button
-            onClick={() => setIsCartOpen(true)}
-            className="relative flex items-center justify-center p-2 text-steel hover:text-ink transition-colors cursor-pointer"
-            aria-label="Open Cart"
+        {/* Mobile hamburger menu trigger inside the pill */}
+        <button
+          onClick={() => setIsMobileMenuOpen(true)}
+          className="flex md:hidden items-center justify-center p-1 text-steel hover:text-ink transition-colors cursor-pointer"
+          aria-label="Open Menu"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="h-6 w-6"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="h-6 w-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-              />
-            </svg>
-            {cartCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-dark-pink text-[9px] font-bold text-on-primary">
-                {cartCount}
-              </span>
-            )}
-          </button>
-
-          {/* Mobile hamburger menu trigger */}
-          <button
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="flex md:hidden items-center justify-center p-2 text-steel hover:text-ink transition-colors cursor-pointer"
-            aria-label="Open Menu"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="h-6 w-6"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-          </button>
-        </div>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
       </div>
 
-      {/* Subtle Moirang Phee patterned bottom border */}
-      <svg width="100%" height="8" className="block select-none bg-transparent">
-        <defs>
-          <pattern id="moirang-phee-mini" width="10" height="8" patternUnits="userSpaceOnUse">
+      {/* Right Side: Actions (Pill action button + Circular buttons) */}
+      <div className="hype-mobile-actions md:relative md:top-auto md:right-auto md:w-auto md:max-width-none flex items-center gap-3 pointer-events-auto">
+        {/* Main Action Pill (Desktop only) */}
+        <div className="hidden md:block">
+          {session ? (
+            <Link
+              href="/orders"
+              className="inline-flex h-11 items-center justify-center bg-lightest-pink/90 backdrop-blur-md border border-light-pink text-ink text-sm font-semibold rounded-full px-6 py-2.5 shadow-sm hover:border-dark-pink transition-all active:scale-[0.98]"
+            >
+              My Orders
+            </Link>
+          ) : (
+            <Link
+              href="/signup"
+              className="inline-flex h-11 items-center justify-center bg-lightest-pink/90 backdrop-blur-md border border-light-pink text-ink text-sm font-semibold rounded-full px-6 py-2.5 shadow-sm hover:border-dark-pink transition-all active:scale-[0.98]"
+            >
+              Sign Up
+            </Link>
+          )}
+        </div>
+
+        {/* Cart Circular Button */}
+        <button
+          onClick={() => setIsCartOpen(true)}
+          className="h-11 w-11 flex items-center justify-center bg-lightest-pink/90 backdrop-blur-md border border-light-pink hover:border-dark-pink text-ink rounded-full relative shadow-sm cursor-pointer transition-all active:scale-[0.95]"
+          aria-label="Open Cart"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="h-5 w-5"
+          >
             <path
-              d="M0 8 L5 1 L10 8 Z"
-              className="fill-dark-pink/10 stroke-dark-pink stroke-[1.5]"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
             />
-          </pattern>
-        </defs>
-        <rect width="100%" height="8" fill="url(#moirang-phee-mini)" />
-      </svg>
+          </svg>
+          {cartCount > 0 && (
+            <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-dark-pink text-[10px] font-bold text-on-primary shadow-sm">
+              {cartCount}
+            </span>
+          )}
+        </button>
+
+        {/* User Profile / Log In Circular Button */}
+        {session ? (
+          <Link
+            href="/profile"
+            className="h-11 w-11 flex items-center justify-center bg-brand-yellow border border-light-pink text-primary font-black rounded-full shadow-sm hover:border-dark-pink transition-all active:scale-[0.95] select-none text-sm"
+            title="My Profile"
+          >
+            {session.user.name.charAt(0).toUpperCase()}
+          </Link>
+        ) : (
+          <Link
+            href="/login"
+            className="h-11 w-11 flex items-center justify-center bg-lightest-pink/90 backdrop-blur-md border border-light-pink hover:border-dark-pink text-ink rounded-full shadow-sm transition-all active:scale-[0.95]"
+            aria-label="Log In"
+            title="Log In"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-5 w-5"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+            </svg>
+          </Link>
+        )}
+
+        {/* Logout button (Desktop only, if logged in) */}
+        {session && (
+          <button
+            onClick={() => authClient.signOut()}
+            className="hidden md:inline-flex h-11 items-center justify-center bg-lightest-pink/90 backdrop-blur-md border border-light-pink hover:border-dark-pink text-ink text-xs font-semibold rounded-full px-4 shadow-sm transition-all active:scale-[0.95] cursor-pointer"
+          >
+            Log Out
+          </button>
+        )}
+      </div>
 
       {/* Mobile Drawer Overlay */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm md:hidden pointer-events-auto"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
       {/* Mobile Drawer Panel */}
       <div
-        className={`fixed top-0 bottom-0 right-0 z-50 w-72 bg-canvas border-l border-light-pink p-6 shadow-2xl transition-transform duration-300 md:hidden flex flex-col justify-between ${
+        className={`fixed top-0 bottom-0 right-0 z-50 w-72 bg-canvas border-l border-light-pink p-6 shadow-2xl transition-transform duration-300 md:hidden flex flex-col justify-between pointer-events-auto ${
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -228,7 +244,28 @@ export default function Navbar({ categories = [] }: NavbarProps) {
               onClick={() => setIsMobileMenuOpen(false)}
               className="text-base font-semibold text-steel hover:text-dark-pink transition-colors"
             >
-              Shop All
+              All
+            </Link>
+            <Link
+              href="/catalog?featured=true"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-base font-semibold text-steel hover:text-dark-pink transition-colors"
+            >
+              New
+            </Link>
+            <Link
+              href="/catalog?category=saree"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-base font-semibold text-steel hover:text-dark-pink transition-colors"
+            >
+              Saree
+            </Link>
+            <Link
+              href="#"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-base font-semibold text-steel hover:text-dark-pink transition-colors"
+            >
+              Our Story
             </Link>
 
             {/* Categories section in Drawer */}

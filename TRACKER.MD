@@ -5,8 +5,8 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 ---
 
 ## Current Status
-- **Overall Progress**: 82% (Milestones 1 to 9.1 Complete, UI Tuning Milestones 9.2 to 9.7 Pending, Milestone 10 Pending)
-- **Current Milestone**: Milestone 9.2: UI Tuning - Home Page
+- **Overall Progress**: 84% (Milestones 1 to 9.2 Complete, UI Tuning Milestones 9.3 to 9.7 Pending, Milestone 10 Pending)
+- **Current Milestone**: Milestone 9.3: UI Tuning - Catalog & Filters
 
 ---
 
@@ -232,9 +232,10 @@ This file tracks the status of all granular tasks in the TraDiva project. Mark i
 - [x] Git Commit: `ui: tweak and optimize navbar and footer layout`
 
 ### Milestone 9.2: UI Tuning - Home Page
-- [ ] Tweak and optimize homepage layout, hero section, and promotional blocks
-- [ ] Ensure proper typography, font pairings, and Manipuri-themed vector highlights
-- [ ] Git Commit: `ui: refine homepage layout and typography`
+- [x] Tweak and optimize homepage layout, hero section, and promotional blocks
+- [x] Ensure proper typography, font pairings, and Manipuri-themed vector highlights
+- [x] Implement fluid page sizing container as a single source of truth across the website
+- [x] Git Commit: `ui: implement fluid page container and navbar alignments`
 
 ### Milestone 9.3: UI Tuning - Catalog Page & Filters
 - [ ] Standardize price formatting from USD ($) to BDT (৳) on catalog cards
