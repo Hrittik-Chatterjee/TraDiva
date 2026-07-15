@@ -125,16 +125,10 @@ body {
 }
 
 /* Inspected Hypefluency Multi-Pill Floating Navigation Sizing */
-@media screen and (min-width: 1280px) {
-  .hype-nav-wrapper {
-    top: 3em;
-  }
-}
-
 @media screen and (min-width: 768px) {
   .hype-nav-wrapper {
-    position: absolute;
-    top: 2em;
+    position: fixed;
+    top: 20px;
     right: 50%;
     translate: 50% 0;
     width: calc(100% - 2 * var(--page-gutter));
@@ -145,28 +139,30 @@ body {
   }
 }
 
-@media screen and (min-width: 480px) {
-  .hype-mobile-actions {
-    max-width: 360px;
+@media screen and (min-width: 1280px) {
+  .hype-nav-wrapper {
+    top: 28px;
   }
 }
 
-.hype-mobile-actions {
-  position: absolute;
-  top: 2em;
-  right: 2em;
-  width: calc(100% - 4em);
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  pointer-events: auto;
-}
+@media screen and (max-width: 767px) {
+  .hype-mobile-actions {
+    position: absolute;
+    top: 2em;
+    right: 2em;
+    width: calc(100% - 4em);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    pointer-events: auto;
+  }
 
-.hype-mobile-logo {
-  position: absolute;
-  top: 2em;
-  left: 2em;
-  pointer-events: auto;
+  .hype-mobile-logo {
+    position: absolute;
+    top: 2em;
+    left: 2em;
+    pointer-events: auto;
+  }
 }
 
 /* Reusable Fluid Page Container Sizing */
