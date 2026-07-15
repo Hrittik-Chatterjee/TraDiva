@@ -124,15 +124,24 @@ body {
   animation: soft-blink 5s infinite;
 }
 
+@media screen and (max-width: 767px) {
+  .hype-nav-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
 /* Inspected Hypefluency Multi-Pill Floating Navigation Sizing */
 @media screen and (min-width: 768px) {
   .hype-nav-wrapper {
     position: fixed;
-    top: 20px;
+    top: 2.25rem;
     right: 50%;
     translate: 50% 0;
-    width: calc(100% - 2 * var(--page-gutter));
-    max-width: var(--max-width-page-content);
+    width: calc(100% - 4.5rem);
+    max-width: calc(var(--max-width-page-content) - 0.5rem);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -141,7 +150,7 @@ body {
 
 @media screen and (min-width: 1280px) {
   .hype-nav-wrapper {
-    top: 28px;
+    top: 2.5rem;
   }
 }
 
@@ -150,7 +159,6 @@ body {
     position: absolute;
     top: 2em;
     right: 2em;
-    width: calc(100% - 4em);
     display: flex;
     justify-content: flex-end;
     gap: 0.75rem;
