@@ -22,7 +22,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-canvas text-ink">
+      <body className="min-h-screen flex flex-col bg-canvas text-ink">
         <PostHogProvider>
           <PostHogPageView />
           <CartProvider>

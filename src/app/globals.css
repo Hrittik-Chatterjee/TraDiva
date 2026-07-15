@@ -185,6 +185,19 @@ body {
   }
 }
 
+/* Logo cutout silhouette effect using CSS masking */
+.logo-cutout {
+  mask-image: url('/TraDivalogo.svg');
+  -webkit-mask-image: url('/TraDivalogo.svg');
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  mask-position: left center;
+  -webkit-mask-position: left center;
+  background-color: #fff5f3 !important;
+}
+
 
 
 
