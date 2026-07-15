@@ -1,29 +1,42 @@
 import Link from "next/link";
-import { ManipuriGirlPlaceholder, MoirangPheePattern } from "@/components/shared/manipuri-patterns";
+import Image from "next/image";
+import { MoirangPheePattern } from "@/components/shared/manipuri-patterns";
 
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center bg-canvas">
       {/* Hero Section */}
-      <section className="page-container py-12 md:py-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        {/* Left Side: Brand Text & CTAs (7 cols) */}
-        <div className="lg:col-span-7 flex flex-col items-start text-left">
+      <section className="relative w-full min-h-[90vh] md:h-screen flex items-center justify-center overflow-hidden">
+        {/* Next.js Optimized Background Image */}
+        <Image
+          src="/hero.webp"
+          fill
+          className="object-cover"
+          priority
+          alt="TraDiva Hero"
+        />
+
+        {/* Premium Pinkish Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-dark-pink/55 to-black/45 z-10" />
+
+        {/* Centered Content Container */}
+        <div className="relative z-20 max-w-5xl px-6 flex flex-col items-center text-center text-on-primary">
           {/* Cultural Tag Badge */}
           <div className="mb-6 inline-flex items-center rounded-full bg-lightest-pink px-4 py-1.5 text-xs font-semibold text-dark-pink border border-light-pink">
             🌸 Traditional Manipuri Weaves & Attire
           </div>
 
-          {/* Hero Title (80px display, tight leading) */}
-          <h1 className="max-w-3xl text-4xl sm:text-6xl md:text-[76px] font-medium leading-[1.05] tracking-tight md:tracking-[-2px] text-ink mb-6">
+          {/* Hero Title */}
+          <h1 className="max-w-4xl text-4xl sm:text-6xl md:text-[80px] font-bold leading-[1.05] tracking-tight md:tracking-[-2px] mb-6 text-on-primary uppercase drop-shadow-[0_4px_12px_rgba(0,0,0,0.45)]">
             Embrace the Heritage of Manipur.
           </h1>
 
           {/* Hero Subtitle */}
-          <p className="max-w-144 text-lg text-steel mb-10 leading-relaxed">
+          <p className="max-w-2xl text-base sm:text-lg md:text-xl text-on-primary/80 mb-10 leading-relaxed font-medium drop-shadow-[0_2px_6px_rgba(0,0,0,0.45)]">
             Discover exquisite Phaneks, Innaphis, and handcrafted cultural products woven with love and legacy. Experience premium authenticity, directly from native Manipuri artisans.
           </p>
 
-          {/* Action buttons with black-pill style and pink borders */}
+          {/* Action buttons (Reusing existing storefront classes) */}
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
             <Link
               href="/catalog"
@@ -33,30 +46,10 @@ export default function Home() {
             </Link>
             <Link
               href="/about"
-              className="w-full sm:w-auto inline-flex h-12 items-center justify-center rounded-full border border-light-pink bg-transparent px-8 text-sm font-medium text-ink hover:bg-lightest-pink active:scale-[0.98] transition-all"
+              className="w-full sm:w-auto inline-flex h-12 items-center justify-center rounded-full border border-light-pink bg-transparent px-8 text-sm font-medium text-on-primary hover:bg-light-pink/20 active:scale-[0.98] transition-all"
             >
               Our Heritage Story
             </Link>
-          </div>
-        </div>
-
-        {/* Right Side: Animated Manipuri Cartoon Character Frame (5 cols) */}
-        <div className="lg:col-span-5 flex justify-center items-center">
-          <div className="relative w-full max-w-85 aspect-4/5 rounded-3xl border border-light-pink bg-lightest-pink/40 p-6 shadow-sm flex flex-col justify-between items-center overflow-hidden">
-            {/* Traditional Pattern Decorative Corner Accent */}
-            <div className="absolute top-0 left-0 w-full h-2 bg-brand-yellow"></div>
-            
-            {/* The Floating Cartoon Illustration */}
-            <div className="w-full h-full max-h-65 animate-gentle-float">
-              <ManipuriGirlPlaceholder />
-            </div>
-
-            {/* Sub-label describing the character attire */}
-            <div className="text-center mt-2 z-10">
-              <span className="text-[11px] font-bold tracking-wider text-dark-pink uppercase bg-canvas border border-light-pink px-3 py-1 rounded-full">
-                Wearing Phanek & Innaphi
-              </span>
-            </div>
           </div>
         </div>
       </section>
