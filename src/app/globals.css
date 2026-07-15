@@ -185,17 +185,30 @@ body {
   }
 }
 
-/* Logo cutout silhouette effect using CSS masking */
-.logo-cutout {
-  mask-image: url('/TraDivalogo.svg');
-  -webkit-mask-image: url('/TraDivalogo.svg');
-  mask-repeat: no-repeat;
-  -webkit-mask-repeat: no-repeat;
-  mask-size: contain;
-  -webkit-mask-size: contain;
-  mask-position: left center;
-  -webkit-mask-position: left center;
-  background-color: #fff5f3 !important;
+/* True vector cutout mask applied directly to the footer container */
+.footer-masked {
+  mask-image: url('/TraDivalogo.svg'), linear-gradient(#000, #000);
+  -webkit-mask-image: url('/TraDivalogo.svg'), linear-gradient(#000, #000);
+  mask-repeat: no-repeat, no-repeat;
+  -webkit-mask-repeat: no-repeat, no-repeat;
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  
+  /* Mobile Mask Dimensions (large cutout dominant on mobile) */
+  mask-size: 325px 100px, cover;
+  -webkit-mask-size: 325px 100px, cover;
+  mask-position: left -0.1rem top -15px, center;
+  -webkit-mask-position: left -0.1rem top -15px, center;
+}
+
+@media (min-width: 768px) {
+  .footer-masked {
+    /* Desktop Mask Dimensions */
+    mask-size: 385px 117px, cover;
+    -webkit-mask-size: 385px 117px, cover;
+    mask-position: left -0.1rem bottom 0, center;
+    -webkit-mask-position: left -0.1rem bottom 0, center;
+  }
 }
 
 
