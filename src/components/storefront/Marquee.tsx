@@ -5,8 +5,8 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Register ScrollTrigger plugin
-gsap.registerPlugin(ScrollTrigger);
+// Register plugins
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function Marquee() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -23,25 +23,19 @@ export default function Marquee() {
       repeat: -1,
     });
 
-    // 2. Monitor scroll direction and speed to dynamically influence marquee speed & direction
+    let currentDirection = 1;
+
+    // 2. Monitor scroll direction to dynamically reverse marquee speed & direction
     const trigger = ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top bottom",
       end: "bottom top",
       onUpdate: (self) => {
-        // self.direction is 1 when scrolling down, -1 when scrolling up
-        const scrollDirection = self.direction;
-        
-        // Map scroll velocity to a very subtle speed multiplier (capped to a safe maximum of 1.5x speed)
-        const velocity = Math.abs(self.getVelocity());
-        const speedMultiplier = Math.min(1.5, 1 + velocity / 2000);
-
-        // Smoothly adjust the timeline's playback direction and speed
-        gsap.to(loopTween, {
-          timeScale: scrollDirection * speedMultiplier,
-          duration: 0.5,
-          overwrite: "auto",
-        });
+        // Only update timeScale when direction changes (from 1 to -1 or vice versa)
+        if (self.direction !== currentDirection) {
+          currentDirection = self.direction;
+          loopTween.timeScale(currentDirection);
+        }
       },
     });
 
@@ -77,7 +71,7 @@ export default function Marquee() {
     >
       <div
         ref={marqueeRef}
-        className="flex items-center gap-2 md:gap-3 whitespace-nowrap"
+        className="flex items-center gap-2 md:gap-3 whitespace-nowrap w-max will-change-transform"
       >
         {/* Render multiple tracks for a seamless, continuous infinite scroll */}
         {trackItems}
