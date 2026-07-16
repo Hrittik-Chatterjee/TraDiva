@@ -19,13 +19,13 @@ export default function Hero() {
 
     // Scroll parallax translation: move background container downwards as we scroll down
     gsap.to(imageRef.current, {
-      yPercent: 25,
+      yPercent: 12,
       ease: "none",
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top top",
         end: "bottom top",
-        scrub: true,
+        scrub: 1.5,
       },
     });
   }, { scope: containerRef });
@@ -38,7 +38,8 @@ export default function Hero() {
       {/* Background Image Wrapper (taller than viewport to give headroom for animation) */}
       <div
         ref={imageRef}
-        className="absolute -top-[15%] left-0 h-[130%] w-full z-0 pointer-events-none"
+        className="absolute -top-[10%] left-0 h-[120%] w-full z-0 pointer-events-none will-change-transform"
+        style={{ willChange: "transform" }}
       >
         <Image
           src="/hero.webp"
