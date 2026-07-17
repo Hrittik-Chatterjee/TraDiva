@@ -17,37 +17,37 @@ interface StickerAsset {
 
 const stickerAssets: StickerAsset[] = [
   {
-    src: "/popup/thing.svg",
+    src: "/popup/thing.webp",
     className: "absolute left-[4%] top-[16%] md:left-[4%] md:top-[20%] w-[80px] md:w-[130px] h-auto -rotate-12 z-20",
     alt: "Star Badge"
   },
   {
-    src: "/popup/An_Icon.dfqwtppe_9OhHI.svg",
+    src: "/popup/An_Icon.dfqwtppe_9OhHI.webp",
     className: "absolute left-[5%] bottom-[10%] md:bottom-auto md:top-[55%] w-[90px] md:w-[150px] h-auto rotate-6 z-20",
     alt: "Icon Badge"
   },
   {
-    src: "/popup/Phanek.svg",
+    src: "/popup/Phanek.webp",
     className: "absolute left-[12%] top-[8%] md:left-[16%] md:top-[10%] w-[100px] md:w-[180px] h-auto -rotate-[15deg] z-20",
     alt: "Traditional Phanek Sticker"
   },
   {
-    src: "/popup/chorki.svg",
+    src: "/popup/chorki.webp",
     className: "absolute left-[42%] bottom-[8%] w-[110px] md:w-[130px] h-auto rotate-6 z-20",
     alt: "Spinning Wheel Badge"
   },
   {
-    src: "/popup/arroba.D1T-WjYY_ZxELlA.svg",
+    src: "/popup/arroba.D1T-WjYY_ZxELlA.webp",
     className: "absolute right-[4%] top-[18%] w-[90px] md:w-[140px] h-auto -rotate-6 z-20",
     alt: "@ Motif Sticker"
   },
   {
-    src: "/popup/doll.svg",
+    src: "/popup/doll.webp",
     className: "absolute right-[5%] bottom-[2%] md:bottom-[10%] w-[110px] md:w-[190px] h-auto rotate-12 z-20",
     alt: "Manipuri Traditional Doll"
   },
   {
-    src: "/popup/loom.svg",
+    src: "/popup/loom.webp",
     className: "absolute right-[22%] top-[6%] w-[130px] md:w-[150px] h-auto -rotate-12 z-20",
     alt: "Artisan Loom Badge"
   }
@@ -61,15 +61,15 @@ export default function BlueprintSection() {
 
     const stickers = gsap.utils.toArray(".sticker-blob");
 
-    // Animate stickers popping out bouncy-style when the section enters the screen
+    // Animate stickers sliding up and fading in smoothly when the section enters the screen
     gsap.fromTo(
       stickers,
-      { scale: 0, opacity: 0 },
+      { y: 50, opacity: 0 },
       {
-        scale: 1,
+        y: 0,
         opacity: 1,
         duration: 0.8,
-        ease: "back.out(1.5)",
+        ease: "power2.out",
         stagger: {
           each: 0.15,
           from: "random"
@@ -114,9 +114,9 @@ export default function BlueprintSection() {
         </p>
       </div>
 
-      {/* Decorative Floating SVG Sticker Blobs */}
+      {/* Decorative Floating WebP Sticker Blobs */}
       {stickerAssets.map((asset, index) => (
-        <div key={index} className={`sticker-blob ${asset.className}`}>
+        <div key={index} className={`sticker-blob will-change-transform ${asset.className}`}>
           <img
             src={asset.src}
             alt={asset.alt}
