@@ -3,6 +3,7 @@ import Marquee from "@/components/storefront/Marquee";
 import CulturalCategories from "@/components/storefront/CulturalCategories";
 import BlueprintSection from "@/components/storefront/BlueprintSection";
 import FeaturedProducts from "@/components/storefront/FeaturedProducts";
+import NewArrivals from "@/components/storefront/NewArrivals";
 import { MoirangPheePattern } from "@/components/shared/manipuri-patterns";
 
 export default function Home() {
@@ -27,6 +28,9 @@ export default function Home() {
 
       {/* Artisan Blueprint Showcase Section */}
       <BlueprintSection />
+
+      {/* New Arrivals Showcase Section */}
+      <NewArrivals />
 
     </div>
   );
