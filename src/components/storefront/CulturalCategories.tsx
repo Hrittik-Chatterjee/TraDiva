@@ -130,7 +130,7 @@ export default function CulturalCategories() {
         </div>
 
         {/* Categories Flex Grid */}
-        <div className="flex flex-col md:flex-row w-full gap-4 md:gap-6 min-h-[480px]">
+        <div className="flex flex-wrap md:flex-nowrap w-full gap-4 md:gap-6 min-h-[480px]">
           {categories.map((cat) => {
             const isActive = activeIndex === cat.id;
             const isAnyActive = activeIndex !== null;
@@ -141,10 +141,11 @@ export default function CulturalCategories() {
                 onMouseEnter={() => setActiveIndex(cat.id)}
                 onMouseLeave={() => setActiveIndex(null)}
                 onClick={() => setActiveIndex(isActive ? null : cat.id)}
-                className={`relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 ease-out group flex-1
+                className={`relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 ease-out group
+                  w-[calc(50%-8px)] md:w-auto md:flex-1
                   ${isActive ? "md:flex-[3.5] shadow-2xl" : ""}
                   ${isAnyActive && !isActive ? "md:flex-[0.7] opacity-65 md:opacity-85" : ""}
-                  aspect-[4/3] md:aspect-auto min-h-[220px] md:min-h-none
+                  aspect-[4/3] md:aspect-auto min-h-[180px] md:min-h-none
                 `}
               >
                 {/* Background Category Image */}
@@ -168,22 +169,22 @@ export default function CulturalCategories() {
 
                 {/* Hover/Active Frosted Glassmorphic Overlay */}
                 <div 
-                  className={`absolute inset-0 bg-black/40 backdrop-blur-md flex flex-col justify-end p-8 text-white transition-all duration-500 z-20
+                  className={`absolute inset-0 bg-black/40 backdrop-blur-md flex flex-col justify-end p-4 md:p-8 text-white transition-all duration-500 z-20
                     ${isActive ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
                   `}
                 >
-                  <h3 className="text-2xl md:text-3xl font-black uppercase mb-3 tracking-wide">
+                  <h3 className="text-lg md:text-3xl font-black uppercase mb-1.5 md:mb-3 tracking-wide">
                     {cat.hoverTitle}
                   </h3>
-                  <p className="text-xs md:text-sm text-white/95 leading-relaxed font-medium max-w-xl">
+                  <p className="text-[10px] md:text-sm text-white/95 leading-relaxed font-medium max-w-xl">
                     {cat.description}
                   </p>
                   
                   <Link 
                     href={`/catalog?category=${cat.title.toLowerCase()}`}
-                    className="mt-6 inline-flex w-max items-center justify-center rounded-full bg-white px-6 py-2.5 text-xs font-bold text-ink hover:bg-brand-yellow hover:text-ink active:scale-[0.98] transition-all"
+                    className="mt-3 md:mt-6 inline-flex w-max items-center justify-center rounded-full bg-white px-4 py-2 md:px-6 md:py-2.5 text-[10px] md:text-xs font-bold text-ink hover:bg-brand-yellow hover:text-ink active:scale-[0.98] transition-all"
                   >
-                    Explore Collection &rarr;
+                    Explore &rarr;
                   </Link>
                 </div>
               </div>
