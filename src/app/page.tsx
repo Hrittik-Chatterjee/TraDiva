@@ -1,6 +1,7 @@
 import Hero from "@/components/storefront/Hero";
 import Marquee from "@/components/storefront/Marquee";
 import CulturalCategories from "@/components/storefront/CulturalCategories";
+import BlueprintSection from "@/components/storefront/BlueprintSection";
 import { MoirangPheePattern } from "@/components/shared/manipuri-patterns";
 
 export default function Home() {
@@ -15,6 +16,9 @@ export default function Home() {
 
       {/* Interactive Categories Showcase */}
       <CulturalCategories />
+
+      {/* Artisan Blueprint Showcase Section */}
+      <BlueprintSection />
     </div>
   );
 }
