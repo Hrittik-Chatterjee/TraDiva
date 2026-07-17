@@ -20,13 +20,13 @@ export default function Home() {
       {/* Featured Products Showcase Section */}
       <FeaturedProducts />
 
+            {/* Interactive Categories Showcase */}
+      <CulturalCategories />
+
 
 
       {/* Artisan Blueprint Showcase Section */}
       <BlueprintSection />
-
-            {/* Interactive Categories Showcase */}
-      <CulturalCategories />
 
     </div>
   );
