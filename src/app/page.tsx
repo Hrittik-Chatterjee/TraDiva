@@ -4,6 +4,7 @@ import CulturalCategories from "@/components/storefront/CulturalCategories";
 import BlueprintSection from "@/components/storefront/BlueprintSection";
 import FeaturedProducts from "@/components/storefront/FeaturedProducts";
 import NewArrivals from "@/components/storefront/NewArrivals";
+import ReelsSection from "@/components/storefront/ReelsSection";
 import { MoirangPheePattern } from "@/components/shared/manipuri-patterns";
 
 export default function Home() {
@@ -32,6 +33,8 @@ export default function Home() {
       {/* New Arrivals Showcase Section */}
       <NewArrivals />
 
+      {/* Reels Carousel Showcase Section */}
+      <ReelsSection />
     </div>
   );
 }
