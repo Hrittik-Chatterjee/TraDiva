@@ -5,6 +5,7 @@ import BlueprintSection from "@/components/storefront/BlueprintSection";
 import FeaturedProducts from "@/components/storefront/FeaturedProducts";
 import NewArrivals from "@/components/storefront/NewArrivals";
 import ReelsSection from "@/components/storefront/ReelsSection";
+import TestimonialsSection from "@/components/storefront/TestimonialsSection";
 import { MoirangPheePattern } from "@/components/shared/manipuri-patterns";
 
 export default function Home() {
@@ -35,6 +36,9 @@ export default function Home() {
 
       {/* Reels Carousel Showcase Section */}
       <ReelsSection />
+
+      {/* Testimonials Section */}
+      <TestimonialsSection />
     </div>
   );
 }
