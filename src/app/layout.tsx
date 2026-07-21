@@ -5,6 +5,7 @@ import PostHogPageView from "@/components/providers/posthog-pageview";
 import { CartProvider } from "@/components/providers/cart-provider";
 import CartSheet from "@/components/storefront/CartSheet";
 import Navbar from "@/components/layout/navbar";
+import MainContainer from "@/components/layout/main-container";
 import Footer from "@/components/layout/footer";
 import { getCategories } from "@/services/catalog";
 
@@ -27,7 +28,7 @@ export default async function RootLayout({
           <PostHogPageView />
           <CartProvider>
             <Navbar categories={categoriesList} />
-            <main className="flex-1 flex flex-col">{children}</main>
+            <MainContainer>{children}</MainContainer>
             <CartSheet />
             <Footer />
           </CartProvider>
