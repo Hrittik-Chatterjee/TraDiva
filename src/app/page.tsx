@@ -10,14 +10,14 @@ import { MoirangPheePattern } from "@/components/shared/manipuri-patterns";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center bg-canvas">
+    <div className="flex flex-col items-center justify-center bg-lightest-pink">
       {/* Hero Section */}
       <Hero />
       <Marquee />
       
 
       {/* Repeating Traditional Pattern Divider */}
-      <MoirangPheePattern height={24} className="bg-canvas my-8" />
+      <MoirangPheePattern height={24} className="bg-lightest-pink my-8" />
 
       
       {/* Featured Products Showcase Section */}
