@@ -57,17 +57,26 @@ const DEFAULT_REELS = [
   },
 ];
 
+let isSeeding = false;
+
 // Seed default reels if none exist
 export async function ensureDefaultReelsSeeded() {
-  const existing = await db.select().from(reels).limit(1);
-  if (existing.length === 0) {
-    for (const item of DEFAULT_REELS) {
-      await db.insert(reels).values({
-        id: "reel_" + crypto.randomUUID(),
-        ...item,
-        isActive: true,
-      });
+  if (isSeeding) return;
+  isSeeding = true;
+
+  try {
+    const existing = await db.select().from(reels).limit(1);
+    if (existing.length === 0) {
+      for (const item of DEFAULT_REELS) {
+        await db.insert(reels).values({
+          id: "reel_" + crypto.randomUUID(),
+          ...item,
+          isActive: true,
+        });
+      }
     }
+  } finally {
+    isSeeding = false;
   }
 }
 
