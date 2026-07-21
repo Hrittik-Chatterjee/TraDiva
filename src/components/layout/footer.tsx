@@ -3,7 +3,7 @@ import { ManipuriGirlPlaceholder } from "../shared/manipuri-patterns";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-brand-yellow text-primary relative pt-28 pb-12 md:py-6 px-6 md:px-8 mt-auto select-none overflow-visible z-10 footer-masked">
+    <footer className="w-full bg-brand-yellow text-primary relative -mt-[200px] md:-mt-[120px] pt-28 pb-12 md:py-8 px-6 md:px-8 select-none overflow-visible z-10 footer-masked">
 
       <div className="mx-auto max-w-page-content relative z-10">
         {/* Desktop View — hidden on mobile */}

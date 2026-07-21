@@ -6,6 +6,7 @@ import FeaturedProducts from "@/components/storefront/FeaturedProducts";
 import NewArrivals from "@/components/storefront/NewArrivals";
 import ReelsSection from "@/components/storefront/ReelsSection";
 import TestimonialsSection from "@/components/storefront/TestimonialsSection";
+import ContactSection from "@/components/storefront/ContactSection";
 import { MoirangPheePattern } from "@/components/shared/manipuri-patterns";
 
 export default function Home() {
@@ -23,10 +24,8 @@ export default function Home() {
       {/* Featured Products Showcase Section */}
       <FeaturedProducts />
 
-            {/* Interactive Categories Showcase */}
+      {/* Interactive Categories Showcase */}
       <CulturalCategories />
-
-
 
       {/* Artisan Blueprint Showcase Section */}
       <BlueprintSection />
@@ -39,6 +38,9 @@ export default function Home() {
 
       {/* Testimonials Section */}
       <TestimonialsSection />
+
+      {/* Contact Us Section */}
+      <ContactSection />
     </div>
   );
 }

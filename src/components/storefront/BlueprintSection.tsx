@@ -91,7 +91,7 @@ export default function BlueprintSection() {
       {/* Background Image with Dark Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/loomimage.jpg"
+          src="/pinkcontact.webp"
           fill
           className="object-cover"
           sizes="100vw"

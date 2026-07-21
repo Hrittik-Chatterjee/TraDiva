@@ -23,7 +23,7 @@ const categories: Category[] = [
   {
     id: 0,
     title: "Saree",
-    image: "/Saree.jpg",
+    image: "/Saree.webp",
     hoverTitle: "Manipuri Silk Sarees",
     description: "Exquisite handwoven silk sarees decorated with traditional temple borders and intricate gold floral work.",
     bgColor: "oklch(77.8% 0.149 354.2)",
@@ -32,7 +32,7 @@ const categories: Category[] = [
   {
     id: 1,
     title: "Urna",
-    image: "/urna.jpg",
+    image: "/urna.webp",
     hoverTitle: "Traditional Dupattas",
     description: "Delicate and lightweight stoles featuring handwoven Manipuri motifs and elegant border designs.",
     bgColor: "oklch(79.4% 0.111 303.9)",
@@ -41,7 +41,7 @@ const categories: Category[] = [
   {
     id: 2,
     title: "Innaphi",
-    image: "/Inaphi.jpg",
+    image: "/Inaphi.webp",
     hoverTitle: "Moirang Phee Shawls",
     description: "Semi-translucent traditional shawls featuring the iconic hand-loomed Moirang Phee temple motifs.",
     bgColor: "oklch(94.6% 0.141 104.4)",
@@ -50,7 +50,7 @@ const categories: Category[] = [
   {
     id: 3,
     title: "Phanek",
-    image: "/Phanek.jpg",
+    image: "/Phanek.webp",
     hoverTitle: "Phanek Maphals",
     description: "Striped wrap skirts woven in premium cotton or silk, finished with hand-embroidered border patterns.",
     bgColor: "oklch(82.2% 0.073 246.3)",
