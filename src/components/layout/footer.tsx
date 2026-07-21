@@ -7,9 +7,9 @@ export default function Footer() {
 
       <div className="mx-auto max-w-page-content relative z-10">
         {/* Desktop View — hidden on mobile */}
-        <div className="hidden md:flex items-center justify-between gap-6 pl-[280px]">
+        <div className="hidden md:flex items-center justify-between gap-6 pl-[385px]">
           {/* Address & Privacy */}
-          <div className="flex items-center gap-6 text-left">
+          <div className="flex-1 flex items-center justify-center gap-6 text-center">
             <span className="text-xs font-semibold tracking-tight uppercase opacity-90">
               Sreemangal, Sylhet
             </span>
@@ -23,7 +23,7 @@ export default function Footer() {
           </div>
 
           {/* Socials, Copyright, and Doll */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 shrink-0">
             <div className="flex items-center gap-4">
               <a
                 href="#"
