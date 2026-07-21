@@ -111,3 +111,16 @@ export const orderItems = pgTable("order_items", {
   price: integer("price").notNull(), // in cents
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export const reels = pgTable("reels", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  tagline: text("tagline").notNull(),
+  imageUrl: text("image_url").notNull(),
+  videoUrl: text("video_url").notNull(),
+  categorySlug: text("category_slug").default("saree").notNull(),
+  sortOrder: integer("sort_order").default(0).notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});

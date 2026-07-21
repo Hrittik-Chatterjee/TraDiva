@@ -11,55 +11,57 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(Draggable);
 }
 
-interface ReelMock {
-  brand: string;
+export interface StorefrontReel {
+  id?: string;
+  title: string;
   tagline: string;
-  image: string;
-  video: string;
-  category: string;
+  imageUrl: string;
+  videoUrl: string;
+  categorySlug: string;
 }
 
-const featuredReels: ReelMock[] = [
+const defaultFeaturedReels: StorefrontReel[] = [
   {
-    brand: "TraDiva Silk",
+    title: "TraDiva Silk",
     tagline: "#HandspunLuxury",
-    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=600&auto=format&fit=crop",
-    video: "/hypedemo.mp4",
-    category: "saree"
+    imageUrl: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=600&auto=format&fit=crop",
+    videoUrl: "/hypedemo.mp4",
+    categorySlug: "saree"
   },
   {
-    brand: "Moirang Weaves",
+    title: "Moirang Weaves",
     tagline: "#ArtisanPride",
-    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=600&auto=format&fit=crop",
-    video: "/hypedemo.mp4",
-    category: "innaphi"
+    imageUrl: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=600&auto=format&fit=crop",
+    videoUrl: "/hypedemo.mp4",
+    categorySlug: "innaphi"
   },
   {
-    brand: "Saree Stories",
+    title: "Saree Stories",
     tagline: "#CulturalLegacy",
-    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=600&auto=format&fit=crop",
-    video: "/hypedemo.mp4",
-    category: "saree"
+    imageUrl: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=600&auto=format&fit=crop",
+    videoUrl: "/hypedemo.mp4",
+    categorySlug: "saree"
   },
   {
-    brand: "Innaphi Aura",
+    title: "Innaphi Aura",
     tagline: "#ManipuriThreads",
-    image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?q=80&w=600&auto=format&fit=crop",
-    video: "/hypedemo.mp4",
-    category: "innaphi"
+    imageUrl: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?q=80&w=600&auto=format&fit=crop",
+    videoUrl: "/hypedemo.mp4",
+    categorySlug: "innaphi"
   },
   {
-    brand: "Heritage Urna",
+    title: "Heritage Urna",
     tagline: "#ArtistryInEveryWeave",
-    image: "https://images.unsplash.com/photo-1608748010899-18f300247112?q=80&w=600&auto=format&fit=crop",
-    video: "/hypedemo.mp4",
-    category: "urna"
+    imageUrl: "https://images.unsplash.com/photo-1608748010899-18f300247112?q=80&w=600&auto=format&fit=crop",
+    videoUrl: "/hypedemo.mp4",
+    categorySlug: "urna"
   }
 ];
 
-const originalLength = featuredReels.length; // 5
+export default function ReelsSection({ reels }: { reels?: StorefrontReel[] }) {
+  const activeReels = reels && reels.length > 0 ? reels : defaultFeaturedReels;
+  const originalLength = activeReels.length;
 
-export default function ReelsSection() {
   const trackWrapperRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const proxyRef = useRef<HTMLDivElement>(null);
@@ -67,9 +69,9 @@ export default function ReelsSection() {
   
   // 3 repeats of the cards to act as an infinite horizontal scrolling buffer
   const itemsWithClones = [
-    ...featuredReels, // 0 - 4
-    ...featuredReels, // 5 - 9
-    ...featuredReels  // 10 - 14
+    ...activeReels,
+    ...activeReels,
+    ...activeReels
   ];
 
   const [leftActiveIndex, setLeftActiveIndex] = useState(0); // Active index on leftmost focus (0 to 4)
@@ -316,18 +318,18 @@ export default function ReelsSection() {
                   >
                     {/* Background Preview Image */}
                     <Image
-                      src={reel.image}
+                      src={reel.imageUrl}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none select-none"
                       sizes="(max-width: 768px) 260px, 300px"
-                      alt={reel.brand}
+                      alt={reel.title}
                       draggable="false"
                     />
 
                     {/* Active Card Loop Video Overlay */}
                     {dist === 0 && (
                       <video
-                        src={reel.video}
+                        src={reel.videoUrl}
                         autoPlay
                         loop
                         muted
@@ -370,14 +372,14 @@ export default function ReelsSection() {
                       }`}
                     >
                       <span className="text-[#ffea79] text-xl md:text-2xl font-black uppercase tracking-tight block leading-tight mb-1">
-                        {reel.brand}
+                        {reel.title}
                       </span>
                       <span className="text-white/90 text-xs md:text-sm font-bold block mb-4">
                         {reel.tagline}
                       </span>
                       
                       <Link
-                        href={`/catalog?category=${reel.category}`}
+                        href={reel.categorySlug === "all" ? "/catalog" : `/catalog?category=${reel.categorySlug}`}
                         className={`inline-block bg-[#ffea79] text-black font-bold text-xs md:text-sm px-6 py-2 rounded-full hover:bg-white hover:scale-105 active:scale-95 transition-all duration-300 ease-out ${
                           isDraggingState ? "pointer-events-none" : ""
                         }`}

@@ -8,8 +8,11 @@ import ReelsSection from "@/components/storefront/ReelsSection";
 import TestimonialsSection from "@/components/storefront/TestimonialsSection";
 import ContactSection from "@/components/storefront/ContactSection";
 import { MoirangPheePattern } from "@/components/shared/manipuri-patterns";
+import { getStorefrontReels } from "@/services/reels";
 
-export default function Home() {
+export default async function Home() {
+  const reels = await getStorefrontReels();
+
   return (
     <div className="flex flex-col items-center justify-center bg-lightest-pink">
       {/* Hero Section */}
@@ -34,7 +37,7 @@ export default function Home() {
       <NewArrivals />
 
       {/* Reels Carousel Showcase Section */}
-      <ReelsSection />
+      <ReelsSection reels={reels} />
 
       {/* Testimonials Section */}
       <TestimonialsSection />
