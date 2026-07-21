@@ -21,6 +21,7 @@ export const productSchema = z.object({
     z.number().min(0.01, "Price must be greater than 0")
   ),
   images: z.array(z.string().min(1)).min(1, "At least one image is required"),
+  videos: z.array(z.string()).optional().default([]),
   categoryId: z.string().min(1, "Category is required"),
   stock: z.preprocess(
     (val) => Number(val),

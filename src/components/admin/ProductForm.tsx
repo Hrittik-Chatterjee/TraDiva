@@ -13,6 +13,7 @@ interface ProductFormProps {
     description: string;
     price: number; /* stored in cents */
     images: string[];
+    videos?: string[];
     categoryId: string;
     stock: number | null;
     isFeatured: boolean;
@@ -35,14 +36,16 @@ export default function ProductForm({ categories, initialData }: ProductFormProp
   const [isFeatured, setIsFeatured] = useState(initialData?.isFeatured || false);
   const [isActive, setIsActive] = useState(initialData?.isActive ?? true);
   const [images, setImages] = useState<string[]>(initialData?.images || []);
+  const [videos, setVideos] = useState<string[]>(initialData?.videos || []);
 
-  const [uploading, setUploading] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
 
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
-    setUploading(true);
+    setUploadingImage(true);
     setError(null);
 
     const formData = new FormData();
@@ -54,21 +57,62 @@ export default function ProductForm({ categories, initialData }: ProductFormProp
         body: formData,
       });
 
+      const data = await res.json();
       if (!res.ok) {
-        throw new Error("Upload failed");
+        throw new Error(data.error || "Upload failed");
       }
 
-      const data = await res.json();
       setImages((prev) => [...prev, data.url]);
-    } catch {
-      setError("Image upload failed. Please try again.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Image upload failed";
+      setError(message);
     } finally {
-      setUploading(false);
+      setUploadingImage(false);
+    }
+  }
+
+  async function handleVideoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    if (file.size > 25 * 1024 * 1024) {
+      setError("Video exceeds the 25MB file size limit. Please upload an optimized clip.");
+      return;
+    }
+
+    setUploadingVideo(true);
+    setError(null);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Upload failed");
+      }
+
+      setVideos((prev) => [...prev, data.url]);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Video upload failed";
+      setError(message);
+    } finally {
+      setUploadingVideo(false);
     }
   }
 
   function removeImage(indexToRemove: number) {
     setImages((prev) => prev.filter((_, idx) => idx !== indexToRemove));
+  }
+
+  function removeVideo(indexToRemove: number) {
+    setVideos((prev) => prev.filter((_, idx) => idx !== indexToRemove));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -84,6 +128,7 @@ export default function ProductForm({ categories, initialData }: ProductFormProp
       categoryId,
       stock: parseInt(stock),
       images,
+      videos,
       isFeatured,
       isActive,
     };
@@ -98,6 +143,12 @@ export default function ProductForm({ categories, initialData }: ProductFormProp
     setPending(false);
 
     if (result?.error) {
+      setError(result.error);
+    } else {
+      router.push("/admin/products");
+      router.refresh();
+    }
+  }
       setError(result.error);
     } else {
       router.push("/admin/products");
@@ -221,20 +272,20 @@ export default function ProductForm({ categories, initialData }: ProductFormProp
         {/* Upload Input Button */}
         <div className="flex items-center gap-4 mb-4">
           <label className="cursor-pointer h-10 inline-flex items-center justify-center rounded-full border border-light-pink bg-lightest-pink/20 px-4 text-xs font-medium text-ink hover:bg-lightest-pink transition-colors">
-            {uploading ? "Uploading..." : "Upload Image"}
+            {uploadingImage ? "Uploading Image..." : "Upload Image"}
             <input
               type="file"
               accept="image/*"
               className="hidden"
               onChange={handleImageUpload}
-              disabled={uploading}
+              disabled={uploadingImage}
             />
           </label>
         </div>
 
         {/* Thumbnail Preview Grid */}
         {images.length > 0 && (
-          <div className="grid grid-cols-4 gap-4 p-4 rounded-xl border border-light-pink/50 bg-lightest-pink/5">
+          <div className="grid grid-cols-4 gap-4 p-4 rounded-xl border border-light-pink/50 bg-lightest-pink/5 mb-4">
             {images.map((url, idx) => (
               <div key={idx} className="relative aspect-square rounded-lg border border-light-pink bg-canvas overflow-hidden group">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -243,6 +294,47 @@ export default function ProductForm({ categories, initialData }: ProductFormProp
                   type="button"
                   onClick={() => removeImage(idx)}
                   className="absolute top-1 right-1 w-5 h-5 rounded-full bg-primary/80 hover:bg-dark-pink text-on-primary flex items-center justify-center text-[10px] font-bold transition-colors"
+                >
+                  &times;
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Product Videos Upload (Optional) */}
+      <div>
+        <div className="flex items-center justify-between mb-1">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-stone">
+            Product Videos <span className="normal-case text-stone/70 font-normal">(Optional)</span>
+          </label>
+          <span className="text-[11px] text-stone/70">MP4 / WebM under 25MB recommended</span>
+        </div>
+
+        <div className="flex items-center gap-4 mb-4">
+          <label className="cursor-pointer h-10 inline-flex items-center justify-center rounded-full border border-light-pink bg-lightest-pink/20 px-4 text-xs font-medium text-ink hover:bg-lightest-pink transition-colors">
+            {uploadingVideo ? "Uploading Video..." : "Upload Video Clip"}
+            <input
+              type="file"
+              accept="video/mp4,video/webm"
+              className="hidden"
+              onChange={handleVideoUpload}
+              disabled={uploadingVideo}
+            />
+          </label>
+        </div>
+
+        {/* Video Preview Grid */}
+        {videos.length > 0 && (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-4 rounded-xl border border-light-pink/50 bg-lightest-pink/5">
+            {videos.map((url, idx) => (
+              <div key={idx} className="relative aspect-video rounded-lg border border-light-pink bg-black overflow-hidden group">
+                <video src={url} controls className="w-full h-full object-contain" preload="metadata" />
+                <button
+                  type="button"
+                  onClick={() => removeVideo(idx)}
+                  className="absolute top-1 right-1 w-6 h-6 rounded-full bg-brand-red text-white flex items-center justify-center text-xs font-bold shadow-md hover:bg-brand-red-dark transition-colors z-10"
                 >
                   &times;
                 </button>

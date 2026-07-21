@@ -80,6 +80,7 @@ export async function createProductAction(input: unknown) {
       description: result.data.description,
       price: Math.round(result.data.price * 100), // convert to cents
       images: result.data.images,
+      videos: result.data.videos,
       categoryId: result.data.categoryId,
       stock: result.data.stock,
       isFeatured: result.data.isFeatured,
@@ -118,6 +119,7 @@ export async function updateProductAction(id: string, input: unknown) {
       description: result.data.description,
       price: Math.round(result.data.price * 100), // convert to cents
       images: result.data.images,
+      videos: result.data.videos,
       categoryId: result.data.categoryId,
       stock: result.data.stock,
       isFeatured: result.data.isFeatured,

@@ -65,6 +65,7 @@ export const products = pgTable("products", {
   description: text("description").notNull(),
   price: integer("price").notNull(), // stored in cents/paisa
   images: text("images").array().notNull(), // list of image paths/URLs
+  videos: text("videos").array().default([]).notNull(), // list of video paths/URLs
   categoryId: text("category_id")
     .notNull()
     .references(() => categories.id, { onDelete: "restrict" }),

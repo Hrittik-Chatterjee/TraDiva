@@ -47,6 +47,7 @@ export async function getProducts() {
       description: products.description,
       price: products.price,
       images: products.images,
+      videos: products.videos,
       isFeatured: products.isFeatured,
       isActive: products.isActive,
       createdAt: products.createdAt,
@@ -71,6 +72,7 @@ export async function getProductById(id: string) {
       description: products.description,
       price: products.price,
       images: products.images,
+      videos: products.videos,
       isFeatured: products.isFeatured,
       isActive: products.isActive,
       categoryId: products.categoryId,
@@ -89,6 +91,7 @@ export async function createProduct(input: {
   description: string;
   price: number;
   images: string[];
+  videos?: string[];
   categoryId: string;
   stock: number;
   isFeatured: boolean;
@@ -103,6 +106,7 @@ export async function createProduct(input: {
     description: input.description,
     price: input.price,
     images: input.images,
+    videos: input.videos || [],
     categoryId: input.categoryId,
     isFeatured: input.isFeatured ?? false,
     isActive: input.isActive ?? true,
@@ -125,6 +129,7 @@ export async function updateProduct(
     description: string;
     price: number;
     images: string[];
+    videos?: string[];
     categoryId: string;
     stock: number;
     isFeatured: boolean;
@@ -139,6 +144,7 @@ export async function updateProduct(
       description: input.description,
       price: input.price,
       images: input.images,
+      videos: input.videos || [],
       categoryId: input.categoryId,
       isFeatured: input.isFeatured ?? false,
       isActive: input.isActive ?? true,
@@ -210,6 +216,7 @@ export async function getStorefrontProducts(filters: {
       description: products.description,
       price: products.price,
       images: products.images,
+      videos: products.videos,
       isFeatured: products.isFeatured,
       createdAt: products.createdAt,
       category: {
@@ -238,6 +245,7 @@ export async function getProductBySlug(slug: string) {
       description: products.description,
       price: products.price,
       images: products.images,
+      videos: products.videos,
       isFeatured: products.isFeatured,
       isActive: products.isActive,
       category: {

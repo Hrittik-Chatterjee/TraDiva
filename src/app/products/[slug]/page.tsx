@@ -92,7 +92,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
           {/* Gallery Column */}
           <div className="md:col-span-6 lg:col-span-5">
-            <ProductGallery images={product.images} />
+            <ProductGallery images={product.images} videos={product.videos} />
           </div>
 
           {/* Details Column */}

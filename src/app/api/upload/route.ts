@@ -13,9 +13,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
+    const contentType = file.type || "application/octet-stream";
+    const isVideo = contentType.startsWith("video/");
+    const maxAllowedSize = isVideo ? 25 * 1024 * 1024 : 10 * 1024 * 1024; // 25MB for videos, 10MB for images
+
+    if (file.size > maxAllowedSize) {
+      const maxMb = isVideo ? "25MB" : "10MB";
+      return NextResponse.json(
+        { error: `File size exceeds the maximum limit of ${maxMb}` },
+        { status: 400 }
+      );
+    }
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const contentType = file.type || "application/octet-stream";
 
     // Generate a unique filename to prevent overwrites
     const timestamp = Date.now();
