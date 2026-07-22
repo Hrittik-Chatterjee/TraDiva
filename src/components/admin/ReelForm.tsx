@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createReelAction, updateReelAction } from "@/app/actions/reels";
 
+import { uploadFileWithProgress } from "@/lib/upload-with-progress";
+
 interface ReelFormProps {
   initialData?: {
     id: string;
@@ -33,35 +35,31 @@ export default function ReelForm({ initialData, categories, currentActiveCount }
   const [isActive, setIsActive] = useState(initialData?.isActive ?? true);
 
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [imageProgress, setImageProgress] = useState<number | null>(null);
+  
   const [uploadingVideo, setUploadingVideo] = useState(false);
+  const [videoProgress, setVideoProgress] = useState<number | null>(null);
 
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
     setUploadingImage(true);
+    setImageProgress(0);
     setError(null);
 
-    const formData = new FormData();
-    formData.append("file", files[0]);
-
     try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
+      const url = await uploadFileWithProgress(files[0], (percent) => {
+        setImageProgress(percent);
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || "Image upload failed");
-      }
-
-      setImageUrl(data.url);
+      setImageUrl(url);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Image upload failed";
       setError(message);
     } finally {
       setUploadingImage(false);
+      setImageProgress(null);
     }
   }
 
@@ -76,28 +74,21 @@ export default function ReelForm({ initialData, categories, currentActiveCount }
     }
 
     setUploadingVideo(true);
+    setVideoProgress(0);
     setError(null);
 
-    const formData = new FormData();
-    formData.append("file", file);
-
     try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
+      const url = await uploadFileWithProgress(file, (percent) => {
+        setVideoProgress(percent);
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || "Video upload failed");
-      }
-
-      setVideoUrl(data.url);
+      setVideoUrl(url);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Video upload failed";
       setError(message);
     } finally {
       setUploadingVideo(false);
+      setVideoProgress(null);
     }
   }
 
@@ -235,9 +226,9 @@ export default function ReelForm({ initialData, categories, currentActiveCount }
         <label className="block text-xs font-semibold uppercase tracking-wider text-stone mb-2">
           1. Cover Preview Image <span className="text-brand-red">*</span>
         </label>
-        <div className="flex items-center gap-4 mb-3">
+        <div className="space-y-3 mb-3">
           <label className="cursor-pointer h-10 inline-flex items-center justify-center rounded-full border border-light-pink bg-lightest-pink/20 px-4 text-xs font-medium text-ink hover:bg-lightest-pink transition-colors">
-            {uploadingImage ? "Uploading Image..." : imageUrl ? "Change Cover Image" : "Upload Cover Image"}
+            {uploadingImage ? `Uploading Cover (${imageProgress ?? 0}%)` : imageUrl ? "Change Cover Image" : "Upload Cover Image"}
             <input
               type="file"
               accept="image/*"
@@ -246,6 +237,21 @@ export default function ReelForm({ initialData, categories, currentActiveCount }
               disabled={uploadingImage}
             />
           </label>
+
+          {uploadingImage && imageProgress !== null && (
+            <div className="w-full max-w-xs space-y-1">
+              <div className="flex justify-between text-[11px] font-bold text-dark-pink">
+                <span>Uploading Cover Image...</span>
+                <span>{imageProgress}%</span>
+              </div>
+              <div className="w-full h-2 rounded-full bg-lightest-pink overflow-hidden">
+                <div
+                  className="h-full bg-dark-pink transition-all duration-200 ease-out"
+                  style={{ width: `${imageProgress}%` }}
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {imageUrl && (
@@ -265,9 +271,9 @@ export default function ReelForm({ initialData, categories, currentActiveCount }
           <span className="text-[11px] text-stone/70">MP4 under 25MB recommended</span>
         </div>
 
-        <div className="flex items-center gap-4 mb-3">
+        <div className="space-y-3 mb-3">
           <label className="cursor-pointer h-10 inline-flex items-center justify-center rounded-full border border-light-pink bg-lightest-pink/20 px-4 text-xs font-medium text-ink hover:bg-lightest-pink transition-colors">
-            {uploadingVideo ? "Uploading Video..." : videoUrl ? "Change Video Clip" : "Upload Video Clip"}
+            {uploadingVideo ? `Uploading Video (${videoProgress ?? 0}%)` : videoUrl ? "Change Video Clip" : "Upload Video Clip"}
             <input
               type="file"
               accept="video/mp4,video/webm"
@@ -276,6 +282,21 @@ export default function ReelForm({ initialData, categories, currentActiveCount }
               disabled={uploadingVideo}
             />
           </label>
+
+          {uploadingVideo && videoProgress !== null && (
+            <div className="w-full max-w-xs space-y-1">
+              <div className="flex justify-between text-[11px] font-bold text-dark-pink">
+                <span>Uploading MP4 Video...</span>
+                <span>{videoProgress}%</span>
+              </div>
+              <div className="w-full h-2 rounded-full bg-lightest-pink overflow-hidden">
+                <div
+                  className="h-full bg-dark-pink transition-all duration-200 ease-out"
+                  style={{ width: `${videoProgress}%` }}
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {videoUrl && (

@@ -166,6 +166,32 @@ export async function deleteProduct(id: string) {
   await db.delete(products).where(eq(products.id, id));
 }
 
+export async function getActiveFeaturedCount(): Promise<number> {
+  const result = await db
+    .select({ id: products.id })
+    .from(products)
+    .where(and(eq(products.isFeatured, true), eq(products.isActive, true)));
+  return result.length;
+}
+
+export async function getStorefrontFeaturedProducts() {
+  return await db
+    .select({
+      id: products.id,
+      name: products.name,
+      slug: products.slug,
+      price: products.price,
+      images: products.images,
+      categoryName: categories.name,
+      categorySlug: categories.slug,
+    })
+    .from(products)
+    .leftJoin(categories, eq(products.categoryId, categories.id))
+    .where(and(eq(products.isFeatured, true), eq(products.isActive, true)))
+    .orderBy(desc(products.createdAt))
+    .limit(6);
+}
+
 // --- Storefront Catalog Services ---
 
 export async function getStorefrontProducts(filters: {

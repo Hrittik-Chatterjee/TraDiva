@@ -4,46 +4,30 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-interface ProductMock {
-  title: string;
-  image: string;
-  category: string;
+export interface StorefrontFeaturedProduct {
+  id: string;
+  name: string;
+  slug: string;
+  price: number; /* in cents */
+  images: string[];
+  categoryName?: string | null;
+  categorySlug?: string | null;
 }
 
-const featuredProducts: ProductMock[] = [
-  {
-    title: "Mayang Silk Saree",
-    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=600&auto=format&fit=crop",
-    category: "saree"
-  },
-  {
-    title: "Royal Phanek Maphal",
-    image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?q=80&w=600&auto=format&fit=crop",
-    category: "phanek"
-  },
-  {
-    title: "Moirang Phee Innaphi",
-    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=600&auto=format&fit=crop",
-    category: "innaphi"
-  },
-  {
-    title: "Embroidered Urna",
-    image: "https://images.unsplash.com/photo-1608748010899-18f300247112?q=80&w=600&auto=format&fit=crop",
-    category: "urna"
-  },
-  {
-    title: "Golden Brocade Saree",
-    image: "https://images.unsplash.com/photo-1610030469668-93535c17b6b3?q=80&w=600&auto=format&fit=crop",
-    category: "saree"
-  },
-  {
-    title: "Handspun Silk Shawl",
-    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=600&auto=format&fit=crop",
-    category: "innaphi"
+export default function FeaturedProducts({ products }: { products?: StorefrontFeaturedProduct[] }) {
+  if (!products || products.length === 0) {
+    return null;
   }
-];
 
-export default function FeaturedProducts() {
+  const displayProducts = products.map((p) => ({
+    id: p.id,
+    name: p.name,
+    slug: p.slug,
+    price: p.price,
+    image: p.images[0] || "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=600&auto=format&fit=crop",
+    categorySlug: p.categorySlug || "all",
+  }));
+
   return (
     <section className="w-full py-16 md:py-24 px-6 bg-lightest-pink">
       <div className="page-container">
@@ -56,20 +40,21 @@ export default function FeaturedProducts() {
 
         {/* Responsive Grid Layout (2 cols mobile, 3 cols desktop) */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-          {featuredProducts.map((product, index) => (
+          {displayProducts.map((product, index) => (
             <Link
-              href={`/catalog?category=${product.category}`}
-              key={index}
+              href={`/product/${product.slug}`}
+              key={product.id || index}
               className="relative rounded-[24px] md:rounded-[32px] overflow-hidden aspect-[4/3] cursor-pointer group shadow-sm hover:shadow-xl transition-all duration-500 bg-canvas"
             >
               {/* Product Background Image */}
               <Image
                 src={product.image}
                 fill
+                unoptimized
                 className="object-cover group-hover:scale-105 transition-transform duration-500"
                 sizes="(max-width: 768px) 50vw, 33vw"
                 priority={index < 3}
-                alt={product.title}
+                alt={product.name}
               />
 
               {/* Bottom Dark Gradient Overlay */}
@@ -80,11 +65,16 @@ export default function FeaturedProducts() {
                 ✦
               </div>
 
-              {/* White Text Title (Bottom-left) */}
+              {/* White Text Title & Taka Price (Bottom-left) */}
               <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 z-20 text-white select-none">
-                <h3 className="text-base md:text-3xl font-black uppercase tracking-tight leading-tight max-w-[85%]">
-                  {product.title}
+                <h3 className="text-base md:text-2xl font-black uppercase tracking-tight leading-tight max-w-[90%]">
+                  {product.name}
                 </h3>
+                {product.price > 0 && (
+                  <p className="text-xs md:text-sm font-bold text-[#ffea79] mt-0.5">
+                    ৳ {(product.price / 100).toLocaleString("en-BD", { minimumFractionDigits: 0 })}
+                  </p>
+                )}
               </div>
             </Link>
           ))}

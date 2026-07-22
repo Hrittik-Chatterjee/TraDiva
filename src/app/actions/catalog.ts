@@ -74,6 +74,13 @@ export async function createProductAction(input: unknown) {
   }
 
   try {
+    if (result.data.isFeatured && result.data.isActive) {
+      const activeFeaturedCount = await import("@/services/catalog").then((m) => m.getActiveFeaturedCount());
+      if (activeFeaturedCount >= 6) {
+        return { error: "Featured quota full! Already 6 featured products added to homepage. Maximum limit reached. Please un-feature an existing product first." };
+      }
+    }
+
     const id = await createProduct({
       name: result.data.name,
       slug: result.data.slug,
@@ -94,6 +101,7 @@ export async function createProductAction(input: unknown) {
     });
     revalidatePath("/admin/products");
     revalidatePath("/admin");
+    revalidatePath("/");
     return { success: true, id };
   } catch (error) {
     const err = error as { code?: string };
@@ -113,6 +121,17 @@ export async function updateProductAction(id: string, input: unknown) {
   }
 
   try {
+    if (result.data.isFeatured && result.data.isActive) {
+      const existingProducts = await import("@/services/catalog").then((m) => m.getProducts());
+      const currentProduct = existingProducts.find((p) => p.id === id);
+      if (!currentProduct?.isFeatured) {
+        const activeFeaturedCount = await import("@/services/catalog").then((m) => m.getActiveFeaturedCount());
+        if (activeFeaturedCount >= 6) {
+          return { error: "Featured quota full! Already 6 featured products added to homepage. Maximum limit reached. Please un-feature an existing product first." };
+        }
+      }
+    }
+
     await updateProduct(id, {
       name: result.data.name,
       slug: result.data.slug,
@@ -132,6 +151,8 @@ export async function updateProductAction(id: string, input: unknown) {
       stock: result.data.stock,
     });
     revalidatePath("/admin/products");
+    revalidatePath("/admin");
+    revalidatePath("/");
     return { success: true };
   } catch (error) {
     const err = error as { code?: string };
@@ -171,14 +192,16 @@ export async function toggleProductActiveAction(id: string, isActive: boolean) {
     }
 
     await updateProduct(id, {
-      title: existing.title,
+      name: existing.name,
+      slug: existing.slug,
       description: existing.description,
       price: existing.price,
-      currency: existing.currency,
-      categoryId: existing.categoryId,
       images: existing.images,
+      videos: existing.videos || [],
+      categoryId: existing.category?.id || "",
+      stock: existing.stock || 0,
+      isFeatured: isActive ? existing.isFeatured : false,
       isActive,
-      slug: existing.slug,
     });
 
     revalidatePath("/admin/products");
@@ -189,5 +212,46 @@ export async function toggleProductActiveAction(id: string, isActive: boolean) {
   } catch (error) {
     console.error("Product toggle active action error:", error);
     return { error: "Failed to update product status" };
+  }
+}
+
+export async function toggleProductFeaturedAction(id: string, isFeatured: boolean) {
+  try {
+    const existingProducts = await import("@/services/catalog").then((m) => m.getProducts());
+    const existing = existingProducts.find((p) => p.id === id);
+    if (!existing) {
+      return { error: "Product not found" };
+    }
+
+    if (isFeatured && existing.isActive) {
+      const activeFeaturedCount = await import("@/services/catalog").then((m) => m.getActiveFeaturedCount());
+      if (activeFeaturedCount >= 6) {
+        return {
+          error: "Featured quota full! Already 6 featured products added to homepage. Maximum limit reached. Please un-feature an existing product first.",
+          isQuotaFull: true,
+        };
+      }
+    }
+
+    await updateProduct(id, {
+      name: existing.name,
+      slug: existing.slug,
+      description: existing.description,
+      price: existing.price,
+      images: existing.images,
+      videos: existing.videos || [],
+      categoryId: existing.category?.id || "",
+      stock: existing.stock || 0,
+      isFeatured,
+      isActive: existing.isActive,
+    });
+
+    revalidatePath("/admin/products");
+    revalidatePath("/admin");
+    revalidatePath("/");
+    return { success: true };
+  } catch (error) {
+    console.error("Product toggle featured action error:", error);
+    return { error: "Failed to update featured status" };
   }
 }

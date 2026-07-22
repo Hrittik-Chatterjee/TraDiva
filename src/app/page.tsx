@@ -9,9 +9,11 @@ import TestimonialsSection from "@/components/storefront/TestimonialsSection";
 import ContactSection from "@/components/storefront/ContactSection";
 import { MoirangPheePattern } from "@/components/shared/manipuri-patterns";
 import { getStorefrontReels } from "@/services/reels";
+import { getStorefrontFeaturedProducts } from "@/services/catalog";
 
 export default async function Home() {
   const reels = await getStorefrontReels();
+  const featuredProductsList = await getStorefrontFeaturedProducts();
 
   return (
     <div className="flex flex-col items-center justify-center bg-lightest-pink">
@@ -25,7 +27,7 @@ export default async function Home() {
 
       
       {/* Featured Products Showcase Section */}
-      <FeaturedProducts />
+      <FeaturedProducts products={featuredProductsList} />
 
       {/* Interactive Categories Showcase */}
       <CulturalCategories />
