@@ -201,10 +201,10 @@ export default function ProductTableControls({ products }: { products: ProductTa
                         type="button"
                         onClick={() => handleToggleFeatured(product.id, product.isFeatured)}
                         disabled={isToggling || !product.isActive}
-                        title={!product.isActive ? "Hidden products cannot be featured on homepage" : ""}
+                        title={!product.isActive ? "This product is hidden. Make it visible to add to featured products." : ""}
                         className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold transition-all border ${
                           !product.isActive
-                            ? "bg-stone/5 border-stone/10 text-stone/40 cursor-not-allowed"
+                            ? "bg-gray-100 border-gray-200 text-gray-400 opacity-60 cursor-not-allowed select-none"
                             : product.isFeatured
                               ? "bg-amber-100 border-amber-300 text-amber-900 hover:bg-amber-200 cursor-pointer"
                               : "bg-stone/10 border-stone/20 text-stone hover:bg-stone/20 cursor-pointer"
