@@ -90,6 +90,7 @@ export default async function AdminReelsPage({
                   <Image
                     src={reel.imageUrl}
                     fill
+                    unoptimized
                     className="object-cover"
                     alt={reel.title}
                     sizes="300px"

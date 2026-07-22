@@ -74,7 +74,7 @@ export default function ReelsSection({ reels }: { reels?: StorefrontReel[] }) {
     ...activeReels
   ];
 
-  const [leftActiveIndex, setLeftActiveIndex] = useState(0); // Active index on leftmost focus (0 to 4)
+  const [leftActiveIndex, setLeftActiveIndex] = useState(0); // Active index (0 to originalLength - 1)
   const [isDraggingState, setIsDraggingState] = useState(false); // Blocks link clicks during drag
   const [cardWidth, setCardWidth] = useState(300);
 
@@ -104,18 +104,20 @@ export default function ReelsSection({ reels }: { reels?: StorefrontReel[] }) {
 
   // Update card shading overlay calculations dynamically based on coordinates
   const updateShadesAndCounter = useCallback((progress: number) => {
-    const spacing = 1 / originalLength; // 0.2
+    if (originalLength <= 1) return;
+    const spacing = 1 / originalLength;
     const rawIndex = Math.round(progress / spacing);
-    const activeIdx = ((rawIndex % originalLength) + originalLength) % originalLength; // 0 to 4
+    const activeIdx = ((rawIndex % originalLength) + originalLength) % originalLength;
     setLeftActiveIndex(activeIdx);
-  }, []);
+  }, [originalLength]);
 
   // Instantiate Timeline and Draggable
   useEffect(() => {
+    if (originalLength <= 1) return;
     if (!trackRef.current || !proxyRef.current || !trackWrapperRef.current) return;
 
     const cardSlotWidth = cardWidth + 24;
-    const cycleWidth = originalLength * cardSlotWidth; // Width of 1 cycle (5 cards)
+    const cycleWidth = originalLength * cardSlotWidth; // Width of 1 cycle
 
     // 1. Pause timeline translating track from 0 to -cycleWidth
     loopTimeline.current = gsap.timeline({ paused: true, repeat: -1 });
@@ -136,7 +138,7 @@ export default function ReelsSection({ reels }: { reels?: StorefrontReel[] }) {
       trigger: trackWrapperRef.current, // drag anywhere on the track
       dragClickables: false,
       onPress: function () {
-        gsap.killTweensOf(playheadRef.current); // Stop active snap glides instantly
+        gsap.killTweensOf(playheadRef.current);
         this.startOffset = playheadRef.current.offset;
         setIsDraggingState(true);
         dragHistory.current = [{ x: this.x, time: Date.now() }];
@@ -146,11 +148,9 @@ export default function ReelsSection({ reels }: { reels?: StorefrontReel[] }) {
         dragHistory.current.push({ x: this.x, time: now });
         dragHistory.current = dragHistory.current.filter(item => now - item.time < 100);
 
-        // Convert pixel drag displacement to timeline progress offset
         const deltaX = this.x - this.startX;
         playheadRef.current.offset = this.startOffset - deltaX / cycleWidth;
 
-        // Apply progress with seamless wrapping
         if (loopTimeline.current) {
           const wrappedTime = gsap.utils.wrap(0, 1, playheadRef.current.offset);
           loopTimeline.current.progress(wrappedTime);
@@ -170,26 +170,22 @@ export default function ReelsSection({ reels }: { reels?: StorefrontReel[] }) {
           const newest = history[history.length - 1];
           const timeDiff = newest.time - oldest.time;
           if (timeDiff > 0) {
-            pixelVelocity = ((newest.x - oldest.x) / timeDiff) * 1000; // px/sec
+            pixelVelocity = ((newest.x - oldest.x) / timeDiff) * 1000;
           }
         }
 
-        const progressVelocity = pixelVelocity / cycleWidth; // progress units per second
-
-        // Momentum snap projection
-        const momentumFactor = 0.8; // friction length multiplier
+        const progressVelocity = pixelVelocity / cycleWidth;
+        const momentumFactor = 0.8;
         const projectedOffset = playheadRef.current.offset - (progressVelocity * momentumFactor);
 
-        const spacing = 1 / originalLength; // 0.2
+        const spacing = 1 / originalLength;
         const targetOffset = Math.round(projectedOffset / spacing) * spacing;
-
-        // Glide speed duration proportional to release flick velocity
         const animDuration = Math.max(0.4, Math.min(1.2, Math.abs(progressVelocity) * 0.6));
 
         gsap.to(playheadRef.current, {
           offset: targetOffset,
           duration: animDuration,
-          ease: "power4.out", // Fast glide, gradual friction deceleration
+          ease: "power4.out",
           onUpdate: function () {
             if (loopTimeline.current) {
               const wrappedTime = gsap.utils.wrap(0, 1, playheadRef.current.offset);
@@ -201,7 +197,6 @@ export default function ReelsSection({ reels }: { reels?: StorefrontReel[] }) {
       }
     });
 
-    // Set initial position based on playhead offset
     const wrappedTime = gsap.utils.wrap(0, 1, playheadRef.current.offset);
     loopTimeline.current.progress(wrappedTime);
     updateShadesAndCounter(wrappedTime);
@@ -214,9 +209,10 @@ export default function ReelsSection({ reels }: { reels?: StorefrontReel[] }) {
         loopTimeline.current.kill();
       }
     };
-  }, [cardWidth, updateShadesAndCounter]); // Only rebuilds timeline metrics on resize
+  }, [cardWidth, originalLength, updateShadesAndCounter]);
 
   const slideTo = (targetOffset: number) => {
+    if (originalLength <= 1) return;
     gsap.killTweensOf(playheadRef.current);
 
     gsap.to(playheadRef.current, {
@@ -234,12 +230,14 @@ export default function ReelsSection({ reels }: { reels?: StorefrontReel[] }) {
   };
 
   const scrollLeftAction = () => {
+    if (originalLength <= 1) return;
     const spacing = 1 / originalLength;
     const currentSnapped = Math.round(playheadRef.current.offset / spacing) * spacing;
     slideTo(currentSnapped - spacing);
   };
 
   const scrollRightAction = () => {
+    if (originalLength <= 1) return;
     const spacing = 1 / originalLength;
     const currentSnapped = Math.round(playheadRef.current.offset / spacing) * spacing;
     slideTo(currentSnapped + spacing);
@@ -282,116 +280,158 @@ export default function ReelsSection({ reels }: { reels?: StorefrontReel[] }) {
               </div>
             </div>
             
-            <div className="flex gap-4">
-              <button
-                onClick={scrollLeftAction}
-                className="w-12 h-12 rounded-full bg-dark-pink flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-out cursor-pointer shadow-md"
-                aria-label="Previous Slide"
-              >
-                &larr;
-              </button>
-              <button
-                onClick={scrollRightAction}
-                className="w-12 h-12 rounded-full bg-dark-pink flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-out cursor-pointer shadow-md"
-                aria-label="Next Slide"
-              >
-                &rarr;
-              </button>
-            </div>
+            {originalLength > 1 && (
+              <div className="flex gap-4">
+                <button
+                  onClick={scrollLeftAction}
+                  className="w-12 h-12 rounded-full bg-dark-pink flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-out cursor-pointer shadow-md"
+                  aria-label="Previous Slide"
+                >
+                  &larr;
+                </button>
+                <button
+                  onClick={scrollRightAction}
+                  className="w-12 h-12 rounded-full bg-dark-pink flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-out cursor-pointer shadow-md"
+                  aria-label="Next Slide"
+                >
+                  &rarr;
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Scrolling Reels Track Wrapper */}
-          <div ref={trackWrapperRef} className="flex-grow overflow-hidden select-none cursor-grab active:cursor-grabbing">
-            {/* Translated Slider Track */}
-            <div 
-              ref={trackRef}
-              className="flex gap-6"
-            >
-              {itemsWithClones.map((reel, index) => {
-                // Loop-aware index distance mapping (relative to current active index)
-                const dist = (index - leftActiveIndex + 15) % originalLength;
-
-                return (
-                  <div
-                    key={index}
-                    className="reel-card w-[260px] md:w-[300px] aspect-[9/16] flex-shrink-0 rounded-[32px] overflow-hidden relative group shadow-md hover:shadow-xl transition-all duration-500 bg-white"
+          {originalLength === 1 ? (
+            /* Single Reel Layout */
+            <div className="flex-grow flex justify-start">
+              <div className="reel-card w-[260px] md:w-[300px] aspect-[9/16] rounded-[32px] overflow-hidden relative shadow-lg bg-white">
+                <Image
+                  src={activeReels[0].imageUrl}
+                  fill
+                  unoptimized
+                  className="object-cover"
+                  sizes="(max-width: 768px) 260px, 300px"
+                  alt={activeReels[0].title}
+                  priority
+                />
+                <video
+                  src={activeReels[0].videoUrl}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover z-0"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent z-10" />
+                <div className="absolute top-5 right-5 z-20 text-white/90 text-2xl select-none">
+                  ✦
+                </div>
+                <div className="absolute bottom-6 left-6 right-6 z-20 text-white select-none">
+                  <span className="text-[#ffea79] text-xl md:text-2xl font-black uppercase tracking-tight block leading-tight mb-1">
+                    {activeReels[0].title}
+                  </span>
+                  <span className="text-white/90 text-xs md:text-sm font-bold block mb-4">
+                    {activeReels[0].tagline}
+                  </span>
+                  <Link
+                    href={activeReels[0].categorySlug === "all" ? "/catalog" : `/catalog?category=${activeReels[0].categorySlug}`}
+                    className="inline-block bg-[#ffea79] text-black font-bold text-xs md:text-sm px-6 py-2 rounded-full hover:bg-white hover:scale-105 active:scale-95 transition-all duration-300 ease-out"
                   >
-                    {/* Background Preview Image */}
-                    <Image
-                      src={reel.imageUrl}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none select-none"
-                      sizes="(max-width: 768px) 260px, 300px"
-                      alt={reel.title}
-                      draggable="false"
-                    />
+                    Shop Look
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ) : (
+            /* Multi Reel Infinite Slider Track */
+            <div ref={trackWrapperRef} className="flex-grow overflow-hidden select-none cursor-grab active:cursor-grabbing">
+              <div 
+                ref={trackRef}
+                className="flex gap-6"
+              >
+                {itemsWithClones.map((reel, index) => {
+                  const reelIndex = index % originalLength;
+                  const isFocused = reelIndex === leftActiveIndex;
 
-                    {/* Active Card Loop Video Overlay */}
-                    {dist === 0 && (
-                      <video
-                        src={reel.videoUrl}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+                  return (
+                    <div
+                      key={index}
+                      className="reel-card w-[260px] md:w-[300px] aspect-[9/16] flex-shrink-0 rounded-[32px] overflow-hidden relative group shadow-md hover:shadow-xl transition-all duration-500 bg-white"
+                    >
+                      {/* Background Preview Image */}
+                      <Image
+                        src={reel.imageUrl}
+                        fill
+                        unoptimized
+                        className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none select-none"
+                        sizes="(max-width: 768px) 260px, 300px"
+                        alt={reel.title}
+                        draggable="false"
                       />
-                    )}
 
-                    {/* Bottom Dark Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent z-10" />
+                      {/* Active Card Loop Video Overlay */}
+                      {isFocused && (
+                        <video
+                          src={reel.videoUrl}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+                        />
+                      )}
 
-                    {/* Translucent White Shade Overlay (No CSS transition property to avoid animation overhead and lag) */}
-                    <div 
-                      className={`absolute inset-0 bg-white z-15 pointer-events-none ${
-                        dist === 0 
-                          ? "opacity-0" 
-                          : dist === 1 
-                            ? "opacity-35" 
-                            : "opacity-75"
-                      }`}
-                    />
+                      {/* Bottom Dark Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent z-10" />
 
-                    {/* Star Icon (Top-right) - only visible on active card */}
-                    <div 
-                      className={`absolute top-5 right-5 z-20 text-white/90 text-2xl select-none transition-all duration-500 ${
-                        dist === 0 
-                          ? "opacity-100 rotate-0 group-hover:rotate-90" 
-                          : "opacity-0 pointer-events-none"
-                      }`}
-                    >
-                      ✦
-                    </div>
+                      {/* Translucent White Shade Overlay */}
+                      <div 
+                        className={`absolute inset-0 bg-white z-15 pointer-events-none transition-opacity duration-300 ${
+                          isFocused ? "opacity-0" : "opacity-50"
+                        }`}
+                      />
 
-                    {/* Text & Button Overlay (Bottom-left) - only visible on active card */}
-                    <div 
-                      className={`absolute bottom-6 left-6 right-6 z-20 text-white select-none transition-all duration-500 ${
-                        dist === 0 
-                          ? "opacity-100 translate-y-0" 
-                          : "opacity-0 translate-y-6 pointer-events-none"
-                      }`}
-                    >
-                      <span className="text-[#ffea79] text-xl md:text-2xl font-black uppercase tracking-tight block leading-tight mb-1">
-                        {reel.title}
-                      </span>
-                      <span className="text-white/90 text-xs md:text-sm font-bold block mb-4">
-                        {reel.tagline}
-                      </span>
-                      
-                      <Link
-                        href={reel.categorySlug === "all" ? "/catalog" : `/catalog?category=${reel.categorySlug}`}
-                        className={`inline-block bg-[#ffea79] text-black font-bold text-xs md:text-sm px-6 py-2 rounded-full hover:bg-white hover:scale-105 active:scale-95 transition-all duration-300 ease-out ${
-                          isDraggingState ? "pointer-events-none" : ""
+                      {/* Star Icon */}
+                      <div 
+                        className={`absolute top-5 right-5 z-20 text-white/90 text-2xl select-none transition-all duration-500 ${
+                          isFocused 
+                            ? "opacity-100 rotate-0 group-hover:rotate-90" 
+                            : "opacity-0 pointer-events-none"
                         }`}
                       >
-                        Shop Look
-                      </Link>
+                        ✦
+                      </div>
+
+                      {/* Text & Button Overlay */}
+                      <div 
+                        className={`absolute bottom-6 left-6 right-6 z-20 text-white select-none transition-all duration-500 ${
+                          isFocused 
+                            ? "opacity-100 translate-y-0" 
+                            : "opacity-0 translate-y-6 pointer-events-none"
+                        }`}
+                      >
+                        <span className="text-[#ffea79] text-xl md:text-2xl font-black uppercase tracking-tight block leading-tight mb-1">
+                          {reel.title}
+                        </span>
+                        <span className="text-white/90 text-xs md:text-sm font-bold block mb-4">
+                          {reel.tagline}
+                        </span>
+                        
+                        <Link
+                          href={reel.categorySlug === "all" ? "/catalog" : `/catalog?category=${reel.categorySlug}`}
+                          className={`inline-block bg-[#ffea79] text-black font-bold text-xs md:text-sm px-6 py-2 rounded-full hover:bg-white hover:scale-105 active:scale-95 transition-all duration-300 ease-out ${
+                            isDraggingState ? "pointer-events-none" : ""
+                          }`}
+                        >
+                          Shop Look
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
         </div>
       </div>
