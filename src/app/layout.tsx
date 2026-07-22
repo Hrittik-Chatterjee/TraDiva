@@ -8,6 +8,7 @@ import Navbar from "@/components/layout/navbar";
 import MainContainer from "@/components/layout/main-container";
 import Footer from "@/components/layout/footer";
 import { getCategories } from "@/services/catalog";
+import { ModalProvider } from "@/components/providers/modal-provider";
 
 export const metadata: Metadata = {
   title: "TraDiva - Premium E-commerce",
@@ -26,12 +27,14 @@ export default async function RootLayout({
       <body className="min-h-screen flex flex-col bg-canvas text-ink">
         <PostHogProvider>
           <PostHogPageView />
-          <CartProvider>
-            <Navbar categories={categoriesList} />
-            <MainContainer>{children}</MainContainer>
-            <CartSheet />
-            <Footer />
-          </CartProvider>
+          <ModalProvider>
+            <CartProvider>
+              <Navbar categories={categoriesList} />
+              <MainContainer>{children}</MainContainer>
+              <CartSheet />
+              <Footer />
+            </CartProvider>
+          </ModalProvider>
         </PostHogProvider>
       </body>
     </html>

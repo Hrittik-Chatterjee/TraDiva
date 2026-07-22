@@ -150,9 +150,44 @@ export async function deleteProductAction(id: string) {
     trackServerEvent(userId, "admin_delete_product", { productId: id });
     revalidatePath("/admin/products");
     revalidatePath("/admin");
+    revalidatePath("/catalog");
+    revalidatePath("/");
     return { success: true };
   } catch (error) {
     console.error("Product delete action error:", error);
-    return { error: "Failed to delete product" };
+    return {
+      error: "Cannot delete this product because it is linked to existing customer orders.",
+      isForeignKeyError: true,
+    };
+  }
+}
+
+export async function toggleProductActiveAction(id: string, isActive: boolean) {
+  try {
+    const existingProducts = await import("@/services/catalog").then((m) => m.getProducts());
+    const existing = existingProducts.find((p) => p.id === id);
+    if (!existing) {
+      return { error: "Product not found" };
+    }
+
+    await updateProduct(id, {
+      title: existing.title,
+      description: existing.description,
+      price: existing.price,
+      currency: existing.currency,
+      categoryId: existing.categoryId,
+      images: existing.images,
+      isActive,
+      slug: existing.slug,
+    });
+
+    revalidatePath("/admin/products");
+    revalidatePath("/admin");
+    revalidatePath("/catalog");
+    revalidatePath("/");
+    return { success: true };
+  } catch (error) {
+    console.error("Product toggle active action error:", error);
+    return { error: "Failed to update product status" };
   }
 }

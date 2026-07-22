@@ -149,12 +149,6 @@ export default function ProductForm({ categories, initialData }: ProductFormProp
       router.refresh();
     }
   }
-      setError(result.error);
-    } else {
-      router.push("/admin/products");
-      router.refresh();
-    }
-  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl border border-light-pink p-8 rounded-2xl bg-canvas">
@@ -373,7 +367,7 @@ export default function ProductForm({ categories, initialData }: ProductFormProp
       <div className="flex gap-4 pt-4 border-t border-lightest-pink">
         <button
           type="submit"
-          disabled={pending || uploading}
+          disabled={pending || uploadingImage || uploadingVideo}
           className="h-10 inline-flex items-center justify-center rounded-full bg-primary px-8 text-xs font-medium text-on-primary hover:bg-dark-pink disabled:bg-stone disabled:cursor-not-allowed transition-colors"
         >
           {pending ? "Saving..." : initialData ? "Update Product" : "Publish Product"}
